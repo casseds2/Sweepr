@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+      <form action="/auth/register" method="POST">
+        <input name="username" placeholder="username"/> <br />
+        <input name="firstName" placeholder="first name"/> <br />
+        <input name="lastName" placeholder="last name"/> <br />
+        <input name="email" placeholder="email"/> <br />
+        <input name="password" placeholder="password"/> <br />
+        <input type="submit" value="Register"/>
+      </form>
+
+
+      <form action="/auth/login" method="POST">
+        <input name="username" placeholder="username"/> <br />
+        <input name="password" placeholder="password"/> <br />
+        <input type="submit" value="Login"/>
+      </form>
+
+      <form action="auth/logout" method="POST">
+        <button type="submit">Logout</button>
+      </form>
+
+  </body>
+</html>
