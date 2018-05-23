@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { NavBar } from '../containers'
+import { ApplicationBar } from '../containers'
 
 class Home extends Component{
 
   render(){
     return(
       <div>
-        <NavBar />
+        <ApplicationBar />
         Home Component
       </div>
     )

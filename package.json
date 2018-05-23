@@ -11,6 +11,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@material-ui/core": "^1.0.0",
+    "@material-ui/icons": "^1.0.0",
     "bcrypt": "^2.0.1",
     "bluebird": "^3.5.1",
     "client-sessions": "^0.8.0",

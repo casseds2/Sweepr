@@ -270,6 +270,139 @@ exports.default = App;
 
 /***/ }),
 
+/***/ "./src/components/containers/ApplicationBar.js":
+/*!*****************************************************!*\
+  !*** ./src/components/containers/ApplicationBar.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _MuiThemeProvider = __webpack_require__(/*! material-ui/styles/MuiThemeProvider */ "./node_modules/material-ui/styles/MuiThemeProvider.js");
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _styles = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/styles/index.js");
+
+var _AppBar = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/AppBar/index.js");
+
+var _AppBar2 = _interopRequireDefault(_AppBar);
+
+var _Toolbar = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/Toolbar/index.js");
+
+var _Toolbar2 = _interopRequireDefault(_Toolbar);
+
+var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
+
+var _Typography2 = _interopRequireDefault(_Typography);
+
+var _Button = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _IconButton = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/IconButton/index.js");
+
+var _IconButton2 = _interopRequireDefault(_IconButton);
+
+var _Menu = __webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js");
+
+var _Menu2 = _interopRequireDefault(_Menu);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  root: {
+    flexGrow: 1
+  },
+  flex: {
+    flex: 1
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  }
+};
+
+var ApplicationBar = function (_Component) {
+  _inherits(ApplicationBar, _Component);
+
+  function ApplicationBar() {
+    _classCallCheck(this, ApplicationBar);
+
+    var _this = _possibleConstructorReturn(this, (ApplicationBar.__proto__ || Object.getPrototypeOf(ApplicationBar)).call(this));
+
+    _this.state = {
+      classes: _propTypes2.default.object.isRequired
+    };
+    return _this;
+  }
+
+  _createClass(ApplicationBar, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        null,
+        _react2.default.createElement(
+          'div',
+          { className: this.state.classes.root },
+          _react2.default.createElement(
+            _AppBar2.default,
+            { position: 'static' },
+            _react2.default.createElement(
+              _Toolbar2.default,
+              null,
+              _react2.default.createElement(
+                _IconButton2.default,
+                { className: this.state.classes.menuButton, color: 'inherit', 'aria-label': 'Menu' },
+                _react2.default.createElement(_Menu2.default, null)
+              ),
+              _react2.default.createElement(
+                _Typography2.default,
+                { variant: 'title', color: 'inherit', className: this.state.classes.flex },
+                'Sweepr'
+              ),
+              _react2.default.createElement(
+                _Button2.default,
+                { color: 'inherit' },
+                'Login'
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return ApplicationBar;
+}(_react.Component);
+
+exports.default = ApplicationBar;
+
+/***/ }),
+
 /***/ "./src/components/containers/NavBar.js":
 /*!*********************************************!*\
   !*** ./src/components/containers/NavBar.js ***!
@@ -301,6 +434,10 @@ var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
 var _actions = __webpack_require__(/*! ../../actions */ "./src/actions/index.js");
+
+var _ApplicationBar = __webpack_require__(/*! ./ApplicationBar */ "./src/components/containers/ApplicationBar.js");
+
+var _ApplicationBar2 = _interopRequireDefault(_ApplicationBar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -336,23 +473,18 @@ var NavBar = function (_Component) {
     key: 'render',
     value: function render() {
 
-      var username = this.props.currentuser.username == null ? "Unknown" : this.props.currentuser.username;
+      // let username = (this.props.currentuser.username == null) ? "Unknown" : this.props.currentuser.username
 
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          _MuiThemeProvider2.default,
-          null,
-          _react2.default.createElement(_FlatButton2.default, { onClick: this.currentUser.bind(this), backgroundColor: 'green', hoverColor: 'red', label: 'CurrentUser' })
-        ),
-        _react2.default.createElement(
-          'h1',
-          null,
-          'Hello: ',
-          username
-        )
-      );
+      // return(
+      //   <div>
+      //     <MuiThemeProvider>
+      //       {/* <FlatButton onClick={this.currentUser.bind(this)} backgroundColor="green" hoverColor="red" label="CurrentUser" /> */}
+      //     </MuiThemeProvider>
+      //     <h1>Hello: {username}</h1>
+      //   </div>
+      // )
+
+      return _react2.default.createElement(_ApplicationBar2.default, null);
     }
   }]);
 
@@ -635,7 +767,7 @@ exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Users)
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NavBar = exports.Users = undefined;
+exports.ApplicationBar = exports.NavBar = exports.Users = undefined;
 
 var _Users = __webpack_require__(/*! ./Users */ "./src/components/containers/Users.js");
 
@@ -645,10 +777,15 @@ var _NavBar = __webpack_require__(/*! ./NavBar */ "./src/components/containers/N
 
 var _NavBar2 = _interopRequireDefault(_NavBar);
 
+var _ApplicationBar = __webpack_require__(/*! ./ApplicationBar */ "./src/components/containers/ApplicationBar.js");
+
+var _ApplicationBar2 = _interopRequireDefault(_ApplicationBar);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Users = _Users2.default;
 exports.NavBar = _NavBar2.default;
+exports.ApplicationBar = _ApplicationBar2.default;
 
 /***/ }),
 
@@ -697,7 +834,7 @@ var Home = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_containers.NavBar, null),
+        _react2.default.createElement(_containers.ApplicationBar, null),
         'Home Component'
       );
     }
