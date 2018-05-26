@@ -30,12 +30,6 @@ class SweepstakeForm extends Component{
       currentTeamName: ''
     }
   }
-  
-  componentDidMount(){
-    if(this.props.currentUser == ''){
-      this.props.getCurrentUser()
-    }
-  }
 
   handleFormChange(event){
     // console.log(event.target.id + ' === ' + event.target.value)
@@ -208,14 +202,13 @@ class SweepstakeForm extends Component{
 
 const stateToProps = (state) => {
   return {
-    currentUser: state.user.currentUser
+    currentUser: state.auth.user,
   }
 }
 
 const dispatchToProps = (dispatch) => {
 	return {
     createSweepstake: (params) => dispatch(sweepstakeActions.createSweepstake(params)),
-    getCurrentUser: () => dispatch(authActions.getCurrentUser())
 	}
 }
 
