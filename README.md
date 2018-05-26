@@ -30,3 +30,7 @@ You can use NODE_ENV production when looking to move the application to producti
 - nodemon
 - webpack -w
 
+# Contributors
+- Stephen Cassedy (https://github.com/casseds2)
+- Aaron Daly (https://github.com/aaron-daly)
+
