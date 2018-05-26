@@ -17,7 +17,7 @@
 
 Environment (.env file) should contain: 
 
-- **dbURL='mongodb://<user>:<password>@ds131800.mlab.com:31800/<project_name>'**
+- **dbURL='mongodb://{user}:{password}@ds131800.mlab.com:31800/{project_name}'**
 - **secret='my-secret'**
 - **NODE_ENV = 'dev'**
 
