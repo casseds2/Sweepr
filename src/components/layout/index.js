@@ -1,7 +1,9 @@
-import Home from './Home'
+import Dashboard from './Dashboard'
+import Sidebar from './Sidebar'
+import Profile from './Profile'
 
 export {
-
-  Home
-
+  Dashboard,
+  Sidebar,
+  Profile
 }

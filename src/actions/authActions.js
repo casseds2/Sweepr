@@ -5,12 +5,10 @@ export default {
 
   getCurrentUser: () => {
     return (dispatch) => {
-
       dispatch({
         type: constants.FETCHING_PROFILE,
         status: 'loading'
       })
-
       APIManager.get('/auth/currentuser', null)
       .then(data => {
         dispatch({
@@ -26,6 +24,5 @@ export default {
         })
       })
     }
-  } 
-  	
+  }	
 }

@@ -1,15 +1,20 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { userReducer } from '../reducers'
+import createHistory from 'history/createBrowserHistory'
+import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 var store
+const history = createHistory()
+const reactRouterRedux = routerMiddleware(history)
 
 export default {
 
 	configure: (initialState) => {
 		
 		const reducers = combineReducers({
-			user: userReducer
+      user: userReducer,
+      router: routerReducer
 		})
 
 		if (initialState){
@@ -24,7 +29,8 @@ export default {
 
 		store = createStore(
 		    reducers,
-		    applyMiddleware(thunk)
+        applyMiddleware(thunk),
+        applyMiddleware(reactRouterRedux)
 		)
 
 		return store
