@@ -10,7 +10,7 @@ router.post('/:action', function(req, res, next){
 
     if(action == 'register'){
         console.log('Req: ' + JSON.stringify(req.body))
-        AccountController.create(req.body)
+        AccountController.create(req)
         .then(data => {
             console.log('Data: ' + JSON.stringify(data))
             res.json({

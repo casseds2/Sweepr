@@ -4,10 +4,10 @@ var Promise = require('bluebird')
 
 module.exports = {
 
-    create: (params) => {
-        params['password'] = bcrypt.hashSync(params.password, 10)
+    create: (req) => {
+        req['body']['password'] = bcrypt.hashSync(req.body.password, 10)
         return new Promise(function(resolve, reject){
-            Account.create(params, (err, profile) => {
+            Account.create(req.body, (err, profile) => {
             if(err){
                 reject(err)
                 return
