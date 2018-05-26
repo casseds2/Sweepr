@@ -6,7 +6,6 @@
 - sudo npm install -g webpack
 - sudo npm install -g webpack-cli
 - sudo npm install -g nodemon
-- sudo npm install -g mongodb
 
 ## Making Project
 - cd /project
@@ -18,7 +17,7 @@
 
 Environment (.env file) should contain: 
 
-- **dbURL='mongodb://localhost/{project-name}'**
+- **dbURL='mongodb://<user>:<password>@ds131800.mlab.com:31800/<project_name>'**
 - **secret='my-secret'**
 - **NODE_ENV = 'dev'**
 
