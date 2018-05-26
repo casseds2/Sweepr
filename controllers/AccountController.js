@@ -31,27 +31,27 @@ module.exports = {
     },
 
     login: (req) => {
-        let params = {username: req.body.username}
-        return new Promise(function(resolve, reject){
-            Account.find(params, (err, profiles) => {
-                if(err){
-                    reject({message: 'User Login Failed!'})
-                    return
-                }
-                if(profiles.length == 0){
-                    reject({message: 'User Does Not Exists!'})
-                    return
-                }
-                let profile = profiles[0]
-                let isPasswordCorrect = bcrypt.compareSync(req.body.password, profile.password)
-                if(isPasswordCorrect == false){
-                    reject({message: 'Entered Wrong Password!'})
-                    return
-                }
-                req.session.user = profile._id
-                resolve(profile)
-            })
-        })
+      let params = {username: req.body.username}
+      return new Promise(function(resolve, reject){
+          Account.find(params, (err, profiles) => {
+              if(err){
+                  reject({message: 'User Login Failed!'})
+                  return
+              }
+              if(profiles.length == 0){
+                  reject({message: 'User Does Not Exist!'})
+                  return
+              }
+              let profile = profiles[0]
+              let isPasswordCorrect = bcrypt.compareSync(req.body.password, profile.password)
+              if(isPasswordCorrect == false){
+                  reject({message: 'Entered Wrong Password!'})
+                  return
+              }
+              req.session.user = profile._id
+              resolve(profile)
+          })
+      })
     },
 
     currentUser: (req) => {

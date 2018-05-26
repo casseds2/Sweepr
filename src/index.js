@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom' 
 import App from './components/App'
 import createHistory from 'history/createBrowserHistory'
-import { Dashboard, Profile } from './components/layout';
+import { Dashboard, Profile, CreateSweepstake } from './components/layout';
 
 const history = createHistory()
 
@@ -15,6 +15,7 @@ const app = (
 			<div>
 				<Route exact path='/' component={Dashboard} />
 				<Route path='/profile' component={Profile} />
+        <Route path='/create' component={CreateSweepstake} />
 			</div>
 		</BrowserRouter>
 	</Provider>
