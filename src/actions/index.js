@@ -2,7 +2,6 @@ import authActions from './authActions'
 import sweepstakeActions from './sweepstakeActions'
 
 export {
-
-  authActions
-
+  authActions,
+  sweepstakeActions
 }
