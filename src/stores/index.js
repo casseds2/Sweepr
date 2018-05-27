@@ -29,8 +29,7 @@ export default {
 
 		store = createStore(
 		    reducers,
-        applyMiddleware(thunk),
-        applyMiddleware(reactRouterRedux)
+        applyMiddleware(thunk, reactRouterRedux)
 		)
 
 		return store

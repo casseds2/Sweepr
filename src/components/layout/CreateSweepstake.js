@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Sidebar from './Sidebar'
+import { SweepstakeForm } from '../containers'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 
 class CreateSweepstake extends Component{
@@ -8,7 +9,7 @@ class CreateSweepstake extends Component{
       <MuiTheme>
         <div>
           <Sidebar />
-          <h1>CreateSweepstake Component</h1>
+          <SweepstakeForm />
         </div>
       </MuiTheme>
     )
