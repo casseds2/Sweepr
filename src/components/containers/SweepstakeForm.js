@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import { connect } from 'react-redux'
-import actions from '../../actions'
+import { sweepstakeActions } from '../../actions'
 
 class SweepstakeForm extends Component{  
   
@@ -169,7 +169,7 @@ class SweepstakeForm extends Component{
 
 const dispatchToProps = (dispatch) => {
 	return {
-    createSweepstake: (params) => dispatch(actions.createSweepstake(params))
+    createSweepstake: (params) => dispatch(sweepstakeActions.createSweepstake(params))
 	}
 }
 

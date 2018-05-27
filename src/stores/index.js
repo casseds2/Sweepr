@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import { userReducer } from '../reducers'
+import { userReducer, sweepstakeReducer } from '../reducers'
 import createHistory from 'history/createBrowserHistory'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
@@ -14,6 +14,7 @@ export default {
 		
 		const reducers = combineReducers({
       user: userReducer,
+      sweepstake: sweepstakeReducer,
       router: routerReducer
 		})
 
