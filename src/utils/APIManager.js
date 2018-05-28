@@ -9,11 +9,11 @@ export default {
       .query(query)
       .set('Accept', 'application/json')
       .end((err, response) => {
-          if(err){
-              reject(err)
-              return
-          }
-          resolve(response.body)
+        if(err){
+          reject(err)
+          return
+        }
+        resolve(response.body)
       })
     })
   },
@@ -39,10 +39,23 @@ export default {
       .send(data)
       .set('Accept', 'application/json')
       .end((err, response) => {
-          reject(err)
-          return
+        reject(err)
+        return
       })
       resolve(response.body)
+    })
+  },
+
+  delete: (url) => {
+    return new Promise((resolve, reject) => {
+      superagent.del(url)
+      .send({})
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        reject(err)
+        return
+      })
+      resolve({deleted:true})
     })
   }
 

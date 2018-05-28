@@ -21,16 +21,24 @@ class SweepstakeForm extends Component{
     this.state = {
       form: {
         name: '',
+        description: '',
         teams: [],
+        owner: '',
         isPrivate: false,
         members: []
       },
       currentTeamName: ''
     }
   }
+  
+  componentDidMount(){
+    if(this.props.currentUser == ''){
+      this.props.getCurrentUser()
+    }
+  }
 
   handleFormChange(event){
-    console.log(event.target.id + ' === ' + event.target.value)
+    // console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state.form)
     updated[event.target.id] = event.target.value
     this.setState({
@@ -39,7 +47,7 @@ class SweepstakeForm extends Component{
   }
 
   handleChange(event){
-    console.log(event.target.id + ' === ' + event.target.value)
+    // console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state)
     updated[event.target.id] = event.target.value
     this.setState(
@@ -72,17 +80,15 @@ class SweepstakeForm extends Component{
   }
 
   save(){
-    this.props.createSweepstake(this.state.form)
+    //console.log('CurrentUser: ' + JSON.stringify(this.props.currentUser))
+    let updated = Object.assign({}, this.state.form)
+    updated['owner'] = this.props.currentUser._id
+    this.setState({
+      form: updated
+    })
+    this.props.createSweepstake(updated)
   }
 
-  componentDidUpdate(){
-    console.log(JSON.stringify(this.state))
-  }
-
-  componentDidMount(){
-    this.props.getProfiles()
-  }
-  
   render(){
 
     const styles = {
@@ -152,6 +158,17 @@ class SweepstakeForm extends Component{
             </Grid>
             <Grid item style={styles.textEntryStyle}>
               <TextField
+                fullWidth
+                required
+                id="description"
+                label="Description"
+                value={this.state.form.description}
+                margin="normal"
+                onChange={this.handleFormChange.bind(this)}
+              />
+            </Grid>
+            <Grid item style={styles.textEntryStyle}>
+              <TextField
                 id="currentTeamName"
                 label="Teams"
                 value={this.state.currentTeamName}
@@ -189,11 +206,17 @@ class SweepstakeForm extends Component{
   }
 }
 
+const stateToProps = (state) => {
+  return {
+    currentUser: state.user.currentUser
+  }
+}
+
 const dispatchToProps = (dispatch) => {
 	return {
     createSweepstake: (params) => dispatch(sweepstakeActions.createSweepstake(params)),
-    getProfiles: () => dispatch(authActions.getProfiles())
+    getCurrentUser: () => dispatch(authActions.getCurrentUser())
 	}
 }
 
-export default connect(null, dispatchToProps)(SweepstakeForm)
+export default connect(stateToProps, dispatchToProps)(SweepstakeForm)

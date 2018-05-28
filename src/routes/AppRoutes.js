@@ -1,4 +1,4 @@
-import { Dashboard, Profile, CreateSweepstake } from '../components/layout'
+import { Dashboard, Profile, CreateSweepstake, ViewAllSweepstakes } from '../components/layout'
 import {
   Person,
   ContentPaste,
@@ -29,6 +29,13 @@ const AppRoutes = [
     navbarName: "Create Sweepstake",
     icon: Person,
     component: CreateSweepstake
+  },
+  {
+    path: "/view/sweepstakes",
+    sidebarName: "Sweepstakes",
+    navbarName: "Sweepstakes",
+    icon: Person,
+    component: ViewAllSweepstakes
   },
   { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
 ]

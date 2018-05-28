@@ -119,30 +119,30 @@ router.put('/resource/:id', (req, res, next) => {
 
 router.delete('/:resource/:id', (req, res, next) => {
 
-    var resource = req.params.resource
-    var id = req.params.id
-    var controller = controllers[resource]
+  var resource = req.params.resource
+  var id = req.params.id
+  var controller = controllers[resource]
 
-    if(controller == null){
-        res.json({
-            confirmation: 'fail',
-            message: 'Invalid Resource Request: ' + resource
-        })
-        return
-    }
-    controller.delete(id)
-    .then(data => {
-        res.json({
-            confirmation: 'success',
-            data: data
-        })
+  if(controller == null){
+    res.json({
+      confirmation: 'fail',
+      message: 'Invalid Resource Request: ' + resource
     })
-    .catch(err => {
-        res.json({
-            confirmation: 'fail',
-            message: err
-        })
+    return
+  }
+  controller.delete(id)
+  .then(data => {
+    res.json({
+      confirmation: 'success',
+      data: data
     })
+  })
+  .catch(err => {
+    res.json({
+      confirmation: 'fail',
+      message: err
+    })
+  })
 
 })
 

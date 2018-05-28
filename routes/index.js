@@ -9,6 +9,10 @@ router.get('/create', (req, res) => {
   res.render('index', null)
 })
 
+router.get('/view/sweepstakes', (req, res) => {
+  res.render('index', null)
+})
+
 router.get('/createUser', function(req, res, next){
   res.render('createUser', null)
 })
