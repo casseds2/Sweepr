@@ -16,15 +16,15 @@ module.exports = {
     },
 
     find: (params) => {
-        return new Promise((resolve, reject) => {
-            Account.find(params, (err, profiles) => {
-                if(err){
-                    reject(err)
-                    return
-                }
-                resolve(profiles)
-            })
+      return new Promise((resolve, reject) => {
+        Account.find(params, (err, profiles) => {
+            if(err){
+                reject(err)
+                return
+            }
+            resolve(profiles)
         })
+      })
     },
 
     delete: (id) => {

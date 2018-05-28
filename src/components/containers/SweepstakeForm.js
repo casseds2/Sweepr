@@ -10,8 +10,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
+import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
-import { sweepstakeActions } from '../../actions'
+import { sweepstakeActions, authActions } from '../../actions'
 
 class SweepstakeForm extends Component{  
   
@@ -70,8 +71,16 @@ class SweepstakeForm extends Component{
     })
   }
 
+  save(){
+    this.props.createSweepstake(this.state.form)
+  }
+
   componentDidUpdate(){
     console.log(JSON.stringify(this.state))
+  }
+
+  componentDidMount(){
+    this.props.getProfiles()
   }
   
   render(){
@@ -91,13 +100,15 @@ class SweepstakeForm extends Component{
       teamlistElemStyle: {
         backgroundColor: '#ededed',
         margin: 5
+      },
+      saveButtonStyle: {
+        margin: 5
       }
     }
 
     let teamEntries = this.state.form.teams.map((team, index) => {
-      return  <Grid item style={styles.teamlistElemStyle} xs={3}>
+      return  <Grid item key={index} style={styles.teamlistElemStyle} xs={4}>
                 <ListItem
-                  key={index}
                   role={undefined}
                   dense
                   button
@@ -161,6 +172,17 @@ class SweepstakeForm extends Component{
               </List>
             </Grid>
           </Grid>
+          <Grid container justify={'center'} direction={'row'}>
+            <Grid item style={styles.saveButtonStyle}>
+              <Button
+                variant="raised" 
+                color="primary"
+                onClick={ () => { this.save() } }
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
           </Paper>
       </Grid>
     )
@@ -169,7 +191,8 @@ class SweepstakeForm extends Component{
 
 const dispatchToProps = (dispatch) => {
 	return {
-    createSweepstake: (params) => dispatch(sweepstakeActions.createSweepstake(params))
+    createSweepstake: (params) => dispatch(sweepstakeActions.createSweepstake(params)),
+    getProfiles: () => dispatch(authActions.getProfiles())
 	}
 }
 

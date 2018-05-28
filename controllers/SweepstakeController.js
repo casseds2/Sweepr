@@ -7,8 +7,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
         Sweepstake.create(req.body, (err, sweepstake) => {
         if(err){
-            reject(err)
-            return
+          reject(err)
+          return
         }
         resolve(sweepstake)
       })
@@ -18,11 +18,11 @@ module.exports = {
   findById: (id) => {
     return new Promise((resolve, reject) => {
       Sweepstake.findById(id, (err, sweepstake) => {
-          if(err){
-              reject(err)
-              return
-          }
-          resolve(sweepstake)
+        if(err){
+          reject(err)
+          return
+        }
+        resolve(sweepstake)
       })
     })
   },
@@ -30,11 +30,11 @@ module.exports = {
   find: (params) => {
     return new Promise((resolve, reject) => {
       Sweepstake.find(params, (err, sweepstakes) => {
-          if(err){
-              reject(err)
-              return
-          }
-          resolve(sweepstakes)
+        if(err){
+          reject(err)
+          return
+        }
+        resolve(sweepstakes)
       })
     })
   },
@@ -42,11 +42,11 @@ module.exports = {
   delete: (id) => {
     return new Promise((resolve, reject) => {
       Sweepstake.findByIdAndRemove(id, (err, sweepstake) => {
-          if(err){
-              reject(err)
-              return
-          }
-          resolve(sweepstake)
+        if(err){
+          reject(err)
+          return
+        }
+        resolve(sweepstake)
       })
     })
   }

@@ -60,7 +60,6 @@ module.exports = {
                 resolve({error: 'No Session'})
                 return
             }
-            console.log(JSON.stringify(req.session))
             if(req.session.user == null){
                 resolve({error: 'No Session For User'})
                 return

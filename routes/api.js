@@ -4,60 +4,60 @@ var controllers = require('../controllers')
 
 router.get('/:resource', function(req, res, next){
 
-    var resource  = req.params.resource
-    var controller = controllers[resource]
+  var resource  = req.params.resource
+  var controller = controllers[resource]
 
-    if(controller == null){
-        res.json({
-            confirmation: 'fail',
-            message: 'Invalid Resource Request: ' + resource
-        })
-        return
-    }
-    controller.find(req.query)
-    .then(data => {
-        res.json({
-            confirmation: 'success',
-            data: data
-        })
+  if(controller == null){
+    res.json({
+      confirmation: 'fail',
+      message: 'Invalid Resource Request: ' + resource
     })
-    .catch(err => {
-        res.json({
-            confirmation: 'fail',
-            message: err
-        })
+    return
+  }
+  controller.find(req.query)
+  .then(data => {
+    res.json({
+      confirmation: 'success',
+      data: data
     })
-});
+  })
+  .catch(err => {
+    res.json({
+      confirmation: 'fail',
+      message: err
+    })
+  })
+})
 
 router.get('/:resource/:id', function(req, res, next){
     
-    var resource = req.params.resource
-    var id = req.params.id
-    var controller = controllers[resource]
+  var resource = req.params.resource
+  var id = req.params.id
+  var controller = controllers[resource]
 
-    if(controller == null){
-        res.json({
-            confirmation: 'fail',
-            message: 'Invalid Resource Request: ' + resource
-        })
-        return
-    }
-    controller.findById(id)
-    .then(data => {
-        res.json({
-            confirmation: 'success',
-            data: data
-        })
+  if(controller == null){
+    res.json({
+      confirmation: 'fail',
+      message: 'Invalid Resource Request: ' + resource
     })
-    .catch(err => {
-        res.json({
-            confirmation: 'fail',
-            message: err
-        })
+    return
+  }
+  controller.findById(id)
+  .then(data => {
+    res.json({
+      confirmation: 'success',
+      data: data
     })
-});
+  })
+  .catch(err => {
+    res.json({
+      confirmation: 'fail',
+      message: err
+    })
+  })
+})
 
-router.post('/resource', (req, res, next) => {
+router.post('/:resource', (req, res, next) => {
 
   var resource = req.params.resource
   var controller = controllers[resource]
@@ -70,18 +70,17 @@ router.post('/resource', (req, res, next) => {
     return
   }
 
-  controller.create(req.body, (err, result) => {
-    if(err){
-      res.json({
-        confirmation: 'fail',
-        message: err
-      })
-      return
-    }
-
+  controller.create(req)
+  .then(data => {
     res.json({
       confirmation: 'success',
-      data: result
+      data: data
+    })
+  })
+  .catch(err => {
+    res.json({
+      confirmation: 'fail',
+      err: err
     })
   })
 

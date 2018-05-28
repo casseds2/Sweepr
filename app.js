@@ -6,6 +6,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 var sessions = require('client-sessions')
 var cons = require('consolidate');
+var cors = require('cors')
 
 require('dotenv').config()
 
@@ -62,7 +63,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
+})
 
 app.use((err, req, res, next) => {
     // set locals, only providing error in development
@@ -73,5 +74,7 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error');
 })
+
+app.use(cors({origin:true,credentials: true}))
 
 module.exports = app;

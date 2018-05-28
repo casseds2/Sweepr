@@ -10,8 +10,10 @@ export default (state = initialState, action) => {
 	switch (action.type) {
 
     case constants.SWEEPSTAKE_CREATED:
-      let updated = Object.assign([], this.state)
-      updated['sweepstakes'] = action.data.data
+      let sweepstake = action.data.data
+      let sweepstakes = updated['sweepstakes']
+      sweepstakes.push(sweepstake)
+      updated['sweepstakes'] = sweepstakes
 			return updated
 
 		default:
