@@ -1,7 +1,7 @@
-import userReducer from './userReducer'
+import authReducer from './authReducer'
 import sweepstakeReducer from './sweepstakeReducer'
 
-export {
-  userReducer,
-  sweepstakeReducer
+export default {
+  auth: authReducer,
+  sweepstake: sweepstakeReducer,
 }

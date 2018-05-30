@@ -10,9 +10,6 @@ class AllSweepstakes extends Component{
     if(this.props.sweepstakes.sweepstakes.length === 0){
       this.props.fetchSweepstakes()
     }
-    if(this.props.currentUser == ''){
-      this.props.getCurrentUser()
-    }
   }
 
   componentDidUpdate(){
@@ -50,7 +47,7 @@ class AllSweepstakes extends Component{
 const stateToProps = (state) => {
   return {
     sweepstakes: state.sweepstake,
-    currentUser: state.user.currentUser
+    currentUser: state.auth.user,
   }
 }
 
@@ -58,7 +55,6 @@ const dispatchToProps = (dispatch) => {
   return {
     fetchSweepstakes: () => dispatch(sweepstakeActions.fetchSweepstakes()),
     deleteSweepstake: (sweepstake, index) => dispatch(sweepstakeActions.deleteSweepstake(sweepstake, index)),
-    getCurrentUser: () => dispatch(authActions.getCurrentUser())
   }
 }  
 

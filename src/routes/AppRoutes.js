@@ -31,7 +31,7 @@ const AppRoutes = [
     component: CreateSweepstake
   },
   {
-    path: "/view/sweepstakes",
+    path: "/sweepstakes",
     sidebarName: "Sweepstakes",
     navbarName: "Sweepstakes",
     icon: Person,

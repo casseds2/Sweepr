@@ -1,26 +1,40 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import store from './stores'
-import { Provider } from 'react-redux'
-import { BrowserRouter, Route } from 'react-router-dom' 
-import App from './components/App'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { connect, Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import logger from 'redux-logger'
+import { Route, Switch } from 'react-router-dom'
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
-import { Dashboard, Profile, CreateSweepstake, ViewAllSweepstakes } from './components/layout';
+
+import reducers from './reducers'
+import * as layouts from './components/layout'
+import { PrivateRoute } from './components/containers'
 
 const history = createHistory()
+const reactRouterRedux = routerMiddleware(history)
 
-const app = (
-	<Provider store={store.configure(null)}>
-    <BrowserRouter>
-			<div>
-				<Route exact path='/' component={Dashboard} />
-				<Route path='/profile' component={Profile} />
-        <Route path='/create' component={CreateSweepstake} />
-        <Route path='/view/sweepstakes' component={ViewAllSweepstakes} />
-			</div>
-		</BrowserRouter>
-	</Provider>
+const store = createStore(
+	combineReducers({
+		...reducers,
+		routing: routerReducer,
+	}),
+	applyMiddleware(thunk, logger, reactRouterRedux)
 )
 
+const app = (
+	<Provider store={store}>
+    <ConnectedRouter history={history}>
+			<Switch>
+				<Route exact path='/login' component={layouts.Login} />
+				<PrivateRoute exact path='/' component={layouts.Dashboard} />
+				<PrivateRoute exact path='/profile' component={layouts.Profile} />
+				<PrivateRoute exact path='/create' component={layouts.CreateSweepstake} />
+				<PrivateRoute exact path='/sweepstakes' component={layouts.ViewAllSweepstakes} />
+			</Switch>
+		</ConnectedRouter>
+	</Provider>
+)
 
 ReactDOM.render(app, document.getElementById('root'))

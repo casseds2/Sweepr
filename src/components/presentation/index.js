@@ -1,7 +1,9 @@
 import SelectTeam from './SelectTeam'
 import Sweepstake from './Sweepstake'
+import LoginForm from './LoginForm'
 
-export{
+export {
   SelectTeam,
-  Sweepstake
+  Sweepstake,
+  LoginForm,
 }
