@@ -11,5 +11,5 @@ export {
   Profile,
   CreateSweepstake,
   ViewAllSweepstakes,
-  Login,
+  Login
 }

@@ -87,7 +87,6 @@ class LoginForm extends React.Component {
 
   render() {
     if (this.props.user) {
-      console.log(this.props.user)
       return <Redirect to="/" />
     }
     

@@ -8,8 +8,10 @@ class ViewAllSweepstakes extends Component{
   render(){
     return(
       <MuiTheme>
-        <Sidebar />
-        <AllSweepstakes />
+        <div>
+          <Sidebar />
+          <AllSweepstakes />
+        </div>
       </MuiTheme>
     )
   }

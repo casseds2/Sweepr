@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { Grid, Paper, Typography } from '@material-ui/core'
+import { Grid, Paper, Typography, withStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -13,6 +13,32 @@ import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { sweepstakeActions, authActions } from '../../actions'
+import { CreateFormGroupTable } from '../presentation'
+import compose from 'recompose/compose'
+
+const styles = {
+  paperStyle: {
+    width: 100 + '%',
+    marginTop: 20,
+    marginBottom: 20
+  },
+  headerStyle: {
+    paddingTop: 20
+  },
+  textEntryStyle: {
+    marginLeft: 30
+  },
+  teamlistElemStyle: {
+    backgroundColor: '#ededed',
+    margin: 5
+  },
+  saveButtonStyle: {
+    margin: 5
+  },
+  buttonStyle: {
+    backgroundColor: 'blue'
+  }
+}
 
 class SweepstakeForm extends Component{  
   
@@ -27,12 +53,13 @@ class SweepstakeForm extends Component{
         isPrivate: false,
         members: []
       },
-      currentTeamName: ''
+      currentTeamName: '',
+      selectedGroup: 0,
+      numGroups: 0
     }
   }
 
   handleFormChange(event){
-    // console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state.form)
     updated[event.target.id] = event.target.value
     this.setState({
@@ -41,7 +68,6 @@ class SweepstakeForm extends Component{
   }
 
   handleChange(event){
-    // console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state)
     updated[event.target.id] = event.target.value
     this.setState(
@@ -51,17 +77,20 @@ class SweepstakeForm extends Component{
 
   togglePrivate(event){
     let updated = Object.assign({}, this.state.form)
-    updated.isPrivate = !updated.isPrivate
+    updated['isPrivate'] = !updated.isPrivate
     this.setState({
       form: updated
     })
   }
 
   addTeam(){
-    let updated = Object.assign({}, this.state.form)
-    updated.teams.push(this.state.currentTeamName)
+    let updated = Object.assign({}, this.state)
+    updated['form']['teams'].push({name:updated.currentTeamName, group: updated.selectedGroup})
     this.setState({
-      form: updated
+      form: updated['form'],
+      currentTeamName: updated['currentTeamName'],
+      selectedGroup: updated['selectedGroup'],
+      numGroups: updated['numGroups']
     })
   }
 
@@ -73,8 +102,17 @@ class SweepstakeForm extends Component{
     })
   }
 
+  addGroup(){
+    let updated = Object.assign({}, this.state)
+    let numGroups = updated['numGroups'] + 1
+    let selectedGroup = updated['selectedGroup'] + 1
+    this.setState({
+      numGroups: numGroups,
+      selectedGroup: selectedGroup
+    })
+  }
+
   save(){
-    //console.log('CurrentUser: ' + JSON.stringify(this.props.currentUser))
     let updated = Object.assign({}, this.state.form)
     updated['owner'] = this.props.currentUser._id
     this.setState({
@@ -83,54 +121,37 @@ class SweepstakeForm extends Component{
     this.props.createSweepstake(updated)
   }
 
+  selectGroup(index){
+    console.log('Select Group: ' + index)
+    this.setState(Object.assign({}, this.state, {['selectedGroup']: index}))
+  }
+
+  deleteGroup(index){
+    // let updated = Object.assign({}, this.state.form)
+    // let { teams } = updated
+    // teams.splice(index, 1)
+    // updated = {...updated.teams, teams }
+    // this.setState({ form: updated })
+    console.log('State: ' + JSON.stringify(this.state))
+  }
+
+  // ddNote(newNote) {
+  //   this.setState({ toDoNotes: [...this.state.toDoNotes, newNote]})
+  // }
+
   render(){
 
-    const styles = {
-      paperStyle: {
-        width: 100 + '%',
-        marginTop: 20,
-        marginBottom: 20
-      },
-      headerStyle: {
-        paddingTop: 20
-      },
-      textEntryStyle: {
-        marginLeft: 30
-      },
-      teamlistElemStyle: {
-        backgroundColor: '#ededed',
-        margin: 5
-      },
-      saveButtonStyle: {
-        margin: 5
-      }
-    }
-
-    let teamEntries = this.state.form.teams.map((team, index) => {
-      return  <Grid item key={index} style={styles.teamlistElemStyle} xs={4}>
-                <ListItem
-                  role={undefined}
-                  dense
-                  button
-                >
-                  <ListItemText primary={team} />
-                  <ListItemSecondaryAction>
-                    <IconButton aria-label="Comments">
-                      <DeleteIcon
-                        onClick={ () => this.removeTeam(index) }
-                      />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </Grid>
-    })
+    const { classes } = this.props
+  
+    this.deleteGroup(1)
 
     return(
-      <Grid container>
-        <Paper style={{marginTop:20}} style={styles.paperStyle} elevation={24}>
+      <Grid item xs={10}>
+        <Paper>
           <Grid container direction={'row'} justify={'center'}>
-            <Grid item style={styles.headerStyle}>
-              <Typography 
+            <Grid item className={classes.headerStyle}>
+              <Typography     //console.log('CurrentUser: ' + JSON.stringify(this.props.currentUser))
+
                 align={'center'}
                 variant={'display1'}
               >
@@ -139,8 +160,8 @@ class SweepstakeForm extends Component{
               </Typography>
             </Grid>
           </Grid>
-          <Grid container direction={'column'} justify={'flex-start'} style={styles.nameStyle}>
-            <Grid item style={styles.textEntryStyle}>
+          <Grid container direction={'column'} justify={'flex-start'} className={classes.nameStyle}>
+            <Grid item className={classes.textEntryStyle}>
               <TextField
                 required
                 id="name"
@@ -150,7 +171,7 @@ class SweepstakeForm extends Component{
                 onChange={this.handleFormChange.bind(this)}
               />
             </Grid>
-            <Grid item style={styles.textEntryStyle}>
+            <Grid item className={classes.textEntryStyle}>
               <TextField
                 fullWidth
                 required
@@ -161,30 +182,44 @@ class SweepstakeForm extends Component{
                 onChange={this.handleFormChange.bind(this)}
               />
             </Grid>
-            <Grid item style={styles.textEntryStyle}>
-              <TextField
-                id="currentTeamName"
-                label="Teams"
-                value={this.state.currentTeamName}
-                margin="normal"
-                onChange={this.handleChange.bind(this)}
-              />
-              <IconButton aria-label="Add Team">
-                <AddIcon
-                  onClick={ () => this.addTeam() }
-                />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <List>
-                <Grid container justify={'space-around'}>
-                  { teamEntries }
+            <Grid container direction={'row'}>
+              <Grid item xs>
+                <Grid container justify={'center'}>
+                  <Button className={classes.buttonStyle} onClick={ () => { this.addGroup() }} >
+                    Add Group
+                  </Button>
+                </Grid>  
+              </Grid>
+              <Grid item xs>
+                <Grid container justify={'center'}>
+                  <Grid item>
+                    <TextField
+                      id="currentTeamName"
+                      label="Teams"
+                      type="num"
+                      value={this.state.currentTeamName}
+                      margin="normal"
+                      onChange={this.handleChange.bind(this)}
+                    />
+                    <IconButton aria-label="Add Team">
+                      <AddIcon
+                        onClick={ () => this.addTeam() }
+                      />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-              </List>
+              </Grid>
             </Grid>
           </Grid>
+          <CreateFormGroupTable
+            teams={this.state.form.teams}
+            selectedGroup={this.state.selectedGroup}
+            numGroups={this.state.numGroups}
+            onSelectGroup={(index) => {this.selectGroup(index)}}
+            onDeleteGroup={(index) => {this.deleteGroup(index)}}
+          />
           <Grid container justify={'center'} direction={'row'}>
-            <Grid item style={styles.saveButtonStyle}>
+            <Grid item className={classes.saveButtonStyle}>
               <Button
                 variant="raised" 
                 color="primary"
@@ -194,7 +229,7 @@ class SweepstakeForm extends Component{
               </Button>
             </Grid>
           </Grid>
-          </Paper>
+        </Paper>
       </Grid>
     )
   }
@@ -212,4 +247,4 @@ const dispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(stateToProps, dispatchToProps)(SweepstakeForm)
+export default compose(withStyles(styles), connect(stateToProps, dispatchToProps))(SweepstakeForm)

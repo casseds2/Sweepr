@@ -9,5 +9,5 @@ export {
   SweepstakeForm,
   AllSweepstakes,
   LoginForm,
-  PrivateRoute,
+  PrivateRoute
 }
