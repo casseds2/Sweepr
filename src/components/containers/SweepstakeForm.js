@@ -132,12 +132,8 @@ class SweepstakeForm extends Component{
     // teams.splice(index, 1)
     // updated = {...updated.teams, teams }
     // this.setState({ form: updated })
-    console.log('State: ' + JSON.stringify(this.state))
+    console.log('Delete... ')
   }
-
-  // ddNote(newNote) {
-  //   this.setState({ toDoNotes: [...this.state.toDoNotes, newNote]})
-  // }
 
   render(){
 
