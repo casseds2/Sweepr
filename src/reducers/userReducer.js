@@ -9,12 +9,6 @@ export default (state = initialState, action) => {
   let updated = Object.assign({}, state)
 
 	switch (action.type) {
-
-    case constants.SWEEPSTAKE_CREATED:
-      let sweepstake = action.data.data
-      sweepstakes.push(sweepstake)
-      updated['sweepstakes'] = sweepstakes
-      return updated
       
     case constants.FETCHING_USERS:
       console.log('Fetching Users...')

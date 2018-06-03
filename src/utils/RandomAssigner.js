@@ -1,19 +1,18 @@
-generateRandom: (group) => {
-  console.log('Group:' + JSON.stringify(group))
-  let randIndex = Math.floor(Math.random() * group.length)
-  return group[randIndex] 
-} 
- 
-export default {
+import Promise from 'bluebird'
 
-  getRandomSelection: (groups) => { //takes a number of groups and will take random entry from each group
-    console.log('Groups: ' + JSON.stringify(groups))
-    let randomGroup = []
-    groups.map((team) => {
-      let randTeam = generateRandom(team)
-      console.log('Rand Team')
-      randomGroup.push(randTeam)
+export default {
+  randomizeGroups(groups, members){
+    return new Promise((resolve, reject) => {
+      let generated = {}
+      for(var j = 0; j < members.length; j++){
+        let assigns = []
+        Object.values(groups).forEach((group, index) => {
+          let random = Math.floor(Math.random() * group.length)
+          assigns.push(group[random])
+        })
+        generated[members[j]._id] = assigns
+      }
+      resolve(generated)
     })
-    return randomGroup
   }
 }

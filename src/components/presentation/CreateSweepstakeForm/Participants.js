@@ -16,6 +16,7 @@ const styles = {
   formControl: {
     margin: 10,
     minWidth: 200,
+    marginLeft: 30
   }
 }
 
@@ -23,7 +24,7 @@ class Participants extends Component{
   
   render(){
 
-    const { classes, profiles, members } = this.props
+    const { classes, members, profiles } = this.props
 
     let contents = members.map((profile, index) => {
       return  <Grid key={index} item xs={3}>
@@ -50,7 +51,7 @@ class Participants extends Component{
 
     return(
       <Grid>
-        <Grid style={{backgroundColor:'red', marginBottom:20}} container alignContent={'center'} justify={'center'}>
+        <Grid style={{marginBottom:20}} container alignContent={'center'} justify={'center'}>
           <Grid item xs>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-simple">Participants</InputLabel>
@@ -58,9 +59,6 @@ class Participants extends Component{
                 value={"Hello"}
                 onChange={(event) => this.props.addMember(event)}
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
                 {participants}
               </Select>
             </FormControl>

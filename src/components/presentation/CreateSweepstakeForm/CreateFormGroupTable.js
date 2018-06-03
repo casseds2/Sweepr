@@ -18,7 +18,9 @@ class CreateFormGroupTable extends Component{
             addTeamToGroup={this.props.addTeamToGroup}
           />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={1}>
+        </Grid>
+        <Grid item xs={6}>
           <CreateFormGroups
             groups={groups}
             selectedGroup={selectedGroup}

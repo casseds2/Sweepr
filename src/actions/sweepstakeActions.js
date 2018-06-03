@@ -1,27 +1,51 @@
 import constants from '../constants'
-import { APIManager } from '../utils'
+import { APIManager, RandomAssigner } from '../utils'
+import { push } from 'react-router-redux'
 
 export default {
 
   createSweepstake: (params) => {
     return (dispatch) => {
       dispatch({
-        type: constants.CREATING_SWEEPSTAKE,
-        status: 'loading'
+        type: constants.SWEEPSTAKE_CREATED,
+        data: params
       })
-      APIManager.post('/api/sweepstake', params)
+      // dispatch({
+      //   type: constants.CREATING_SWEEPSTAKE,
+      //   status: 'loading'
+      // })
+      // APIManager.post('/api/sweepstake', params)
+      // .then(data => {
+      //   dispatch({
+      //     type: constants.SWEEPSTAKE_CREATED,
+      //     data: data
+      //   })
+      // })
+      // .catch(err => {
+      //   alert(err)
+      //   dispatch({
+      //     type: constants.SWEEPSTAKE_CREATED,
+      //     data: null
+      //   })
+      // })
+    }
+  },
+
+  generateSweepstake: (params) => {
+    return (dispatch) => {
+      dispatch({
+        type: constants.GENERATING_SWEEPSTAKE,
+        satus: 'loading'
+      })
+      RandomAssigner.randomizeGroups(params.groups, params.members)
       .then(data => {
-        dispatch({
-          type: constants.SWEEPSTAKE_CREATED,
-          data: data
-        })
-      })
-      .catch(err => {
-        alert(err)
-        dispatch({
-          type: constants.SWEEPSTAKE_CREATED,
-          data: null
-        })
+        console.log('Data: ' + JSON.stringify(data))
+        //Create Sweepstake in DB Here
+        // dispatch({
+        //   type: constants.SWEEPSTAKE_CREATED,
+        //   data: data
+        // })
+        push('/')
       })
     }
   },

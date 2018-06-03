@@ -23,10 +23,15 @@ const styles = {
     marginBottom: 20
   },
   textEntryStyle: {
-    marginLeft: 30
+    marginLeft: 30,
+    marginRight:30
   },
   saveButtonStyle: {
     margin: 5
+  },
+  dateTimeStyle: {
+    marginLeft: 30,
+    marginTop: 20
   }
 }
 
@@ -47,7 +52,7 @@ class SweepstakeForm extends Component{
     this.addGroup = this.addGroup.bind(this)
     this.addTeamToGroup = this.addTeamToGroup.bind(this)
     this.addMemeber = this.addMemeber.bind(this)
-    this.save = this.save.bind(this)
+    this.generateSweepstake = this.generateSweepstake.bind(this)
   }
 
   componentDidMount(){
@@ -62,7 +67,6 @@ class SweepstakeForm extends Component{
   }
 
   updateField(event){
-    console.log('State: ' + JSON.stringify(this.state))
     console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state)
     updated[event.target.id] = event.target.value
@@ -72,7 +76,6 @@ class SweepstakeForm extends Component{
   }
 
   addGroup(){
-    console.log('State: ' + JSON.stringify(this.state))
     let updated = Object.assign({}, this.state)
     let groups = updated['groups']
     let numGroups = this.state.numGroups
@@ -102,15 +105,18 @@ class SweepstakeForm extends Component{
     let groups = updated['groups']
     let selectedGroup = this.state.selectedGroup
     groups[selectedGroup].push(team)
-    console.log('Groups: ' + JSON.stringify(groups))
     updated['groups'] = groups
     this.setState({
       groups: groups
     })
   }
 
-  save(){
-    console.log('Save')
+  generateSweepstake(){
+    let details = {
+      groups: this.state.groups,
+      members: this.state.members
+    }
+    this.props.generateSweepstake(details)
   }
 
   onSelectGroup = (index) => {
@@ -133,7 +139,7 @@ class SweepstakeForm extends Component{
         <Paper>
           <Caption caption={caption} />
           <Grid container direction={'column'} justify={'flex-start'} className={classes.nameStyle}>
-            <Grid item className={classes.textEntryStyle}>
+            <Grid item xs className={classes.textEntryStyle}>
               <TextField
                 required
                 id="name"
@@ -143,7 +149,7 @@ class SweepstakeForm extends Component{
                 onChange={this.updateField}
               />
             </Grid>
-            <Grid item className={classes.textEntryStyle}>
+            <Grid item xs className={classes.textEntryStyle}>
               <TextField
                 fullWidth
                 required
@@ -154,20 +160,29 @@ class SweepstakeForm extends Component{
                 onChange={this.updateField}
               />
             </Grid>
+            <Grid item xs className={classes.dateTimeStyle}>
+              <TextField
+                id="expiryDate"
+                label="Closing Date and Time"
+                type="datetime-local"
+                defaultValue="2018-06-14T12:00"
+              />
+            </Grid>
             <Grid container>
-              <Grid item xs={4}>
-                <Grid container justify={'center'}>
-                  <Grid item style={{marginTop: 18}}>
+              <Grid item xs={5}>
+                <Grid container justify={'center'} alignContent={'center'} >
+                  <Grid item style={{marginTop: 10}}>
                     <Typography variant="display1" gutterBottom align="center">
                       Available Teams
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 <Grid container justify={'center'}>
-                  <Grid item >
-                    <IconButton style={{label: 'Add'}} aria-label="Add Group">
+                  <Grid item  style={{margin: 10}}>
+                    <IconButton onClick={this.addGroup} style={{label: 'Add'}} aria-label="Add Group">
+                      Add Group
                       <AddIcon
                         onClick={this.addGroup}
                       />
@@ -184,7 +199,7 @@ class SweepstakeForm extends Component{
             addTeamToGroup={this.addTeamToGroup}
             onSelectGroup={this.onSelectGroup}
           />
-          <Participants 
+          <Participants
             profiles={allUsers}
             members={this.state.members}
             addMember={this.addMemeber}
@@ -194,9 +209,9 @@ class SweepstakeForm extends Component{
               <Button
                 variant="raised" 
                 color="primary"
-                onClick={this.save}
+                onClick={this.generateSweepstake}
               >
-                Save
+                Generate Sweepstake
               </Button>
             </Grid>
           </Grid>
@@ -216,7 +231,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
 	return {
-    createSweepstake: (params) => dispatch(sweepstakeActions.createSweepstake(params)),
+    generateSweepstake: (params) => dispatch(sweepstakeActions.generateSweepstake(params)),
     fetchProfiles: () => dispatch(userActions.fetchAllUsers()),
     fetchTeams: (id) => dispatch(competitionActions.fetchTeams(id)),
     fetchCompetition: (id) => dispatch(competitionActions.fetchCompetition(id))

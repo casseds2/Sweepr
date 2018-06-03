@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Typography } from '@material-ui/core'
 import DeleteButton from '@material-ui/icons/Delete'
 import IconButton from 'material-ui/IconButton'
 import withStyles from "@material-ui/core/styles/withStyles"
@@ -10,7 +10,19 @@ const styles = {
   },
   nameDisplay: {
     textAlign: 'center',
-    marginBotom: 10
+    marginTop: 15,
+    padding: 15,
+    backgroundColor: '#f9fbff'
+  },
+  groupName: {
+    textAlign:'center', 
+    margin:5
+  },
+  imageStyle: {
+    flex: 1,
+    width: 55,
+    height: 30,
+    resizeMode: 'contain'
   }
 }
 
@@ -25,7 +37,7 @@ class CreateFormGroups extends Component{
         <Grid item xs>
           <Grid container justify={'space-between'}>
             {Object.keys(groups).map((groupKey, index) => {
-              let paperElevation = (selectedGroup === index) ? 20 : 1
+              let paperElevation = (selectedGroup === index) ? 15 : 1
               let backgroundColor = (selectedGroup === index) ? '#efefefef' : '#ffffffff'
               let teams = groups[groupKey]
               let content = teams.map((team, index) => {
@@ -33,7 +45,16 @@ class CreateFormGroups extends Component{
                           <Grid container justify={'center'}>
                             <Grid item xs={12}>
                               <Paper className={classes.nameDisplay}>
-                                {team.name}
+                                <Grid container>
+                                  <Grid item xs={8}>
+                                    <Typography style={{marginTop: 10}} variant="display1">
+                                      {team.name}
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item={4}>
+                                    <img style={{borderImageWidth:2, border: 'solid', borderImageOutset:1}} class={classes.imageStyle} src={team.crestUrl} />
+                                  </Grid>
+                                </Grid>
                               </Paper>
                             </Grid>
                           </Grid>
@@ -41,18 +62,17 @@ class CreateFormGroups extends Component{
               })
               return  <Grid className={classes.groupBox} key={index} item xs>
                         <Paper style={{backgroundColor:backgroundColor}} elevation={paperElevation} onClick={() => this.props.onSelectGroup(index)}>
-                          <Grid container alignContent={'center'} justify={'center'}>                    
+                          <Grid container justify={'center'}>
+                            <Grid item xs style={{textAlign:'center'}}>
+                              <Typography className={classes.groupName} variant="display1" gutterBottom align="center">
+                                Group {index+1}
+                                <IconButton style={{marginLeft:20}}><DeleteButton></DeleteButton></IconButton>
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                          <Grid container>
                             <Grid item xs>
-                              <Grid container justify={'center'}>
-                                <Grid item xs>
-                                  <h5>Group {index+1}<IconButton><DeleteButton></DeleteButton></IconButton></h5>
-                                </Grid>
-                              </Grid>
-                              <Grid container justify={'center'}>
-                                <Grid item xs>
-                                  {content}
-                                </Grid>
-                              </Grid>
+                              {content}
                             </Grid>
                           </Grid>
                         </Paper>

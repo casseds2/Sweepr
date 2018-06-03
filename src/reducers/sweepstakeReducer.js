@@ -12,7 +12,8 @@ export default (state = initialState, action) => {
 	switch (action.type) {
 
     case constants.SWEEPSTAKE_CREATED:
-      let sweepstake = action.data.data
+      console.log('Data: ' + JSON.stringify(action.data))
+      let sweepstake = action.data
       sweepstakes.push(sweepstake)
       updated['sweepstakes'] = sweepstakes
       return updated

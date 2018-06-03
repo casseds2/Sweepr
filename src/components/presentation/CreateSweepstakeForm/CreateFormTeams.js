@@ -5,7 +5,10 @@ import Image from 'react-image-resizer'
 
 const styles = {
   teamEntry: {
-    padding: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 16,
+    // backgroundColor:'red',
     textAlign: 'center'
   },
   imageStyle: {
