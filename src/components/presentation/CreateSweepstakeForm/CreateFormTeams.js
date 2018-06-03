@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core';
+import { withStyles, Typography } from '@material-ui/core';
 import { Grid, Paper } from '@material-ui/core'
+import Image from 'react-image-resizer'
 
 const styles = {
   teamEntry: {
     padding: 16,
     textAlign: 'center'
+  },
+  imageStyle: {
+    flex: 1,
+    width: 75,
+    height: 50,
+    resizeMode: 'contain'
+  },
+  paperStyle: {
+    backgroundColor: '#efefefef'
   }
 }
 
@@ -13,11 +23,21 @@ class CreateFormTeams extends Component{
 
   render(){
 
-    const { classes, numGroups, teams } = this.props
+    const { classes, availableTeams, numGroups } = this.props
 
-    let teamList = (teams.length === 0) ? <p>Add Some Teams Dummy!</p>
+    let teamList = (availableTeams.length === 0) ? <p>No Teams Available!</p>
 
-    : teams.map((team, index) => { return <Grid className={classes.teamEntry} xs={12} item key={index}> {team.name} </Grid> })
+    : availableTeams.map((team, index) => {
+      return  <Grid className={classes.teamEntry} 
+                    xs
+                    item 
+                    key={index}>
+                <Paper onClick={() => this.props.addTeamToGroup(team)} className={classes.paperStyle}>
+                  <Typography variant="title">{team.name}</Typography>
+                  <img src={team.crestUrl} className={classes.imageStyle} />
+                </Paper>
+              </Grid>
+    })
 
     var sortedTeams = {}
     for(var i = 0; i < numGroups+1; i++){
@@ -26,19 +46,13 @@ class CreateFormTeams extends Component{
     }
 
     return(
-        <Grid container justify={'center'}>
-          <Grid item xs>
-            <Grid container justify={'center'}>
-              <Grid item xs={10}>
-                <Paper>
-                  <Grid container justify={'center'}>
-                    {teamList}
-                  </Grid>
-                </Paper>
-              </Grid>
-            </Grid>
+      <Grid container direction={'column'} className={classes.teamEntry}>
+        <Grid item xs>
+          <Grid container justify={'space-between'}>
+            {teamList}
           </Grid>
         </Grid>
+      </Grid>
     )
   }
 }

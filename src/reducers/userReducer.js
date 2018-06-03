@@ -7,7 +7,6 @@ var initialState = {
 export default (state = initialState, action) => {
   
   let updated = Object.assign({}, state)
-  let allUsers = updated['allUsers']
 
 	switch (action.type) {
 
@@ -23,8 +22,7 @@ export default (state = initialState, action) => {
 
     case constants.USERS_RECEIVED:
       let users = action.data.data
-      allUsers.push(users)
-      updated['allUsers'] = allUsers
+      updated['allUsers'] = users
       return updated
 
 		default:

@@ -1,35 +1,28 @@
-import React from 'react'
+import React, {Component} from 'react'
 import { Paper, Grid } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import CreateFormGroups from './CreateFormGroups'
 import CreateFormTeams from './CreateFormTeams'
 
-class CreateFormGroupTable extends React.Component{
+class CreateFormGroupTable extends Component{
 
   render(){
 
-    const { teams, selectedGroup, numGroups } = this.props
-
-    let sortedTeams = {}
-    for(var i = 0; i < numGroups+1; i++){
-      var grouping =  teams.filter((team) => team.group == i)
-      sortedTeams[i] = grouping
-    }
+    const { availableTeams, selectedGroup, groups } = this.props
 
     return(
       <Grid container>
-        <Grid item xs={4}>
+        <Grid item xs={5}>
           <CreateFormTeams
-            teams={teams}
-            numGroup={numGroups}
+            availableTeams={availableTeams}
+            addTeamToGroup={this.props.addTeamToGroup}
           />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <CreateFormGroups
-            sortedTeams={sortedTeams}
+            groups={groups}
             selectedGroup={selectedGroup}
-            onSelectGroup={(index) => {this.props.onSelectGroup(index)}}
-            onDeleteGroup={(index) => {this.props.onDeleteGroup(index)}}
+            onSelectGroup={this.props.onSelectGroup}
           />
         </Grid>
       </Grid>

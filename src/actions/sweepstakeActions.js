@@ -1,6 +1,5 @@
 import constants from '../constants'
 import { APIManager } from '../utils'
-import { Sweepstake } from '../components/presentation';
 
 export default {
 

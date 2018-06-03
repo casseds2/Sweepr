@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Sidebar from './Sidebar'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
+import { Competitions } from '../containers';
 
 class Dashboard extends Component{
   render(){
@@ -8,7 +9,7 @@ class Dashboard extends Component{
       <MuiTheme>
         <div>
           <Sidebar />
-          <h1>Dashboard Component</h1>
+          <Competitions />
         </div>
       </MuiTheme>
     )

@@ -4,6 +4,9 @@ import LoginForm from './LoginForm'
 import CreateFormGroupTable from './CreateSweepstakeForm/CreateFormGroupTable'
 import CreateFormGroups from './CreateSweepstakeForm/CreateFormGroupTable'
 import CreateFormTeams from './CreateSweepstakeForm/CreateFormTeams'
+import Participants from './CreateSweepstakeForm/Participants'
+import Caption from './CreateSweepstakeForm/Caption'
+import DashboardCompetitions from './Dashboard/DashboardCompetitions'
 
 export {
   SelectTeam,
@@ -11,5 +14,8 @@ export {
   LoginForm,
   CreateFormGroupTable,
   CreateFormGroups,
-  CreateFormTeams
+  CreateFormTeams,
+  Caption,
+  Participants,
+  DashboardCompetitions
 }
