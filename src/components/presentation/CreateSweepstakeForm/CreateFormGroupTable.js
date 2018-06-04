@@ -25,6 +25,7 @@ class CreateFormGroupTable extends Component{
             groups={groups}
             selectedGroup={selectedGroup}
             onSelectGroup={this.props.onSelectGroup}
+            removeTeamFromGroup={this.props.removeTeamFromGroup}
           />
         </Grid>
       </Grid>

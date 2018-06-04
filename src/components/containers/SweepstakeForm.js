@@ -46,13 +46,15 @@ class SweepstakeForm extends Component{
       members: [],
       groups: {},
       selectedGroup: -1,
-      numGroups: 0
+      numGroups: 0,
+      joinExpiryDate: '2018-06-14T12:01'
     }
     this.updateField = this.updateField.bind(this)
     this.addGroup = this.addGroup.bind(this)
     this.addTeamToGroup = this.addTeamToGroup.bind(this)
     this.addMemeber = this.addMemeber.bind(this)
     this.generateSweepstake = this.generateSweepstake.bind(this)
+    this.removeTeamFromGroup = this.removeTeamFromGroup.bind(this)
   }
 
   componentDidMount(){
@@ -66,6 +68,7 @@ class SweepstakeForm extends Component{
     this.props.fetchProfiles()
   }
 
+  //Updates A Text Field In State With event.id and event.value as key/value
   updateField(event){
     console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state)
@@ -75,10 +78,11 @@ class SweepstakeForm extends Component{
     )
   }
 
+  //Adds an Empty Group With Key of Group Index
   addGroup(){
     let updated = Object.assign({}, this.state)
     let groups = updated['groups']
-    let numGroups = this.state.numGroups
+    let numGroups = updated['numGroups']
     let selectedGroup = this.state.selectedGroup
     groups[numGroups] = []
     selectedGroup +=1
@@ -90,6 +94,7 @@ class SweepstakeForm extends Component{
     })
   }
 
+  //Adds A User To the Sweepstake
   addMemeber(event){
     let profile = event.target.value
     let updated = Object.assign({}, this.state)
@@ -100,6 +105,17 @@ class SweepstakeForm extends Component{
     })
   }
 
+  //Remove a Team From a Group
+  removeTeamFromGroup(index){
+    let updated = this.state.groups
+    let selectedGroup = this.state.selectedGroup
+    let teams = updated[selectedGroup]
+    teams.splice(index, 1)
+    updated[selectedGroup] = teams
+    return updated
+  }
+
+  //Add Team to a Group
   addTeamToGroup(team){
     let updated = Object.assign({}, this.state)
     let groups = updated['groups']
@@ -111,16 +127,17 @@ class SweepstakeForm extends Component{
     })
   }
 
+  //Send All Relevant Data to Actions
   generateSweepstake(){
     let details = {
       groups: this.state.groups,
-      members: this.state.members
+      members: this.state.members,
+      joinExpiryDate: this.state.joinExpiryDate
     }
     this.props.generateSweepstake(details)
   }
 
   onSelectGroup = (index) => {
-    console.log('Index: ' + index)
     this.setState({
       selectedGroup: index
     })
@@ -162,7 +179,8 @@ class SweepstakeForm extends Component{
             </Grid>
             <Grid item xs className={classes.dateTimeStyle}>
               <TextField
-                id="expiryDate"
+                onChange={this.updateField}
+                id="joinExpiryDate"
                 label="Closing Date and Time"
                 type="datetime-local"
                 defaultValue="2018-06-14T12:00"
@@ -198,6 +216,7 @@ class SweepstakeForm extends Component{
             selectedGroup={this.state.selectedGroup}
             addTeamToGroup={this.addTeamToGroup}
             onSelectGroup={this.onSelectGroup}
+            removeTeamFromGroup={this.removeTeamFromGroup}
           />
           <Participants
             profiles={allUsers}

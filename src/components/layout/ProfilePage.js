@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import Sidebar from './Sidebar'
+import { Profile } from '../containers'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 
-class Profile extends Component{
+class ProfilePage extends Component{
   render(){
     return(
       <MuiTheme>
         <div>
           <Sidebar />
-          <h1>Profile Component</h1>
+          <Profile />
         </div>
       </MuiTheme>
     )
   }
 }
 
-export default Profile
+export default ProfilePage

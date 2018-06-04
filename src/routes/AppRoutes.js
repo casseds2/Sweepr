@@ -1,6 +1,6 @@
 import { 
   Dashboard, 
-  Profile, 
+  ProfilePage, 
   CreateSweepstake, 
   ViewAllSweepstakes
  } from '../components/layout'
@@ -26,7 +26,7 @@ const AppRoutes = [
     sidebarName: "Profile",
     navbarName: "Profile",
     icon: Person,
-    component: Dashboard
+    component: ProfilePage
   },
   {
     path: "/create",

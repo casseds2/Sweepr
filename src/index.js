@@ -29,7 +29,7 @@ const app = (
 			<Switch>
 				<Route exact path='/login' component={layouts.Login} />
 				<PrivateRoute exact path='/' component={layouts.Dashboard} />
-				<PrivateRoute exact path='/profile' component={layouts.Profile} />
+				<PrivateRoute exact path='/profile' component={layouts.ProfilePage} />
 				<PrivateRoute exact path='/create' component={layouts.CreateSweepstake} />
 				<PrivateRoute exact path='/sweepstakes' component={layouts.ViewAllSweepstakes} />
         <PrivateRoute exact path='/randomizer' component={layouts.RandomAssigner} />

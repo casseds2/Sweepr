@@ -4,6 +4,7 @@ import AllSweepstakes from './AllSweepstakes'
 import LoginForm from './LoginForm'
 import PrivateRoute from './PrivateRoute'
 import Competitions from './Competitions'
+import Profile from './Profile'
 
 export {
   Users,
@@ -11,5 +12,6 @@ export {
   AllSweepstakes,
   LoginForm,
   PrivateRoute,
-  Competitions
+  Competitions,
+  Profile
 }

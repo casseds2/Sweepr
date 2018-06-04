@@ -46,13 +46,13 @@ class CreateFormGroups extends Component{
                             <Grid item xs={12}>
                               <Paper className={classes.nameDisplay}>
                                 <Grid container>
-                                  <Grid item xs={8}>
+                                  <Grid item xs={8} onClick={() => this.props.removeTeamFromGroup(index)}>
                                     <Typography style={{marginTop: 10}} variant="display1">
                                       {team.name}
                                     </Typography>
                                   </Grid>
-                                  <Grid item={4}>
-                                    <img style={{borderImageWidth:2, border: 'solid', borderImageOutset:1}} class={classes.imageStyle} src={team.crestUrl} />
+                                  <Grid item xs={4}>
+                                    <img style={{borderImageWidth:2, border: 'solid', borderImageOutset:1}} className={classes.imageStyle} src={team.crestUrl} />
                                   </Grid>
                                 </Grid>
                               </Paper>
