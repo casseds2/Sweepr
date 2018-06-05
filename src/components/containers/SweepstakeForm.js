@@ -12,8 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
-import { sweepstakeActions, authActions, competitionActions, userActions } from '../../actions'
-import { CreateFormGroupTable, Caption, Participants } from '../presentation'
+import { sweepstakeActions, authActions, competitionActions } from '../../actions'
+import { CreateFormGroupTable, Caption } from '../presentation'
 import compose from 'recompose/compose'
 
 const styles = {
@@ -43,7 +43,7 @@ class SweepstakeForm extends Component{
       name: '',
       description: '',
       owner: '',
-      members: [],
+      members: {},
       groups: {},
       selectedGroup: -1,
       numGroups: 0,
@@ -130,11 +130,13 @@ class SweepstakeForm extends Component{
   //Send All Relevant Data to Actions
   generateSweepstake(){
     let details = {
+      owner: this.currentUser._id,
       groups: this.state.groups,
       members: this.state.members,
       joinExpiryDate: this.state.joinExpiryDate
     }
-    this.props.generateSweepstake(details)
+    //this.props.generateSweepstake(details)
+    
   }
 
   onSelectGroup = (index) => {
@@ -218,11 +220,6 @@ class SweepstakeForm extends Component{
             onSelectGroup={this.onSelectGroup}
             removeTeamFromGroup={this.removeTeamFromGroup}
           />
-          <Participants
-            profiles={allUsers}
-            members={this.state.members}
-            addMember={this.addMemeber}
-          />
           <Grid container justify={'center'} direction={'row'}>
             <Grid item className={classes.saveButtonStyle}>
               <Button
@@ -242,16 +239,14 @@ class SweepstakeForm extends Component{
 
 const stateToProps = (state) => {
   return {
-    currentUser: state.auth,
-    competitions: state.competitions,
-    users: state.user
+    currentUser: state.auth.user,
+    competitions: state.competitions
   }
 }
 
 const dispatchToProps = (dispatch) => {
 	return {
     generateSweepstake: (params) => dispatch(sweepstakeActions.generateSweepstake(params)),
-    fetchProfiles: () => dispatch(userActions.fetchAllUsers()),
     fetchTeams: (id) => dispatch(competitionActions.fetchTeams(id)),
     fetchCompetition: (id) => dispatch(competitionActions.fetchCompetition(id))
 	}

@@ -11,7 +11,6 @@ export default (state = initialState, action) => {
 	switch (action.type) {
       
     case constants.FETCHING_USERS:
-      console.log('Fetching Users...')
       return updated
 
     case constants.USERS_RECEIVED:
