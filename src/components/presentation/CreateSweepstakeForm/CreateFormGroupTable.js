@@ -13,20 +13,21 @@ class CreateFormGroupTable extends Component{
     return(
       <Grid container>
         <Grid item xs={5}>
-          <CreateFormTeams
+          {/* <CreateFormTeams
             availableTeams={availableTeams}
             addTeamToGroup={this.props.addTeamToGroup}
-          />
+          /> */}
         </Grid>
         <Grid item xs={1}>
         </Grid>
         <Grid item xs={6}>
-          <CreateFormGroups
+          {/* <CreateFormGroups
             groups={groups}
             selectedGroup={selectedGroup}
+            deleteGroup={this.props.deleteGroup}
             onSelectGroup={this.props.onSelectGroup}
             removeTeamFromGroup={this.props.removeTeamFromGroup}
-          />
+          /> */}
         </Grid>
       </Grid>
     )

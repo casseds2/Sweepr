@@ -42,12 +42,6 @@ class CreateFormTeams extends Component{
               </Grid>
     })
 
-    var sortedTeams = {}
-    for(var i = 0; i < numGroups+1; i++){
-      var grouping =  teams.filter((team) => team.group == i)
-      sortedTeams[i] = grouping
-    }
-
     return(
       <Grid container direction={'column'} className={classes.teamEntry}>
         <Grid item xs>

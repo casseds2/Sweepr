@@ -30,15 +30,19 @@ class CreateFormGroups extends Component{
 
   render(){
 
-    const { groups, selectedGroup, classes } = this.props
+    const { groups, selectedGroup, classes, isEditing } = this.props
+
+
+    //USE IS EDITING PROPERT TO RENDER/NOT RENDER DELETE BUTTONS. COMPONENT ALSO USED WHEN VIEWING SWEEPSTAKE!!!
+
 
     return(
       <Grid container alignItems={'center'} justify={'center'}>
         <Grid item xs>
           <Grid container justify={'space-between'}>
             {Object.keys(groups).map((groupKey, index) => {
-              let paperElevation = (selectedGroup === index) ? 15 : 1
-              let backgroundColor = (selectedGroup === index) ? '#efefefef' : '#ffffffff'
+              let paperElevation = (selectedGroup == groupKey) ? 15 : 1
+              let backgroundColor = (selectedGroup == groupKey) ? '#efefefef' : '#ffffffff'
               let teams = groups[groupKey]
               let content = teams.map((team, index) => {
                 return  <Grid item key={index}>
@@ -61,12 +65,12 @@ class CreateFormGroups extends Component{
                         </Grid>
               })
               return  <Grid className={classes.groupBox} key={index} item xs>
-                        <Paper style={{backgroundColor:backgroundColor}} elevation={paperElevation} onClick={() => this.props.onSelectGroup(index)}>
+                        <Paper style={{backgroundColor:backgroundColor}} elevation={paperElevation} onClick={() => this.props.onSelectGroup(groupKey)}>
                           <Grid container justify={'center'}>
                             <Grid item xs style={{textAlign:'center'}}>
                               <Typography className={classes.groupName} variant="display1" gutterBottom align="center">
                                 Group {index+1}
-                                <IconButton style={{marginLeft:20}}><DeleteButton></DeleteButton></IconButton>
+                                <IconButton style={{marginLeft:20}}><DeleteButton onClick={() => this.props.deleteGroup(groupKey)}></DeleteButton></IconButton>
                               </Typography>
                             </Grid>
                           </Grid>
