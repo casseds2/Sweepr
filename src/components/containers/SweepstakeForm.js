@@ -13,7 +13,7 @@ import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { sweepstakeActions, authActions, competitionActions } from '../../actions'
-import { CreateFormGroupTable, Caption } from '../presentation'
+import { Caption, CreateFormTeams, CreateFormGroups, Sweepstake } from '../presentation'
 import compose from 'recompose/compose'
 
 const styles = {
@@ -43,8 +43,9 @@ class SweepstakeForm extends Component{
       name: '',
       description: '',
       owner: '',
-      members: {},
+      members: [],
       groups: {},
+      entryFee: 0,
       selectedGroup: -1,
       numGroups: 0,
       joinExpiryDate: '2018-06-14T12:01'
@@ -52,9 +53,10 @@ class SweepstakeForm extends Component{
     this.updateField = this.updateField.bind(this)
     this.addGroup = this.addGroup.bind(this)
     this.addTeamToGroup = this.addTeamToGroup.bind(this)
-    this.addMemeber = this.addMemeber.bind(this)
-    this.generateSweepstake = this.generateSweepstake.bind(this)
+    this.createSweepstake = this.createSweepstake.bind(this)
     this.removeTeamFromGroup = this.removeTeamFromGroup.bind(this)
+    this.deleteGroup = this.deleteGroup.bind(this)
+    this.onSelectGroup = this.onSelectGroup.bind(this)
   }
 
   componentDidMount(){
@@ -65,12 +67,19 @@ class SweepstakeForm extends Component{
     if(teams[selectedCompetitionID] == null){
       this.props.fetchTeams(selectedCompetitionID)
     }
-    this.props.fetchProfiles()
+  }
+
+  //Delete a Group
+  deleteGroup(index){
+    let updated = Object.assign({}, this.state)
+    let groups = updated['groups']
+    delete groups[index]
+    updated['groups'] = groups
+    return updated
   }
 
   //Updates A Text Field In State With event.id and event.value as key/value
   updateField(event){
-    console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state)
     updated[event.target.id] = event.target.value
     this.setState(
@@ -85,23 +94,12 @@ class SweepstakeForm extends Component{
     let numGroups = updated['numGroups']
     let selectedGroup = this.state.selectedGroup
     groups[numGroups] = []
-    selectedGroup +=1
+    selectedGroup += 1
     numGroups += 1
     this.setState({
       groups: groups,
       numGroups: numGroups,
       selectedGroup: selectedGroup
-    })
-  }
-
-  //Adds A User To the Sweepstake
-  addMemeber(event){
-    let profile = event.target.value
-    let updated = Object.assign({}, this.state)
-    let members = updated['members']
-    members.push(profile)
-    this.setState({
-      members: members
     })
   }
 
@@ -120,6 +118,10 @@ class SweepstakeForm extends Component{
     let updated = Object.assign({}, this.state)
     let groups = updated['groups']
     let selectedGroup = this.state.selectedGroup
+    if(groups[selectedGroup] == null){
+      alert('Select A Group!')
+      return
+    }
     groups[selectedGroup].push(team)
     updated['groups'] = groups
     this.setState({
@@ -128,20 +130,23 @@ class SweepstakeForm extends Component{
   }
 
   //Send All Relevant Data to Actions
-  generateSweepstake(){
-    let details = {
-      owner: this.currentUser._id,
+  createSweepstake(){
+    let sweepstake = {
+      owner: this.props.currentUser._id,
       groups: this.state.groups,
       members: this.state.members,
+      name: this.state.name,
+      entryFee: this.state.entryFee,
+      description: this.state.description,
       joinExpiryDate: this.state.joinExpiryDate
     }
-    //this.props.generateSweepstake(details)
-    
+    this.props.createSweepstake(sweepstake)
   }
 
-  onSelectGroup = (index) => {
+  //Select A Group
+  onSelectGroup(groupKey){
     this.setState({
-      selectedGroup: index
+      selectedGroup: groupKey
     })
   }
 
@@ -149,9 +154,8 @@ class SweepstakeForm extends Component{
 
     const { classes } = this.props
     const { competitions, teams, selectedCompetitionID } = this.props.competitions
-    const { allUsers } = this.props.users
-    let availableTeams = (teams[selectedCompetitionID] == null) ? [] : teams[selectedCompetitionID]
-    let caption = (competitions[selectedCompetitionID] == null) ? 'No Header' : <span>{competitions[selectedCompetitionID]['caption']}</span>
+    const availableTeams = (teams[selectedCompetitionID] == null) ? [] : teams[selectedCompetitionID]
+    const caption = (competitions[selectedCompetitionID] == null) ? 'No Header' : <span>{competitions[selectedCompetitionID]['caption']}</span>
 
     return(
       <Grid item xs={10}>
@@ -175,6 +179,17 @@ class SweepstakeForm extends Component{
                 id="description"
                 label="Description"
                 value={this.state.description}
+                margin="normal"
+                onChange={this.updateField}
+              />
+            </Grid>
+            <Grid item xs className={classes.textEntryStyle}>
+              <TextField
+                required
+                id="entryFee"
+                label="Entry Fee"
+                type="number"
+                value={this.state.entryFee}
                 margin="normal"
                 onChange={this.updateField}
               />
@@ -212,22 +227,33 @@ class SweepstakeForm extends Component{
               </Grid>
             </Grid>
           </Grid>
-          <CreateFormGroupTable
-            availableTeams={availableTeams}
-            groups={this.state.groups}
-            selectedGroup={this.state.selectedGroup}
-            addTeamToGroup={this.addTeamToGroup}
-            onSelectGroup={this.onSelectGroup}
-            removeTeamFromGroup={this.removeTeamFromGroup}
-          />
+
+          <Grid container>
+            <Grid item xs={5}>
+              <CreateFormTeams
+                availableTeams={availableTeams}
+                addTeamToGroup={this.addTeamToGroup}
+              />
+            </Grid>
+            <Grid item xs={7}>
+              <CreateFormGroups
+                isEditing={true}
+                groups={this.state.groups}
+                selectedGroup={this.state.selectedGroup}
+                deleteGroup={this.deleteGroup}
+                onSelectGroup={this.onSelectGroup}
+                removeTeamFromGroup={this.removeTeamFromGroup}
+              />
+            </Grid>
+          </Grid>
           <Grid container justify={'center'} direction={'row'}>
             <Grid item className={classes.saveButtonStyle}>
               <Button
                 variant="raised" 
                 color="primary"
-                onClick={this.generateSweepstake}
+                onClick={this.createSweepstake}
               >
-                Generate Sweepstake
+                Create Sweepstake
               </Button>
             </Grid>
           </Grid>
@@ -246,7 +272,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
 	return {
-    generateSweepstake: (params) => dispatch(sweepstakeActions.generateSweepstake(params)),
+    createSweepstake: (sweepstake) => dispatch(sweepstakeActions.createSweepstake(sweepstake)),
     fetchTeams: (id) => dispatch(competitionActions.fetchTeams(id)),
     fetchCompetition: (id) => dispatch(competitionActions.fetchCompetition(id))
 	}

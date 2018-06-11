@@ -27,13 +27,20 @@ const AppRoutes = [
     icon: <Person />,
     component: ProfilePage,
   },
+  // {
+  //   path: "/sweepstakes",
+  //   sidebarName: "Sweepstakes",
+  //   navbarName: "Sweepstakes",
+  //   icon: <Public />,
+  //   component: ViewAllSweepstakes,
+  // },
   {
-    path: "/sweepstakes",
-    sidebarName: "Sweepstakes",
-    navbarName: "Sweepstakes",
+    path: "/create",
+    sidebarName: "Create Sweepstake",
+    navbarName: "Create Sweepstake",
     icon: <Public />,
-    component: ViewAllSweepstakes,
-  },
+    component: CreateSweepstake
+  }
 ]
 
 export default AppRoutes

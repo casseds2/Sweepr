@@ -1,5 +1,6 @@
 import SweepstakeForm from './SweepstakeForm'
 import Sweepstakes from './Sweepstakes'
+import Sweepstake from './Sweepstake'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import PrivateRoute from './PrivateRoute'
@@ -14,4 +15,5 @@ export {
   PrivateRoute,
   Profile,
   Sidebar,
+  Sweepstake
 }

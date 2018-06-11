@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Sidebar } from '../containers'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
-import { Sweepstakes } from '../containers'
+import { Sweepstakes, Sidebar } from '../containers'
 
 class Dashboard extends Component{
   render() {

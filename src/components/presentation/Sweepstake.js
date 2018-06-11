@@ -11,17 +11,19 @@ import Divider from '@material-ui/core/Divider'
 import { Grid, Paper, withStyles } from '@material-ui/core'
 
 const styles = {
-  nameBox: {
-    margin: 5,
+  paper: {
+    margin: 20,
     padding: 5
   },
-  potHeader: {
-    margin: 5,
-    alignText: 'left'
+  display: {
+    margin: 10
   },
-  entryFeeHeader:{
-    margin: 5,
-    alignText: 'left'
+  header: {
+    margin: 5
+  },
+  button: {
+    textAign: 'center',
+    margin: 'auto'
   }
 }
 
@@ -38,71 +40,56 @@ class Sweepstake extends Component{
 
     const { sweepstake, user, classes } = this.props
 
-    const ownerAction = (user._id === sweepstake.owner) ? 
-    <ExpansionPanelActions>
-      <Button 
-        onClick={this.props.delete} 
-        size="small" 
-        color="primary"> 
-        Delete 
-      </Button>
-      <Button>Edit</Button></ExpansionPanelActions> : null
-
-    const members = sweepstake.members.map((member, index) => {
-      return <Grid item key={index} xs={3}>
-              <Paper className={classes.nameBox}>{member.firstName}</Paper>
-             </Grid>
-    })
-
-    const joinButton = (this.isMember(sweepstake.members, user._id)) ? <h2>Already Joined!</h2> : <Button><h2>Join!</h2></Button>
+    const joinButton = (this.isMember(sweepstake.members, user._id)) ? <Typography>Already Joined!</Typography> 
+    : <Button variant="outlined" color="primary" className={classes.button} onClick={this.props.join}><Typography>Join!</Typography></Button>
 
     const pot = sweepstake.entryFee * sweepstake.members.length
 
     return(
-      <div>
-        <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="headline">
+      <Paper className={classes.paper} elevation={3}>
+        <Grid container justify={'center'}>
+          <Grid item className={classes.header}>
+            <Typography variant='display1'>
               {sweepstake.name}
             </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Grid container>
-              <Grid item xs={3}>
-                <Grid container direction={'column'}>
-                  <Grid item xs>
-                    <Typography className={classes.entryFeeHeader} variant="subheading">
-                      Entry Fee: €{sweepstake.entryFee}<br />
-                    </Typography>
-                  </Grid>
-                  <Grid item xs>
-                    <Typography className={classes.potHeader} variant="subheading">
-                      Pot: €{pot}<br />
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={9}>
-                <Grid container justify={'flex-start'}>
-                  <Grid item xs={3}>
-                    <Typography variant="caption">
-                      {sweepstake.description}<br />
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Grid container justify={'flex-start'}>
-                      { members }<br />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </ExpansionPanelDetails>
-          <Divider />
-          {joinButton}
-          { ownerAction }
-        </ExpansionPanel> 
-      </div>
+          </Grid>
+        </Grid>
+        <Grid container justify={'center'}>
+          <Grid className={classes.display} item xs>
+            <Typography variant='headline'>
+              Entry: € {sweepstake.entryFee}
+            </Typography>
+          </Grid>
+          <Grid className={classes.display} item xs>
+            <Typography variant='headline'>
+              Members: {sweepstake.members.length}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container justify={'center'}>
+          <Grid className={classes.display} item xs>
+            <Typography variant='headline'>
+              Pot: € {pot}
+            </Typography>
+          </Grid>
+          <Grid className={classes.display} item xs>
+            <Typography variant='headline'>
+              Closing Date: {sweepstake.joinExpiryDate}
+            </Typography>
+          </Grid>
+        </Grid>
+        <hr />
+        <Grid container justify={'center'}>
+          <Grid item xs>
+            <Button onClick={this.props.view} variant="outlined" color="primary" className={classes.button}>
+              View More
+            </Button>
+          </Grid>
+          <Grid item xs>
+            {joinButton}
+          </Grid>
+        </Grid>
+      </Paper>
     )
   }
 }
