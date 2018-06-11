@@ -57,24 +57,29 @@ const styles = theme => ({
   },
 })
 
-class LoginForm extends React.Component {
+class RegisterForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      email: '',
       username: '',
       password: '',
     }
 
     this.updateField = this.updateField.bind(this)
+    this.updateEmail = this.updateEmail.bind(this)
     this.updateUsername = this.updateUsername.bind(this)
     this.updatePassword = this.updatePassword.bind(this)
-    this.login = this.login.bind(this)
+    this.register = this.register.bind(this)
   }
 
   updateField(field, value) {
     this.setState(Object.assign({}, this.state, {[field]: value}))
   }
 
+  updateEmail(e) {
+    this.updateField('email', e.target.value)
+  }
   updateUsername(e) {
     this.updateField('username', e.target.value)
   }
@@ -83,9 +88,8 @@ class LoginForm extends React.Component {
     this.updateField('password', e.target.value)
   }
 
-  login() {
-    const { username, password } = this.state
-    this.props.login(username, password)
+  register() {
+    this.props.register(this.state)
   }
 
   render() {
@@ -99,14 +103,26 @@ class LoginForm extends React.Component {
       <Card className={classes.card}>
         <div className={classes.header}>
           <Typography className={classes.title}>
-            Welcome back!
+            Let's get the ball rolling...
           </Typography>
         </div>
         <CardContent className={classes.content}>
           <Grid container>
             <Grid container spacing={8} alignItems="flex-end">
               <Grid item xs={12}>
-                <TextField
+                <TextField 
+                  id="email" 
+                  label="Email"
+                  margin="normal"
+                  fullWidth
+                  required
+                  onChange={this.updateEmail}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={8} alignItems="flex-end">
+              <Grid item xs={12}>
+                <TextField 
                   label="Username"
                   margin="normal"
                   fullWidth
@@ -136,8 +152,8 @@ class LoginForm extends React.Component {
               variant="raised"
               className={classes.button}
               fullWidth
-              onClick={this.login}>
-              Login
+              onClick={this.register}>
+              Register
             </Button>              
             </Grid>
           </Grid>
@@ -149,8 +165,8 @@ class LoginForm extends React.Component {
           <Grid item>
             <Typography
               className={classes.poweredBy}
-              onClick={this.props.navigateToRegisterPage}>
-              Still need to sign up?
+              onClick={this.props.navigateToLoginPage}>
+              Already a member?
             </Typography>
           </Grid>
         </Grid>
@@ -159,4 +175,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(LoginForm)
+export default withStyles(styles)(RegisterForm)

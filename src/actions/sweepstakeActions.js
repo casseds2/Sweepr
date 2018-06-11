@@ -1,6 +1,6 @@
 import constants from '../constants'
 import { APIManager, RandomAssigner } from '../utils'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 
 export default {
 

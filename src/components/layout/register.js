@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import { LoginForm } from '../containers'
+import { RegisterForm } from '../containers'
 
 const styles = theme => ({
   root: {
@@ -18,14 +18,14 @@ const styles = theme => ({
   },
 })
 
-const Login = ({ classes }) => (
+const Register = ({ classes }) => (
   <div className={classes.root}>
     <main className={classes.content}>
       <Grid container alignItems="center">
-        <LoginForm />  
+        <RegisterForm />  
       </Grid>
     </main>
   </div>
 )
 
-export default withStyles(styles)(Login)
+export default withStyles(styles)(Register)

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { connect, Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import logger from 'redux-logger'
 import { Route, Switch } from 'react-router-dom'
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
+import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router'
 import createHistory from 'history/createBrowserHistory'
 
 import reducers from './reducers'
@@ -13,14 +13,16 @@ import * as layouts from './components/layout'
 import { PrivateRoute } from './components/containers'
 
 const history = createHistory()
-const reactRouterRedux = routerMiddleware(history)
 
 const store = createStore(
-	combineReducers({
-		...reducers,
-		routing: routerReducer,
-	}),
-	applyMiddleware(thunk, logger, reactRouterRedux)
+	connectRouter(history)(combineReducers(reducers)),
+	compose(
+		applyMiddleware(
+			thunk,
+			logger,
+			routerMiddleware(history),
+		),
+	),
 )
 
 const app = (
@@ -28,6 +30,7 @@ const app = (
     <ConnectedRouter history={history}>
 			<Switch>
 				<Route exact path='/login' component={layouts.Login} />
+				<Route exact path="/register" component={layouts.Register} />
 				<PrivateRoute exact path='/' component={layouts.Dashboard} />
 				<PrivateRoute exact path='/profile' component={layouts.ProfilePage} />
 				<PrivateRoute exact path='/create' component={layouts.CreateSweepstake} />

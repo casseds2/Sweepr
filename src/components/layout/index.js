@@ -1,15 +1,15 @@
 import Dashboard from './Dashboard'
-import Sidebar from './Sidebar'
 import ProfilePage from './ProfilePage'
 import CreateSweepstake from './CreateSweepstake'
 import ViewAllSweepstakes from './ViewAllSweepstakes'
 import Login from './Login'
+import Register from './Register'
 
 export {
   Dashboard,
-  Sidebar,
   ProfilePage,
   CreateSweepstake,
   ViewAllSweepstakes,
-  Login
+  Login,
+  Register,
 }
