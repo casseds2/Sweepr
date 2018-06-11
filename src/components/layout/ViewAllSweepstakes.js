@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 import { AllSweepstakes } from '../containers'
-import Sidebar from './Sidebar'
+import { Sidebar } from '../containers'
 
 class ViewAllSweepstakes extends Component{
- 
-  render(){
-    return(
+  render() {
+    return (
       <MuiTheme>
-        <div>
-          <Sidebar />
+        <Sidebar>
           <AllSweepstakes />
-        </div>
+        </Sidebar>
       </MuiTheme>
     )
   }

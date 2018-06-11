@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Sidebar from './Sidebar'
+import { Sidebar } from '../containers'
 import { SweepstakeForm } from '../containers'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 import { Grid, Paper, withStyles } from '@material-ui/core'
@@ -17,12 +17,15 @@ class CreateSweepstake extends Component{
     
     return(
       <MuiTheme>
-        <div>
-          <Sidebar />
-          <Grid className={classes.paperPadding} container direction={'row'} justify={'center'}>
+        <Sidebar>
+          <Grid 
+            className={classes.paperPadding}
+            direction={'row'}
+            justify={'center'}
+            container>
             <SweepstakeForm />
           </Grid>
-        </div>
+        </Sidebar>
       </MuiTheme>
     )
   }

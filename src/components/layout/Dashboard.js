@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
-import Sidebar from './Sidebar'
+import { Sidebar } from '../containers'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 import { Sweepstakes } from '../containers'
 
 class Dashboard extends Component{
-  render(){
-    return(
+  render() {
+    return (
       <MuiTheme>
-        <div>
-          <Sidebar />
+        <Sidebar>
           <Sweepstakes />
-        </div>
+        </Sidebar>
       </MuiTheme>
     )
   }

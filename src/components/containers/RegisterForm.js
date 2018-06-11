@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { authActions, navigateTo } from '../../actions'
-import { LoginForm } from '../presentation'
+import { RegisterForm } from '../presentation'
 
 const mapStateToProps = (state) => ({
   pending: state.auth.pending,
@@ -9,10 +9,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (username, password) => dispatch(
-    authActions.login(username, password)
+  register: (userCreds) => dispatch(
+    authActions.register(userCreds)
   ),
-  navigateToRegisterPage: (href) => dispatch(navigateTo('/register')),
+  navigateToLoginPage: (href) => dispatch(navigateTo('/login')),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm)

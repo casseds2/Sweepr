@@ -1,4 +1,4 @@
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import jwt_decode from 'jwt-decode'
 import constants from '../constants'
 import { APIManager } from '../utils'
@@ -44,7 +44,7 @@ export function register(userCredentials) {
         localStorage.setItem('id_token', id_token)
         localStorage.setItem('access_token', access_token)
         dispatch(registerSuccess(userData))
-        push('/')
+        dispatch(push('/'))
       })
       .catch(error => dispatch(registerError(error)))
   }
@@ -63,7 +63,7 @@ export function login(username, password) {
       localStorage.setItem('id_token', id_token)
       localStorage.setItem('access_token', access_token)
       dispatch(loginSuccess(userData))
-      push('/')
+      dispatch(push('/'))
     })
     .catch(error => dispatch(loginFailure(error)))
   }

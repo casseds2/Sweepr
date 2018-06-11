@@ -11,11 +11,6 @@ const styles = {
 }
 
 class Profile extends Component{
-
-  componentDidMount(){
-    console.log('CurrentUser: ' + JSON.stringify(this.props.currentUser))
-  }
-
   render(){
     const { classes } = this.props
     return(

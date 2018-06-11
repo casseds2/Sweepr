@@ -87,6 +87,7 @@ router.post('/sessions/create', (req, res) => {
         }
 
         let user = users[0]
+
         let isPasswordCorrect = bcrypt.compareSync(
             req.body.password, 
             user.password,

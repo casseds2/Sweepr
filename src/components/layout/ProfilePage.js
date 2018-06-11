@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
-import Sidebar from './Sidebar'
+import { Sidebar } from '../containers'
 import { Profile } from '../containers'
 import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 
 class ProfilePage extends Component{
-  render(){
-    return(
+  render() {
+    return (
       <MuiTheme>
-        <div>
-          <Sidebar />
+        <Sidebar>
           <Profile />
-        </div>
+        </Sidebar>
       </MuiTheme>
     )
   }
