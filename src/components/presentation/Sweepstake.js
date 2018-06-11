@@ -45,8 +45,6 @@ class Sweepstake extends Component{
 
     const pot = sweepstake.entryFee * sweepstake.members.length
 
-    console.log('Expiry: ' + JSON.stringify(sweepstake.joinExpiryDate))
-
     return(
       <Paper className={classes.paper} elevation={3}>
         <Grid container justify={'center'}>

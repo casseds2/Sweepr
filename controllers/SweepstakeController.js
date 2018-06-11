@@ -49,5 +49,16 @@ module.exports = {
         resolve(sweepstake)
       })
     })
+  },
+  update: (id, update) => {
+    return new Promise((resolve, reject) => {
+      Sweepstake.findByIdAndUpdate(id, update, (err, sweepstake) => {
+        if(err){
+          reject(err)
+          return
+        }
+        resolve(sweepstake)
+      })
+    })
   }
 }

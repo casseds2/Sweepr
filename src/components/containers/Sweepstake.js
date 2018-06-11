@@ -34,8 +34,6 @@ class Sweepstake extends Component{
 
     const { sweepstake, id, classes } = this.props
 
-    console.log('Sweepstake: ' + JSON.stringify(sweepstake))
-
     return(
       <div>
         <Grid container justify={'center'}>
@@ -45,8 +43,8 @@ class Sweepstake extends Component{
             </Typography>
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs className={classes.groups}>
+        <Grid container justify={'center'}>
+          <Grid item xs={6} className={classes.groups}>
             <CreateFormGroups
               groups={sweepstake.groups}
               isEditing={false}

@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { Grid, Typography } from '@material-ui/core/'
 import { connect } from 'react-redux'
-import { sweepstakeActions } from '../../actions'
+import { sweepstakeActions, navigateTo } from '../../actions'
 import { Sweepstake } from '../presentation'
-import { push } from 'react-router-redux'
 
 class Sweepstakes extends Component{
 
@@ -20,13 +19,14 @@ class Sweepstakes extends Component{
   }
 
   joinSweepstake(sweepstake, index){
-    console.log('JOIN @ sweepstake: ' + JSON.stringify(sweepstake))
-    //this.props.joinSweepstake(sweepstake, index, user)
+    const { currentUser } = this.props
+    let profileDetails = {_id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName}
+    sweepstake.members.push(profileDetails)
+    this.props.joinSweepstake(sweepstake._id, sweepstake.members, index)
   }
 
   viewSweepstake(sweepstake){
     this.props.sweepstakeSelected(sweepstake)
-    push('sweepstake/' + sweepstake._id)
   }
 
   render(){
@@ -65,7 +65,7 @@ const dispatchToProps = (dispatch) => {
   return {
     fetchSweepstakes: () => dispatch(sweepstakeActions.fetchSweepstakes()),
     sweepstakeSelected: (sweepstake) => dispatch(sweepstakeActions.sweepstakeSelected(sweepstake)),
-    joinSweepstake: (sweepstake, id, user) => dispatch(sweepstakeActions.addMember(sweepstake, user, index))
+    joinSweepstake: (id, members, index) => dispatch(sweepstakeActions.addMember(id, members, index))
   }
 }  
 

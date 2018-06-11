@@ -45,6 +45,7 @@ class SweepstakeForm extends Component{
       owner: '',
       members: [],
       groups: {},
+      entryFee: 0,
       selectedGroup: -1,
       numGroups: 0,
       joinExpiryDate: '2018-06-14T12:01'
@@ -79,7 +80,6 @@ class SweepstakeForm extends Component{
 
   //Updates A Text Field In State With event.id and event.value as key/value
   updateField(event){
-    console.log(event.target.id + ' === ' + event.target.value)
     let updated = Object.assign({}, this.state)
     updated[event.target.id] = event.target.value
     this.setState(
@@ -136,6 +136,7 @@ class SweepstakeForm extends Component{
       groups: this.state.groups,
       members: this.state.members,
       name: this.state.name,
+      entryFee: this.state.entryFee,
       description: this.state.description,
       joinExpiryDate: this.state.joinExpiryDate
     }
@@ -178,6 +179,17 @@ class SweepstakeForm extends Component{
                 id="description"
                 label="Description"
                 value={this.state.description}
+                margin="normal"
+                onChange={this.updateField}
+              />
+            </Grid>
+            <Grid item xs className={classes.textEntryStyle}>
+              <TextField
+                required
+                id="entryFee"
+                label="Entry Fee"
+                type="number"
+                value={this.state.entryFee}
                 margin="normal"
                 onChange={this.updateField}
               />
@@ -225,7 +237,7 @@ class SweepstakeForm extends Component{
             </Grid>
             <Grid item xs={7}>
               <CreateFormGroups
-                isEditing={false}
+                isEditing={true}
                 groups={this.state.groups}
                 selectedGroup={this.state.selectedGroup}
                 deleteGroup={this.deleteGroup}

@@ -28,13 +28,20 @@ const styles = {
 
 class CreateFormGroups extends Component{
 
+  constructor(){
+    super()
+    this.removeTeamFromGroup = this.removeTeamFromGroup.bind(this)
+  }
+
+  removeTeamFromGroup(index){
+    if(this.props.isEditing){
+      this.props.removeTeamFromGroup(index)
+    }
+  }
+
   render(){
 
     const { groups, selectedGroup, classes, isEditing } = this.props
-
-
-    //USE IS EDITING PROPERT TO RENDER/NOT RENDER DELETE BUTTONS. COMPONENT ALSO USED WHEN VIEWING SWEEPSTAKE!!!
-
 
     return(
       <Grid container alignItems={'center'} justify={'center'}>
@@ -50,7 +57,7 @@ class CreateFormGroups extends Component{
                             <Grid item xs={12}>
                               <Paper className={classes.nameDisplay}>
                                 <Grid container>
-                                  <Grid item xs={8} onClick={() => this.props.removeTeamFromGroup(index)}>
+                                  <Grid item xs={8} onClick={() => this.removeTeamFromGroup(index)}>
                                     <Typography style={{marginTop: 10}} variant="display1">
                                       {team.name}
                                     </Typography>
@@ -70,7 +77,7 @@ class CreateFormGroups extends Component{
                             <Grid item xs style={{textAlign:'center'}}>
                               <Typography className={classes.groupName} variant="display1" gutterBottom align="center">
                                 Group {index+1}
-                                <IconButton style={{marginLeft:20}}><DeleteButton onClick={() => this.props.deleteGroup(groupKey)}></DeleteButton></IconButton>
+                                {(isEditing) ? <IconButton style={{marginLeft:20}}><DeleteButton onClick={() => this.props.deleteGroup(groupKey)}></DeleteButton></IconButton> : null}
                               </Typography>
                             </Grid>
                           </Grid>

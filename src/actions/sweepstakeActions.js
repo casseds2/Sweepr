@@ -1,6 +1,6 @@
 import constants from '../constants'
 import { APIManager, RandomAssigner } from '../utils'
-import { push } from 'connected-react-router'
+import { navigateTo } from '../actions'
 
 export default {
 
@@ -8,11 +8,11 @@ export default {
     return (dispatch) => {
       APIManager.post('/api/sweepstake', params)
       .then(data => {
+        dispatch(navigateTo('/sweepstake/' + data.data._id))
         dispatch({
           type: constants.SWEEPSTAKE_CREATED,
-          data: data
+          data: data.data
         })
-        push('/sweepstakes/' + data._id)
       })
       .catch(err => {
         alert(err)
@@ -70,11 +70,11 @@ export default {
         type: constants.FETCHING_SWEEPSTAKE,
         status: 'loading'
       })
-      APIManager.get('/api/sweepstake', {"id": id})
+      APIManager.get('/api/sweepstake/' + id)
       .then(data => {
         dispatch({
           type: constants.SWEEPSTAKE_RECEIVED,
-          data: data
+          data: data.data
         })
       })
       .catch(err => {
@@ -89,6 +89,7 @@ export default {
 
   sweepstakeSelected: (sweepstake) => {
     return(dispatch) => {
+      dispatch(navigateTo ('/sweepstake/' + sweepstake._id))
       dispatch({
         type:constants.SWEEPSTAKE_SELECTED,
         data: sweepstake
@@ -96,10 +97,12 @@ export default {
     }
   },
 
-  addMember: (sweepstake, index, user) => {
+  addMember: (id, members, index) => {
+    console.log('Members: ' + JSON.stringify(members))
     return(dispatch) => {
-      APIManager.put('/api/sweepstake/' + sweepstake._id)
+      APIManager.put('/api/sweepstake/' + id, {members: members})
       .then(data => {
+        dispatch(navigateTo ('/sweepstake/' + id))
         dispatch({
           type: constants.MEMBER_ADDED,
           data: data,
@@ -109,7 +112,7 @@ export default {
       .catch(err => {
         alert(err)
         dispatch({
-          type: constant.FAILED_ADD_MEMBER,
+          type: constants.FAILED_ADD_MEMBER,
           data: null
         })
       })
@@ -120,6 +123,7 @@ export default {
     return (dispatch) => {
       APIManager.delete('/api/sweepstake/' + sweepstake._id)
       .then(data => {
+        dispatch(navigateTo ('/'))
         dispatch({
           type: constants.SWEEPSTAKE_DELETED,
           index: index,

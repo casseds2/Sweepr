@@ -86,7 +86,7 @@ router.post('/:resource', (req, res, next) => {
 
 })
 
-router.put('/resource/:id', (req, res, next) => {
+router.put('/:resource/:id', (req, res, next) => {
 
   var resource = req.params.resource
   var id = req.params.id
@@ -99,22 +99,19 @@ router.put('/resource/:id', (req, res, next) => {
     })
     return
   }
-
-  controller.update(id, req.body, (err, result) => {
-    if(err){
-      res.json({
-        confirmation: 'fail',
-        message: err
-      })
-      return
-    }
-
+  controller.update(id, req.body)
+  .then(data => {
     res.json({
       confirmation: 'success',
-      data: result
+      data: data
     })
   })
-
+  .catch(err => {
+    res.json({
+      confirmation: 'fail',
+      message: err
+    })
+  })
 })
 
 router.delete('/:resource/:id', (req, res, next) => {

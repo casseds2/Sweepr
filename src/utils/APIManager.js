@@ -39,10 +39,12 @@ export default {
       .send(data)
       .set('Accept', 'application/json')
       .end((err, response) => {
-        reject(err)
-        return
+        if(err){
+          reject(err)
+          return
+        }
+        resolve(response.body)
       })
-      resolve(response.body)
     })
   },
 
@@ -52,10 +54,12 @@ export default {
       .send({})
       .set('Accept', 'application/json')
       .end((err, response) => {
-        reject(err)
-        return
+        if(err){
+          reject(err)
+          return
+        }
+        resolve({deleted:true})
       })
-      resolve({deleted:true})
     })
   }
 
