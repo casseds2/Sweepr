@@ -29,7 +29,7 @@ router.get('/:resource', function(req, res, next){
   })
 })
 
-router.get('/:resource/:id', function(req, res, next){
+router.get('/:resource/:id', (req, res, next) => {
     
   var resource = req.params.resource
   var id = req.params.id

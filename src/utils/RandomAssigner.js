@@ -3,14 +3,23 @@ import Promise from 'bluebird'
 export default {
   randomizeGroups(groups, members){
     return new Promise((resolve, reject) => {
-      let sweepstake = {}
+      let sweepstake = []
       for(var j=0; j < members.length; j++){
-        let assigns = []
+        let memberDetails = {}
+        let assignedTeams = []
         Object.values(groups).forEach((group, index) => {
           let random = Math.floor(Math.random() * group.length)
-          assigns.push(group[random])
+          assignedTeams.push(group[random])
         })
-        sweepstake[members[j]._id] = assigns
+        let user = {
+          _id: members[j]._id,
+          firstName: members[j].firstName,
+          lastName: members[j].lastName,
+          username: members[j].username
+        }
+        memberDetails['assignedTeams'] = assignedTeams
+        memberDetails['user'] = user
+        sweepstake.push(memberDetails)
       }
       resolve(sweepstake)
     })

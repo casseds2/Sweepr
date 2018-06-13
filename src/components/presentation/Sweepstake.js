@@ -22,8 +22,12 @@ const styles = {
     margin: 5
   },
   button: {
-    textAign: 'center',
-    margin: 'auto'
+    margin: 'auto',
+    display: 'block',
+    textAlign: 'center',
+  },
+  buttonText: {
+    textColor: 'white'
   }
 }
 
@@ -34,23 +38,32 @@ class Sweepstake extends Component{
       if(members[i]._id == id)
         return true
     }
+    return false
   }
 
   render(){
 
     const { sweepstake, user, classes } = this.props
 
-    const joinButton = (this.isMember(sweepstake.members, user._id)) ? <Typography>Already Joined!</Typography> 
-    : <Button variant="outlined" color="primary" className={classes.button} onClick={this.props.join}><Typography>Join!</Typography></Button>
+    const joinButton = (this.isMember(sweepstake.members, user._id) || sweepstake.active) ? null 
+    : <Grid item xs><Button variant="contained" color="primary" className={classes.button} onClick={this.props.join}><Typography className={classes.buttonText}>Join!</Typography></Button></Grid>
+
+    const deleteButton = (user._id != sweepstake.owner) ? null
+    : <Grid item xs><Button variant="contained" color="secondary" className={classes.button} onClick={this.props.delete}><Typography className={classes.buttonText}>Delete</Typography></Button></Grid>
+
+    const generateButton = (sweepstake.active || user._id != sweepstake.owner || sweepstake.members.length == 0) ? null
+    : <Grid item xs><Button variant="contained" color="primary" className={classes.button} onClick={this.props.generate}><Typography className={classes.buttonText}>Generate</Typography></Button></Grid>
 
     const pot = sweepstake.entryFee * sweepstake.members.length
+
+    const active = (sweepstake.active) ? <span>Closed</span> : <span>Open</span>
 
     return(
       <Paper className={classes.paper} elevation={3}>
         <Grid container justify={'center'}>
           <Grid item className={classes.header}>
             <Typography variant='display1'>
-              {sweepstake.name}
+              {sweepstake.name} ( {active} )
             </Typography>
           </Grid>
         </Grid>
@@ -82,12 +95,14 @@ class Sweepstake extends Component{
         <Grid container justify={'center'}>
           <Grid item xs>
             <Button onClick={this.props.view} variant="outlined" color="primary" className={classes.button}>
-              View More
+              <Typography className={classes.buttonText}>
+                View More
+              </Typography>
             </Button>
           </Grid>
-          <Grid item xs>
-            {joinButton}
-          </Grid>
+          {joinButton}
+          {generateButton}
+          {deleteButton}
         </Grid>
       </Paper>
     )

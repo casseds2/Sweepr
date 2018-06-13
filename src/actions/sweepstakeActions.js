@@ -8,11 +8,11 @@ export default {
     return (dispatch) => {
       APIManager.post('/api/sweepstake', params)
       .then(data => {
-        dispatch(navigateTo('/sweepstake/' + data.data._id))
         dispatch({
           type: constants.SWEEPSTAKE_CREATED,
           data: data.data
         })
+        dispatch(navigateTo('/sweepstake/' + data.data._id))
       })
       .catch(err => {
         alert(err)
@@ -24,19 +24,35 @@ export default {
     }
   },
 
-  generateSweepstake: (params) => {
-    console.log('Params: ' + JSON.stringify(params))
+  generateSweepstake: (sweepstake, index) => {
     return (dispatch) => {
       dispatch({
         type: constants.GENERATING_SWEEPSTAKE,
         satus: 'loading'
       })
-      RandomAssigner.randomizeGroups(params.groups, params.members) //FIx Function for Data Structure
+      RandomAssigner.randomizeGroups(sweepstake.groups, sweepstake.members) //FIx Function for Data Structure
       .then(data => {
-        console.log('DATA: ' + JSON.stringify(data))
-        params['generated'] = data
-        console.log('Data: ' + JSON.stringify(params))
-        //Create Sweepstake in DB Here
+        sweepstake['sweepstake'] = data
+        sweepstake['active'] = !sweepstake.active
+        APIManager.put('/api/sweepstake/' + sweepstake._id, sweepstake)
+        .then(data => {
+          dispatch(navigateTo('/sweepstake/' + sweepstake._id))
+          dispatch({
+            type: constants.SWEEPSTAKE_GENERATED,
+            data: sweepstake,
+            index: index
+          })
+          dispatch({
+            type: constants.SWEEPSTAKE_SELECTED,
+            data: sweepstake
+          })
+        })
+        .catch(err => {
+          dispatch({
+            type: constants.SWEEPSTAKE_GENERATED,
+            data: null
+          })
+        })
       })
     }
   },
@@ -102,7 +118,7 @@ export default {
     return(dispatch) => {
       APIManager.put('/api/sweepstake/' + id, {members: members})
       .then(data => {
-        dispatch(navigateTo ('/sweepstake/' + id))
+        dispatch(navigateTo ('/'))
         dispatch({
           type: constants.MEMBER_ADDED,
           data: data,
@@ -119,9 +135,10 @@ export default {
     }
   },
 
-  deleteSweepstake: (sweepstake, index) => {
+  deleteSweepstake: (id, index) => {
+    console.log('Index: ' + index)
     return (dispatch) => {
-      APIManager.delete('/api/sweepstake/' + sweepstake._id)
+      APIManager.delete('/api/sweepstake/' + id)
       .then(data => {
         dispatch(navigateTo ('/'))
         dispatch({

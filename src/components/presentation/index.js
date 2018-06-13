@@ -9,6 +9,7 @@ import CreateFormTeams from './CreateSweepstakeForm/CreateFormTeams'
 import Participants from './CreateSweepstakeForm/Participants'
 import Caption from './CreateSweepstakeForm/Caption'
 import DashboardCompetitions from './Dashboard/DashboardCompetitions'
+import AssignedTeams from './ViewSweepstake/AssignedTeams'
 
 export {
   Sidebar,
@@ -22,4 +23,5 @@ export {
   Caption,
   Participants,
   DashboardCompetitions,
+  AssignedTeams
 }

@@ -48,7 +48,7 @@ class SweepstakeForm extends Component{
       entryFee: 0,
       selectedGroup: -1,
       numGroups: 0,
-      joinExpiryDate: '2018-06-14T12:01'
+      joinExpiryDate: '2018-06-14T12:00'
     }
     this.updateField = this.updateField.bind(this)
     this.addGroup = this.addGroup.bind(this)
