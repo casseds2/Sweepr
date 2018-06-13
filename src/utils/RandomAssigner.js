@@ -13,8 +13,6 @@ export default {
         })
         let user = {
           _id: members[j]._id,
-          firstName: members[j].firstName,
-          lastName: members[j].lastName,
           username: members[j].username
         }
         memberDetails['assignedTeams'] = assignedTeams

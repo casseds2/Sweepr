@@ -32,7 +32,7 @@ class AssignedTeams extends Component{
       let teams = user.assignedTeams.map((team, index) => {
         return <Grid key={index} item xs><Typography variant="title">{team.name}</Typography><img src={team.crestUrl} className={classes.imageStyle} /></Grid>
       })
-      return <Paper className={classes.entryStyle}><Grid key={index} container><Grid key={index} item xs><Typography className={classes.usernameStyle} variant="headline">{user.user.username}</Typography></Grid>{teams}</Grid></Paper>
+      return <Paper key={index} className={classes.entryStyle}><Grid key={index} container><Grid key={index} item xs><Typography className={classes.usernameStyle} variant="headline">{user.user.username}</Typography></Grid>{teams}</Grid></Paper>
     })
 
     return(

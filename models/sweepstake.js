@@ -4,7 +4,7 @@ var SweepstakeSchema = new mongoose.Schema({
     name: {type:String, default: ''},
     groups: {type:Object},
     entryFee: {type:Number},
-    members: [{_id:String, firstName:String, lastName:String}],
+    members: [{_id:String, username:String}],
     sweepstake: {type:Array, default:[]},
     joinExpiryDate: {type:String},
     owner: {type:String},

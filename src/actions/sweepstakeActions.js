@@ -94,7 +94,8 @@ export default {
         })
       })
       .catch(err => {
-        alert(err)
+        alert('Could Not Find Sweepstake!')
+        dispatch(navigateTo('/'))
         dispatch({
           type: constants.SWEEPSTAKE_RECEIVED,
           data: null

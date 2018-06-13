@@ -33,7 +33,7 @@ class Participants extends Component{
                     <Paper className={classes.paperDisplay} elevation={10}>
                       <Grid container justify={'center'}>
                         <Grid item>
-                          <h4>{profile.firstName} {profile.lastName}</h4>
+                          <h4>{profile.username}</h4>
                         </Grid>
                       </Grid>
                     </Paper>
@@ -45,7 +45,7 @@ class Participants extends Component{
     let participants = (this.props.profiles.length == 0) ? null : 
       profiles.map((profile, index) => {
       return  <MenuItem key={index} value={profile}>
-                <span>{profile.firstName} {profile.lastName}</span>
+                <span>{profile.username}</span>
               </MenuItem>
     })
 

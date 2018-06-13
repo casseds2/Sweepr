@@ -2,13 +2,13 @@ import React from 'react'
 import { 
   Dashboard, 
   ProfilePage, 
-  CreateSweepstake, 
-  ViewAllSweepstakes,
+  CreateSweepstake,
  } from '../components/layout'
 import {
   Home,
   Person,
   Public,
+  Create,
   PlaylistAdd,
 } from "@material-ui/icons"
 
@@ -21,25 +21,18 @@ const AppRoutes = [
     component: Dashboard,
   },
   {
+    path: "/create",
+    sidebarName: "Create Sweepstake",
+    navbarName: "Create Sweepstake",
+    icon: <Create />,
+    component: CreateSweepstake
+  },
+  {
     path: "/profile",
     sidebarName: "Profile",
     navbarName: "Profile",
     icon: <Person />,
     component: ProfilePage,
-  },
-  // {
-  //   path: "/sweepstakes",
-  //   sidebarName: "Sweepstakes",
-  //   navbarName: "Sweepstakes",
-  //   icon: <Public />,
-  //   component: ViewAllSweepstakes,
-  // },
-  {
-    path: "/create",
-    sidebarName: "Create Sweepstake",
-    navbarName: "Create Sweepstake",
-    icon: <Public />,
-    component: CreateSweepstake
   }
 ]
 

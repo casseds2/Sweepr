@@ -24,9 +24,7 @@ class Sweepstakes extends Component{
     const { currentUser } = this.props
     console.log('CurrentUser: ' + JSON.stringify(currentUser))
     let profileDetails = {
-      _id: currentUser._id, 
-      firstName: currentUser.firstName, 
-      lastName: currentUser.lastName,
+      _id: currentUser._id,
       username: currentUser.username
     }
     sweepstake.members.push(profileDetails) //TODO Move to Redux?
