@@ -55,20 +55,20 @@ gulp.task('js', function(){
         .pipe(gulp.dest('./public/dist/js/'))
 });
 
-gulp.task('es6-es5', ['js'], function(){
-    return gulp.src([
-                './src/*/**.js',
-                './src/*/*/**.js'
-            ]
-        )
-        .pipe(to5())
-        .pipe(gulp.dest('./public/dist/es5/'))
-});
+// gulp.task('es6-es5', ['js'], function(){
+//     return gulp.src([
+//                 './src/*/**.js',
+//                 './src/*/*/**.js'
+//             ]
+//         )
+//         .pipe(to5())
+//         .pipe(gulp.dest('./public/dist/es5/'))
+// });
 
 gulp.task('watch', function() {
-    gulp.watch(['./src/*/**.js', './src/*/*/**.js', './public/js/**.js'], ['es6-es5'])
+    gulp.watch(['./src/*/**.js', './src/*/*/**.js', './public/js/**.js']) //['es6-es5']
 })
 
-gulp.task('prod', ['style', 'es6-es5'], function(){})
+gulp.task('prod', ['style'], function(){}) //'es6-es5'
 
-gulp.task('default', ['es6-es5', 'watch'], function(){})
+gulp.task('default', ['watch'], function(){}) //'es6-es5', 
