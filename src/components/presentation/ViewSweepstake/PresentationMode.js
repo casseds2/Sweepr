@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withStyles, Grid, Paper, Typography } from '@material-ui/core'
+import { withStyles, Grid, Paper, Typography, Button } from '@material-ui/core'
 import Member from './Member'
 
 const styles = {
@@ -20,32 +20,37 @@ const styles = {
   },
   parentPaperStyle: {
     backgroundColor: '#ffffff'
+  },
+  reveal: {
+    textAlign:'center'
   }
 }
 
-class AssignedTeams extends Component{
+class PresentationMode extends Component{
   
   render(){
-
-    const { classes, sweepstake } = this.props
+  
+    const { classes, sweepstake, revealIndex } = this.props
 
     let sweepstakeTable = sweepstake.map((user, index) => {
       let teams = user.assignedTeams.map((team, index) => {
         return <Grid key={index} item xs><Typography variant="title">{team.name}</Typography><img src={team.crestUrl} className={classes.imageStyle} /></Grid>
       })
-      return <Member key={index} teams={teams} username={user.user.username}/>
+      let revealElement = (index <= revealIndex) ? <Member key={index} teams={teams} username={user.user.username}/> : null
+      return revealElement
     })
 
     return(
-      <Grid container>
-        <Grid item xs>
-          <Paper className={classes.parentPaperStyle}>
-            { sweepstakeTable }
-          </Paper>
+      <Grid container justify={'center'} alignItems={'center'}>
+        <Grid item xs={12}>
+          { sweepstakeTable }
+        </Grid>
+        <Grid item xs className={classes.reveal}>
+          <Button onClick={this.props.revealNext} variant="contained" color="primary">Reveal Next!</Button>
         </Grid>
       </Grid>
     )
   }
 }
 
-export default withStyles(styles)(AssignedTeams)
+export default withStyles(styles)(PresentationMode)

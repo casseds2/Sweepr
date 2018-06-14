@@ -37,6 +37,7 @@ const app = (
 				<PrivateRoute exact path='/sweepstakes' component={layouts.ViewAllSweepstakes} />
         <PrivateRoute exact path='/randomizer' component={layouts.RandomAssigner} />
         <PrivateRoute path='/sweepstake/:id' component={layouts.ViewSweepstake} />
+        <PrivateRoute path='/fixtures' component={layouts.AllFixtures} />
 			</Switch>
 		</ConnectedRouter>
 	</Provider>

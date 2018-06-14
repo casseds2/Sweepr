@@ -22,6 +22,10 @@ export default (state = initialState, action) => {
       updated['selectedCompetitionID'] = id
       return updated
       
+    case constants.FETCHED_FIXTURES:
+      updated['fixtures'][action.matchDay] = action.data
+      return updated
+
     case constants.FETCHING_COMPETITION:
       return updated
 

@@ -54,6 +54,9 @@ class Sweepstake extends Component{
     const generateButton = (sweepstake.active || user._id != sweepstake.owner || sweepstake.members.length == 0) ? null
     : <Grid item xs><Button variant="contained" color="primary" className={classes.button} onClick={this.props.generate}><Typography className={classes.buttonText}>Generate</Typography></Button></Grid>
 
+    const presentButton = (sweepstake.active && user._id == sweepstake.owner) ? <Button onClick={this.props.present} variant="outlined" color="primary" className={classes.button}><Typography className={classes.buttonText}>View In Presentation</Typography></Button>
+    : null
+    
     const pot = sweepstake.entryFee * sweepstake.members.length
 
     const active = (sweepstake.active) ? <span>Closed</span> : <span>Open</span>
@@ -100,6 +103,7 @@ class Sweepstake extends Component{
               </Typography>
             </Button>
           </Grid>
+          {presentButton}
           {joinButton}
           {generateButton}
           {deleteButton}

@@ -1,15 +1,13 @@
 import React from 'react'
 import { 
   Dashboard, 
-  ProfilePage, 
+  AllFixtures,
   CreateSweepstake,
  } from '../components/layout'
 import {
   Home,
-  Person,
-  Public,
   Create,
-  PlaylistAdd,
+  Event
 } from "@material-ui/icons"
 
 const AppRoutes = [
@@ -28,11 +26,11 @@ const AppRoutes = [
     component: CreateSweepstake
   },
   {
-    path: "/profile",
-    sidebarName: "Profile",
-    navbarName: "Profile",
-    icon: <Person />,
-    component: ProfilePage,
+    path: "/fixtures",
+    sidebarName: "Upcoming Fixtures",
+    navbarName: "Upcoming Fixtures",
+    icon: <Event />,
+    component: AllFixtures
   }
 ]
 

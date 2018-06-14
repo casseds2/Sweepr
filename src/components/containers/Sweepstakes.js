@@ -31,8 +31,8 @@ class Sweepstakes extends Component{
     this.props.joinSweepstake(sweepstake._id, sweepstake.members, index)
   }
 
-  viewSweepstake(sweepstake){
-    this.props.sweepstakeSelected(sweepstake)
+  viewSweepstake(sweepstake, presentationMode){
+    this.props.sweepstakeSelected(sweepstake, presentationMode)
   }
 
   deleteSweepstake(id, index){
@@ -57,14 +57,15 @@ class Sweepstakes extends Component{
                   sweepstake={sweepstake}
                   delete={() => this.deleteSweepstake(sweepstake._id, index)}
                   generate={() => this.generateSweepstake(sweepstake, index)}
-                  view={() => this.viewSweepstake(sweepstake)}
+                  view={() => this.viewSweepstake(sweepstake, false)}
+                  present={() => this.viewSweepstake(sweepstake, true)}
                   join={() => this.joinSweepstake(sweepstake, index)}
                 />
               </Grid>
     }) : <Grid container justify={'center'}><Grid item xs style={{textAlign:'center', marginTop: 50}}><Typography variant='display2'>No Sweepstakes!!!!</Typography></Grid></Grid>
 
     return(
-      <Grid container>
+      <Grid container justify={'center'}>
         {content}
       </Grid>
     )
@@ -83,7 +84,7 @@ const dispatchToProps = (dispatch) => {
     fetchSweepstakes: () => dispatch(sweepstakeActions.fetchSweepstakes()),
     deleteSweepstake: (id, index) => dispatch(sweepstakeActions.deleteSweepstake(id, index)),
     generateSweepstake: (sweepstake, index) => dispatch(sweepstakeActions.generateSweepstake(sweepstake, index)),
-    sweepstakeSelected: (sweepstake) => dispatch(sweepstakeActions.sweepstakeSelected(sweepstake)),
+    sweepstakeSelected: (sweepstake, presentationMode) => dispatch(sweepstakeActions.sweepstakeSelected(sweepstake, presentationMode)),
     joinSweepstake: (id, members, index) => dispatch(sweepstakeActions.addMember(id, members, index))
   }
 }  

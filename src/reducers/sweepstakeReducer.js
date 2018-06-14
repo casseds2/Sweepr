@@ -2,7 +2,8 @@ import constants from '../constants'
 
 var initialState = {
   sweepstakes: [],
-  current: {}
+  current: {},
+  presentationMode: false
 }
 
 export default (state = initialState, action) => {
@@ -31,6 +32,8 @@ export default (state = initialState, action) => {
 
     case constants.SWEEPSTAKE_SELECTED:
       updated['current'] = action.data
+      let presentationMode = (action.presentationMode == null) ? false : action.presentationMode
+      updated['presentationMode'] = presentationMode
       return updated
 
     case constants.SWEEPSTAKE_DELETED:
@@ -41,7 +44,9 @@ export default (state = initialState, action) => {
     case constants.SWEEPSTAKE_GENERATED:
       sweepstakes.splice(action.index, 1)
       sweepstakes.push(action.data)
-      updated['sweepstakes'] = sweepstakes
+      updated['sweepstakes'] = sweepstakesaction.
+      updated['current'] = action.data
+      updated['presentationMode'] = action.presentationMode
       return updated
 
     case constants.MEMBER_ADDED:

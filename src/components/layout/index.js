@@ -5,6 +5,7 @@ import ViewAllSweepstakes from './ViewAllSweepstakes'
 import Login from './Login'
 import Register from './Register'
 import ViewSweepstake from './ViewSweepstake'
+import AllFixtures from './AllFixtures'
 
 export {
   Dashboard,
@@ -13,5 +14,6 @@ export {
   ViewAllSweepstakes,
   Login,
   Register,
-  ViewSweepstake
+  ViewSweepstake,
+  AllFixtures
 }

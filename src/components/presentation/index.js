@@ -10,6 +10,9 @@ import Participants from './CreateSweepstakeForm/Participants'
 import Caption from './CreateSweepstakeForm/Caption'
 import DashboardCompetitions from './Dashboard/DashboardCompetitions'
 import AssignedTeams from './ViewSweepstake/AssignedTeams'
+import PresentationMode from './ViewSweepstake/PresentationMode'
+import Member from './ViewSweepstake/Member'
+import FixtureOverview from './Fixtures/FixtureOverview'
 
 export {
   Sidebar,
@@ -23,5 +26,8 @@ export {
   Caption,
   Participants,
   DashboardCompetitions,
-  AssignedTeams
+  AssignedTeams,
+  PresentationMode,
+  Member,
+  FixtureOverview
 }

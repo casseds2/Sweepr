@@ -40,12 +40,15 @@ export default {
           dispatch({
             type: constants.SWEEPSTAKE_GENERATED,
             data: sweepstake,
-            index: index
+            index: index,
+            presentationMode: true
           })
-          dispatch({
-            type: constants.SWEEPSTAKE_SELECTED,
-            data: sweepstake
-          })
+          // dispatch({
+          //   type: constants.SWEEPSTAKE_SELECTED,
+          //   data: sweepstake,
+          //   presentationMode: true
+          // })
+          dispatch(navigateTo ('/sweepstake/' + sweepstake._id))
         })
         .catch(err => {
           dispatch({
@@ -104,12 +107,13 @@ export default {
     }
   },
 
-  sweepstakeSelected: (sweepstake) => {
+  sweepstakeSelected: (sweepstake, presentMode) => {
     return(dispatch) => {
       dispatch(navigateTo ('/sweepstake/' + sweepstake._id))
       dispatch({
         type:constants.SWEEPSTAKE_SELECTED,
-        data: sweepstake
+        data: sweepstake,
+        presentationMode: presentMode
       })
     }
   },

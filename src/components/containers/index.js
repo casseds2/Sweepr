@@ -6,6 +6,7 @@ import RegisterForm from './RegisterForm'
 import PrivateRoute from './PrivateRoute'
 import Profile from './Profile'
 import Sidebar from './Sidebar'
+import Fixtures from './Fixtures'
 
 export {
   SweepstakeForm,
@@ -15,5 +16,6 @@ export {
   PrivateRoute,
   Profile,
   Sidebar,
-  Sweepstake
+  Sweepstake,
+  Fixtures
 }

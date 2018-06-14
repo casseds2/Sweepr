@@ -3,6 +3,25 @@ import { WorldCupApi } from '../utils'
 
 export default {
 
+  fetchFixtures: (id, matchDay) => {
+    // console.log('ID: ' + JSON.stringify(id))
+    // console.log('Matchday: ' + JSON.stringify(matchDay))
+    return (dispatch) => {
+      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', {matchday: matchDay})
+      .then(data => {
+        // console.log('FIXES:' + JSON.stringify(data))
+        dispatch({
+          type: constants.FETCHED_FIXTURES,
+          data: data.fixtures,
+          matchDay: matchDay
+        })
+      })
+      .catch(err => {
+        alert('Could Not Find Fixtures!')
+        dispatch(navigateTo('/'))
+      })
+    }
+  },
   fetchCompetition: (id) => {
     return (dispatch) => {
       dispatch({
@@ -11,6 +30,7 @@ export default {
       })
       WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id, null)
       .then(data => {
+        // console.log('WorldyData: ' + JSON.stringify(data))
         dispatch({
           type: constants.FETCHED_COMPETITION,
           data: data
