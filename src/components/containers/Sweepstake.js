@@ -46,8 +46,6 @@ class Sweepstake extends Component{
     const groups = (Object.keys(current).length === 0) ? [] : current.groups
     const sweepstake = (Object.keys(current).length === 0) ? [] : current.sweepstake
 
-    console.log('PreMode: ' + JSON.stringify(presentationMode))
-
     let presentation = (presentationMode) ? <PresentationMode sweepstake={sweepstake} revealNext={() => this.revealNext()} revealIndex={this.state.revealIndex} /> : <AssignedTeams sweepstake={sweepstake} />
     let primaryDisplay = (current.active) ?  presentation : <CreateFormGroups groups={groups} isEditing={false} />
 

@@ -14,8 +14,8 @@ const styles = {
     resizeMode: 'contain'
   },
   usernameStyle: {
-    textAlign: 'left',
-    margin: 'auto'
+    textAlign: 'center',
+    marginTop: 23
   },
   parentPaperStyle: {
     backgroundColor: '#ffffff'
@@ -31,15 +31,21 @@ class Member extends Component{
 
     const { classes, teams, username, key } = this.props
 
+    let captalizedUsername = username.charAt(0).toUpperCase() + username.substr(1);
+
     return(
       <Paper key={key} className={classes.entryStyle}>
         <Grid key={key} container>
           <Grid key={key} item xs>
-            <Typography 
-              className={classes.usernameStyle} 
-              variant="headline">
-              {username}
-            </Typography>
+            <Grid container alignContent={'center'} >
+              <Grid item xs>
+                <Typography 
+                  className={classes.usernameStyle} 
+                  variant="headline">
+                  {captalizedUsername}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
           {teams}
         </Grid>

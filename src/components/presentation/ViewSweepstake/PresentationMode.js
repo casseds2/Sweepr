@@ -40,13 +40,15 @@ class PresentationMode extends Component{
       return revealElement
     })
 
+    const disabled = (revealIndex === sweepstake.length -1) ? true : false
+
     return(
       <Grid container justify={'center'} alignItems={'center'}>
         <Grid item xs={12}>
           { sweepstakeTable }
         </Grid>
         <Grid item xs className={classes.reveal}>
-          <Button onClick={this.props.revealNext} variant="contained" color="primary">Reveal Next!</Button>
+          <Button disabled={disabled} onClick={this.props.revealNext} variant="contained" color="primary">Reveal Next!</Button>
         </Grid>
       </Grid>
     )

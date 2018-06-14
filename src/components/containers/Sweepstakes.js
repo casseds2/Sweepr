@@ -45,7 +45,7 @@ class Sweepstakes extends Component{
 
   render(){
 
-    const { classes, currentUser } = this.props
+    const { currentUser } = this.props
     const  { sweepstakes }  = this.props.sweepstake
     
     const content = (sweepstakes.length > 0) ? sweepstakes.map((sweepstake, index) => {

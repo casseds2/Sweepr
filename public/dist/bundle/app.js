@@ -1090,8 +1090,6 @@ var Sweepstake = function (_Component) {
       var groups = Object.keys(current).length === 0 ? [] : current.groups;
       var sweepstake = Object.keys(current).length === 0 ? [] : current.sweepstake;
 
-      console.log('PreMode: ' + JSON.stringify(presentationMode));
-
       var presentation = presentationMode ? _react2.default.createElement(_presentation.PresentationMode, { sweepstake: sweepstake, revealNext: function revealNext() {
           return _this2.revealNext();
         }, revealIndex: this.state.revealIndex }) : _react2.default.createElement(_presentation.AssignedTeams, { sweepstake: sweepstake });
@@ -1684,9 +1682,7 @@ var Sweepstakes = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var _props = this.props,
-          classes = _props.classes,
-          currentUser = _props.currentUser;
+      var currentUser = this.props.currentUser;
       var sweepstakes = this.props.sweepstake.sweepstakes;
 
 
@@ -4493,8 +4489,8 @@ var styles = {
     resizeMode: 'contain'
   },
   usernameStyle: {
-    textAlign: 'left',
-    margin: 'auto'
+    textAlign: 'center',
+    marginTop: 23
   },
   parentPaperStyle: {
     backgroundColor: '#ffffff'
@@ -4523,6 +4519,8 @@ var Member = function (_Component) {
           key = _props.key;
 
 
+      var captalizedUsername = username.charAt(0).toUpperCase() + username.substr(1);
+
       return _react2.default.createElement(
         _core.Paper,
         { key: key, className: classes.entryStyle },
@@ -4533,11 +4531,19 @@ var Member = function (_Component) {
             _core.Grid,
             { key: key, item: true, xs: true },
             _react2.default.createElement(
-              _core.Typography,
-              {
-                className: classes.usernameStyle,
-                variant: 'headline' },
-              username
+              _core.Grid,
+              { container: true, alignContent: 'center' },
+              _react2.default.createElement(
+                _core.Grid,
+                { item: true, xs: true },
+                _react2.default.createElement(
+                  _core.Typography,
+                  {
+                    className: classes.usernameStyle,
+                    variant: 'headline' },
+                  captalizedUsername
+                )
+              )
             )
           ),
           teams
@@ -4646,6 +4652,8 @@ var PresentationMode = function (_Component) {
         return revealElement;
       });
 
+      var disabled = revealIndex === sweepstake.length - 1 ? true : false;
+
       return _react2.default.createElement(
         _core.Grid,
         { container: true, justify: 'center', alignItems: 'center' },
@@ -4659,7 +4667,7 @@ var PresentationMode = function (_Component) {
           { item: true, xs: true, className: classes.reveal },
           _react2.default.createElement(
             _core.Button,
-            { onClick: this.props.revealNext, variant: 'contained', color: 'primary' },
+            { disabled: disabled, onClick: this.props.revealNext, variant: 'contained', color: 'primary' },
             'Reveal Next!'
           )
         )
