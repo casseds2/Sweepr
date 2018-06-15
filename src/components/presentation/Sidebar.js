@@ -27,6 +27,7 @@ const styles = theme => ({
   },
   title: {
     flex: 1,
+    marginLeft: 20
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -53,10 +54,10 @@ const Sidebar = (props) => {
         <Toolbar>
           <Typography 
             className={classes.title}
-            variant="title"
+            variant="display1"
             color="inherit"
             noWrap>
-            Sweepstakes Machine
+            Sweepr
           </Typography>
           <Button 
             color="inherit"

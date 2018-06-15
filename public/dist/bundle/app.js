@@ -2047,6 +2047,85 @@ exports.default = Dashboard;
 
 /***/ }),
 
+/***/ "./src/components/layout/Leaderboard.js":
+/*!**********************************************!*\
+  !*** ./src/components/layout/Leaderboard.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+var _containers = __webpack_require__(/*! ../containers */ "./src/components/containers/index.js");
+
+var _MuiThemeProvider = __webpack_require__(/*! @material-ui/core/styles/MuiThemeProvider */ "./node_modules/@material-ui/core/styles/MuiThemeProvider.js");
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Leaderboard = function (_Component) {
+  _inherits(Leaderboard, _Component);
+
+  function Leaderboard() {
+    _classCallCheck(this, Leaderboard);
+
+    return _possibleConstructorReturn(this, (Leaderboard.__proto__ || Object.getPrototypeOf(Leaderboard)).apply(this, arguments));
+  }
+
+  _createClass(Leaderboard, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        null,
+        _react2.default.createElement(
+          _containers.Sidebar,
+          null,
+          _react2.default.createElement(
+            _core.Grid,
+            { container: true, justify: 'center', style: { textAlign: 'center', marginTop: 100 } },
+            _react2.default.createElement(
+              _core.Grid,
+              { item: true, xs: true },
+              _react2.default.createElement(
+                _core.Typography,
+                { variant: 'display3' },
+                'COMING SOON...'
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Leaderboard;
+}(_react.Component);
+
+exports.default = Leaderboard;
+
+/***/ }),
+
 /***/ "./src/components/layout/Login.js":
 /*!****************************************!*\
   !*** ./src/components/layout/Login.js ***!
@@ -2337,7 +2416,7 @@ exports.default = ViewSweepstake;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AllFixtures = exports.ViewSweepstake = exports.Register = exports.Login = exports.ViewAllSweepstakes = exports.CreateSweepstake = exports.ProfilePage = exports.Dashboard = undefined;
+exports.Leaderboard = exports.AllFixtures = exports.ViewSweepstake = exports.Register = exports.Login = exports.ViewAllSweepstakes = exports.CreateSweepstake = exports.ProfilePage = exports.Dashboard = undefined;
 
 var _Dashboard = __webpack_require__(/*! ./Dashboard */ "./src/components/layout/Dashboard.js");
 
@@ -2371,6 +2450,10 @@ var _AllFixtures = __webpack_require__(/*! ./AllFixtures */ "./src/components/la
 
 var _AllFixtures2 = _interopRequireDefault(_AllFixtures);
 
+var _Leaderboard = __webpack_require__(/*! ./Leaderboard */ "./src/components/layout/Leaderboard.js");
+
+var _Leaderboard2 = _interopRequireDefault(_Leaderboard);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Dashboard = _Dashboard2.default;
@@ -2381,6 +2464,7 @@ exports.Login = _Login2.default;
 exports.Register = _Register2.default;
 exports.ViewSweepstake = _ViewSweepstake2.default;
 exports.AllFixtures = _AllFixtures2.default;
+exports.Leaderboard = _Leaderboard2.default;
 
 /***/ }),
 
@@ -3109,6 +3193,8 @@ var _Paper = __webpack_require__(/*! material-ui/Paper */ "./node_modules/materi
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
+var _icons = __webpack_require__(/*! @material-ui/icons */ "./node_modules/@material-ui/icons/index.es.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3125,12 +3211,13 @@ var styles = {
   },
   notPlayed: {
     backgroundColor: '#ff004c',
-    padding: 4
+    padding: 10
   },
   played: {
     backgroundColor: '#74d858',
-    padding: 4
-  }
+    padding: 10
+  },
+  finished: {}
 };
 
 var FixtureOverview = function (_Component) {
@@ -3151,7 +3238,8 @@ var FixtureOverview = function (_Component) {
       var homeTeamName = fixture.homeTeamName,
           awayTeamName = fixture.awayTeamName,
           result = fixture.result,
-          date = fixture.date;
+          date = fixture.date,
+          status = fixture.status;
       var goalsHomeTeam = result.goalsHomeTeam,
           goalsAwayTeam = result.goalsAwayTeam;
 
@@ -3166,7 +3254,49 @@ var FixtureOverview = function (_Component) {
         ' : ',
         goalsAwayTeam
       );
-      var formattedDate = date.substring(0, 16).replace("T", " @ ");
+      var formattedDate = date.substring(0, 16).replace("T", " @ ") + ' (UTC)';
+      // let winner = (goalsHomeTeam > goalsAwayTeam && goalsHomeTeam != null) ? homeTeamName : awayTeamName
+      var winner = goalsHomeTeam != null ? goalsHomeTeam > goalsAwayTeam ? _react2.default.createElement(
+        _core.Typography,
+        { variant: 'caption' },
+        '(',
+        homeTeamName,
+        ' Win)'
+      ) : _react2.default.createElement(
+        _core.Typography,
+        { variant: 'caption' },
+        '(',
+        awayTeamName,
+        ' Win)'
+      ) : null;
+
+      var header = status === 'IN_PLAY' ? _react2.default.createElement(
+        'span',
+        null,
+        _react2.default.createElement(
+          'span',
+          null,
+          'In Progress'
+        ),
+        _react2.default.createElement(_icons.Timer, { style: { marginLeft: 15 } })
+      ) : status === 'FINISHED' ? _react2.default.createElement(
+        'span',
+        null,
+        _react2.default.createElement(
+          'span',
+          null,
+          'Full Time'
+        ),
+        _react2.default.createElement(_icons.Done, { style: { marginLeft: 15 } })
+      ) : status === 'TIMED' ? _react2.default.createElement(
+        'span',
+        null,
+        formattedDate
+      ) : status === 'SCHEDULED' ? _react2.default.createElement(
+        'span',
+        null,
+        'T.B.D.'
+      ) : null;
 
       return _react2.default.createElement(
         _core.Grid,
@@ -3177,15 +3307,38 @@ var FixtureOverview = function (_Component) {
           _react2.default.createElement(
             _core.Typography,
             { variant: 'headline' },
-            formattedDate,
-            ' ',
-            _react2.default.createElement('hr', null),
+            _react2.default.createElement(
+              _core.Grid,
+              { container: true },
+              _react2.default.createElement(
+                _core.Grid,
+                { item: true, xs: true },
+                header,
+                ' ',
+                _react2.default.createElement('hr', null)
+              )
+            ),
             homeTeamName,
-            ' Vs. ',
+            ' ',
+            _react2.default.createElement(
+              'span',
+              null,
+              _react2.default.createElement(
+                _core.Typography,
+                { variant: 'subheading' },
+                'VS'
+              )
+            ),
+            ' ',
             awayTeamName,
             ' ',
             _react2.default.createElement('hr', null),
-            goals
+            goals,
+            _react2.default.createElement(
+              _core.Grid,
+              { item: true, xs: true, style: { marginTop: 10 } },
+              winner
+            )
           )
         )
       );
@@ -3967,7 +4120,8 @@ var styles = function styles(theme) {
       display: 'flex'
     },
     title: {
-      flex: 1
+      flex: 1,
+      marginLeft: 20
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1
@@ -4003,10 +4157,10 @@ var Sidebar = function Sidebar(props) {
           _Typography2.default,
           {
             className: classes.title,
-            variant: 'title',
+            variant: 'display1',
             color: 'inherit',
             noWrap: true },
-          'Sweepstakes Machine'
+          'Sweepr'
         ),
         _react2.default.createElement(
           _Button2.default,
@@ -4898,7 +5052,8 @@ var app = _react2.default.createElement(
 			_react2.default.createElement(_containers.PrivateRoute, { exact: true, path: '/sweepstakes', component: layouts.ViewAllSweepstakes }),
 			_react2.default.createElement(_containers.PrivateRoute, { exact: true, path: '/randomizer', component: layouts.RandomAssigner }),
 			_react2.default.createElement(_containers.PrivateRoute, { path: '/sweepstake/:id', component: layouts.ViewSweepstake }),
-			_react2.default.createElement(_containers.PrivateRoute, { path: '/fixtures', component: layouts.AllFixtures })
+			_react2.default.createElement(_containers.PrivateRoute, { path: '/fixtures', component: layouts.AllFixtures }),
+			_react2.default.createElement(_containers.PrivateRoute, { path: '/leaderboard', component: layouts.Leaderboard })
 		)
 	)
 );
@@ -5268,6 +5423,12 @@ var AppRoutes = [{
   sidebarName: "Upcoming Fixtures",
   navbarName: "Upcoming Fixtures",
   icon: _react2.default.createElement(_icons.Event, null),
+  component: _layout.AllFixtures
+}, {
+  path: "/leaderboard",
+  sidebarName: "Leaderboard",
+  navbarName: "Leaderboard",
+  icon: _react2.default.createElement(_icons.Group, null),
   component: _layout.AllFixtures
 }];
 

@@ -7,7 +7,8 @@ import {
 import {
   Home,
   Create,
-  Event
+  Event,
+  Group
 } from "@material-ui/icons"
 
 const AppRoutes = [
@@ -30,6 +31,13 @@ const AppRoutes = [
     sidebarName: "Upcoming Fixtures",
     navbarName: "Upcoming Fixtures",
     icon: <Event />,
+    component: AllFixtures
+  },
+  {
+    path: "/leaderboard",
+    sidebarName: "Leaderboard",
+    navbarName: "Leaderboard",
+    icon: <Group />,
     component: AllFixtures
   }
 ]
