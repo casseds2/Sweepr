@@ -1,7 +1,7 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Snackbar, IconButton, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { competitionActions } from '../../actions'
+import { competitionActions, appstateActions } from '../../actions'
 import { GroupTable } from '../presentation'
 
 class GroupTables extends React.Component{
@@ -16,6 +16,7 @@ class GroupTables extends React.Component{
   render(){
 
     const { selectedCompetitionID, groupStandings } = this.props.competitions
+    const { fixtureSnackbar } = this.props.appState
 
     let competitionGroups = (groupStandings[selectedCompetitionID] == null) ? [] : groupStandings[selectedCompetitionID]['standings']
     let content = Object.keys(competitionGroups).map((groupKey, index) => {
@@ -42,22 +43,36 @@ class GroupTables extends React.Component{
     })
 
     return(
-      <Grid container justify='center'>
-        {content}
-      </Grid>
+      <div>
+        <Snackbar
+          action={[
+            <Button key="undo" color="secondary" size="small" onClick={this.props.toggleSnackbar}>
+              Close
+            </Button>
+          ]}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={fixtureSnackbar}
+          message="Matches in Progress Not Accounted For"
+        />
+        <Grid container justify='center'>
+          {content}
+        </Grid>
+      </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    competitions: state.competitions
+    competitions: state.competitions,
+    appState: state.appState
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   navigateToRegisterPage: (href) => dispatch(navigateTo('/register')),
-  fetchGroupStandings: (id) => dispatch(competitionActions.fetchGroupStandings(id))
+  fetchGroupStandings: (id) => dispatch(competitionActions.fetchGroupStandings(id)),
+  toggleSnackbar: () => dispatch(appstateActions.toggleFixtureSnackbar())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupTables)

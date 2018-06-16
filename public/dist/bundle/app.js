@@ -137,6 +137,39 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/actions/appstateActions.js":
+/*!****************************************!*\
+  !*** ./src/actions/appstateActions.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(/*! ../constants */ "./src/constants/index.js");
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+
+  toggleFixtureSnackbar: function toggleFixtureSnackbar() {
+    return function (dispatch) {
+      dispatch({
+        type: _constants2.default.FIXTURE_SNACKBAR_TOGGLED
+      });
+    };
+  }
+};
+
+/***/ }),
+
 /***/ "./src/actions/authActions.js":
 /*!************************************!*\
   !*** ./src/actions/authActions.js ***!
@@ -401,7 +434,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.competitionActions = exports.userActions = exports.sweepstakeActions = exports.authActions = undefined;
+exports.appstateActions = exports.competitionActions = exports.userActions = exports.sweepstakeActions = exports.authActions = undefined;
 exports.navigateTo = navigateTo;
 
 var _connectedReactRouter = __webpack_require__(/*! connected-react-router */ "./node_modules/connected-react-router/lib/index.js");
@@ -422,6 +455,10 @@ var _competitionActions = __webpack_require__(/*! ./competitionActions */ "./src
 
 var _competitionActions2 = _interopRequireDefault(_competitionActions);
 
+var _appstateActions = __webpack_require__(/*! ./appstateActions */ "./src/actions/appstateActions.js");
+
+var _appstateActions2 = _interopRequireDefault(_appstateActions);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -436,6 +473,7 @@ exports.authActions = authActions;
 exports.sweepstakeActions = _sweepstakeActions2.default;
 exports.userActions = _userActions2.default;
 exports.competitionActions = _competitionActions2.default;
+exports.appstateActions = _appstateActions2.default;
 
 /***/ }),
 
@@ -823,6 +861,7 @@ var GroupTables = function (_React$Component) {
       var _props$competitions2 = this.props.competitions,
           selectedCompetitionID = _props$competitions2.selectedCompetitionID,
           groupStandings = _props$competitions2.groupStandings;
+      var fixtureSnackbar = this.props.appState.fixtureSnackbar;
 
 
       var competitionGroups = groupStandings[selectedCompetitionID] == null ? [] : groupStandings[selectedCompetitionID]['standings'];
@@ -861,9 +900,23 @@ var GroupTables = function (_React$Component) {
       });
 
       return _react2.default.createElement(
-        _core.Grid,
-        { container: true, justify: 'center' },
-        content
+        'div',
+        null,
+        _react2.default.createElement(_core.Snackbar, {
+          action: [_react2.default.createElement(
+            _core.Button,
+            { key: 'undo', color: 'secondary', size: 'small', onClick: this.props.toggleSnackbar },
+            'Close'
+          )],
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+          open: fixtureSnackbar,
+          message: 'Matches in Progress Not Accounted For'
+        }),
+        _react2.default.createElement(
+          _core.Grid,
+          { container: true, justify: 'center' },
+          content
+        )
       );
     }
   }]);
@@ -873,7 +926,8 @@ var GroupTables = function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    competitions: state.competitions
+    competitions: state.competitions,
+    appState: state.appState
   };
 };
 
@@ -884,6 +938,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchGroupStandings: function fetchGroupStandings(id) {
       return dispatch(_actions.competitionActions.fetchGroupStandings(id));
+    },
+    toggleSnackbar: function toggleSnackbar() {
+      return dispatch(_actions.appstateActions.toggleFixtureSnackbar());
     }
   };
 };
@@ -5780,7 +5837,7 @@ exports.default = (_LOGIN_REQUEST$LOGIN_ = {
   SWEEPSTAKE_GENERATED: 'SWEEPSTAKE_GENERATED',
 
   FETCHING_USERS: 'FETCHING_USERS'
-}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'POINTS_CALCULATED', 'POINTS_CALCULATED'), _LOGIN_REQUEST$LOGIN_);
+}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'POINTS_CALCULATED', 'POINTS_CALCULATED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FIXTURE_SNACKBAR_TOGGLED', 'FIXTURE_SNACKBAR_TOGGLED'), _LOGIN_REQUEST$LOGIN_);
 
 /***/ }),
 
@@ -5866,6 +5923,52 @@ var app = _react2.default.createElement(
 );
 
 _reactDom2.default.render(app, document.getElementById('root'));
+
+/***/ }),
+
+/***/ "./src/reducers/appState.js":
+/*!**********************************!*\
+  !*** ./src/reducers/appState.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _constants = __webpack_require__(/*! ../constants */ "./src/constants/index.js");
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+	fixtureSnackbar: true
+};
+
+exports.default = function () {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	var action = arguments[1];
+
+
+	var updated = Object.assign({}, state);
+
+	switch (action.type) {
+
+		case _constants2.default.FIXTURE_SNACKBAR_TOGGLED:
+			var status = updated['fixtureSnackbar'];
+			status = !status;
+			updated['fixtureSnackbar'] = status;
+			return updated;
+
+		default:
+			return state;
+	}
+};
 
 /***/ }),
 
@@ -6066,13 +6169,18 @@ var _competitionsReducer = __webpack_require__(/*! ./competitionsReducer */ "./s
 
 var _competitionsReducer2 = _interopRequireDefault(_competitionsReducer);
 
+var _appState = __webpack_require__(/*! ./appState */ "./src/reducers/appState.js");
+
+var _appState2 = _interopRequireDefault(_appState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
   auth: _authReducer2.default,
   sweepstake: _sweepstakeReducer2.default,
   user: _userReducer2.default,
-  competitions: _competitionsReducer2.default
+  competitions: _competitionsReducer2.default,
+  appState: _appState2.default
 };
 
 /***/ }),
