@@ -289,7 +289,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var calculateSuccess = function calculateSuccess(data) {
   return {
-    type: _constants2.default.CALCULATE_SUCCESS,
+    type: _constants2.default.POINTS_CALCULATED,
     data: data
   };
 };
@@ -297,10 +297,7 @@ var calculateSuccess = function calculateSuccess(data) {
 function calculatePoints(fixtures) {
   return function (dispatch) {
     _utils.PointsCalculator.calculate(fixtures).then(function (data) {
-      dispatch({
-        type: _constants2.default.POINTS_CALCULATED,
-        data: data
-      });
+      return dispatch(calculateSuccess(data));
     }).catch(function (err) {
       alert(err);
     });
@@ -312,12 +309,13 @@ exports.default = {
   fetchFixtures: function fetchFixtures(id, matchDay) {
     return function (dispatch) {
       _utils.WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', matchDay).then(function (data) {
-        dispatch(calculatePoints(data.fixtures));
         dispatch({
           type: _constants2.default.FETCHED_FIXTURES,
           data: data.fixtures,
           matchDay: matchDay
         });
+        dispatch(calculatePoints(data.fixtures));
+        return data;
       }).catch(function (err) {
         alert('Could Not Find Fixtures!');
         dispatch((0, _actions.navigateTo)('/'));

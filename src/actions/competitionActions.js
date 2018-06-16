@@ -3,7 +3,7 @@ import { WorldCupApi, PointsCalculator } from '../utils'
 import { navigateTo } from '../actions'
 
 const calculateSuccess = (data) => ({
-  type: constants.CALCULATE_SUCCESS,
+  type: constants.POINTS_CALCULATED,
   data: data
 })
 
@@ -11,10 +11,7 @@ export function calculatePoints(fixtures){
   return (dispatch) => {
     PointsCalculator.calculate(fixtures)
     .then(data => {
-      dispatch({
-        type: constants.POINTS_CALCULATED,
-        data: data
-      })
+      return (dispatch(calculateSuccess(data)))
     })
     .catch(err => {
       alert(err)
@@ -28,12 +25,13 @@ export default {
     return (dispatch) => {
       WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', matchDay)
       .then(data => {
-        dispatch(calculatePoints(data.fixtures))
         dispatch({
           type: constants.FETCHED_FIXTURES,
           data: data.fixtures,
           matchDay: matchDay
         })
+        dispatch(calculatePoints(data.fixtures))
+        return data
       })
       .catch(err => {
         alert('Could Not Find Fixtures!')
