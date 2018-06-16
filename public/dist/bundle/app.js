@@ -3624,7 +3624,13 @@ var FixtureOverview = function (_Component) {
         ' : ',
         goalsAwayTeam
       );
-      var formattedDate = date.substring(0, 16).replace("T", " @ ") + ' (UTC)';
+      var formattedDate = date.substring(0, 16).replace("T", " @ ");
+      var hour = formattedDate.substring(13, 15);
+      hour = parseInt(hour);
+      hour += 1;
+      hour = hour.toString();
+      var kickOff = formattedDate.substring(0, 12) + hour + formattedDate.substring(15);
+
       var winner =
       /*if*/goalsHomeTeam != null && status == 'FINISHED' ?
       /*if*/goalsHomeTeam == goalsAwayTeam ?
@@ -3671,7 +3677,7 @@ var FixtureOverview = function (_Component) {
       ) : status === 'TIMED' ? _react2.default.createElement(
         'span',
         null,
-        formattedDate
+        kickOff
       ) : status === 'SCHEDULED' ? _react2.default.createElement(
         'span',
         null,

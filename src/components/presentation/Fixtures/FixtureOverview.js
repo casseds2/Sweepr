@@ -30,7 +30,13 @@ class FixtureOverview extends Component{
     const { homeTeamName, awayTeamName, result, date, status } = fixture
     const { goalsHomeTeam, goalsAwayTeam } = result
     const goals = (goalsHomeTeam == null) ? <span className={classes.notPlayed} >To Be Played</span> : <span className={classes.played}>{goalsHomeTeam} : {goalsAwayTeam}</span>
-    let formattedDate = date.substring(0, 16).replace("T", " @ ") + ' (UTC)'
+    let formattedDate = date.substring(0, 16).replace("T", " @ ")
+    let hour = formattedDate.substring(13, 15)
+    hour = parseInt(hour)
+    hour += 1
+    hour = hour.toString()
+    let kickOff = formattedDate.substring(0, 12) + hour + formattedDate.substring(15)
+
     let winner = 
     /*if*/ (goalsHomeTeam != null && status == 'FINISHED') ? 
       /*if*/ (goalsHomeTeam == goalsAwayTeam) ? 
@@ -43,7 +49,7 @@ class FixtureOverview extends Component{
     let header = (
       status === 'IN_PLAY' ? <span><span>In Progress</span><Timer style={{marginLeft: 15}} /></span> :
       status === 'FINISHED' ? <span><span>Full Time</span><Done style={{marginLeft: 15}} /></span> :
-      status === 'TIMED' ? <span>{formattedDate}</span> :
+      status === 'TIMED' ? <span>{kickOff}</span> :
       status === 'SCHEDULED' ? <span>T.B.D.</span> :
       null
     )
