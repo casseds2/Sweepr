@@ -31,8 +31,14 @@ class FixtureOverview extends Component{
     const { goalsHomeTeam, goalsAwayTeam } = result
     const goals = (goalsHomeTeam == null) ? <span className={classes.notPlayed} >To Be Played</span> : <span className={classes.played}>{goalsHomeTeam} : {goalsAwayTeam}</span>
     let formattedDate = date.substring(0, 16).replace("T", " @ ") + ' (UTC)'
-    // let winner = (goalsHomeTeam > goalsAwayTeam && goalsHomeTeam != null) ? homeTeamName : awayTeamName
-    let winner = (goalsHomeTeam != null) ? (goalsHomeTeam > goalsAwayTeam) ? <Typography variant='caption'>({homeTeamName} Win)</Typography> : <Typography variant='caption'>({awayTeamName} Win)</Typography> : null
+    let winner = 
+    /*if*/ (goalsHomeTeam != null && status == 'FINISHED') ? 
+      /*if*/ (goalsHomeTeam == goalsAwayTeam) ? 
+        /*then*/ <Typography variant='caption'>(Draw)</Typography> : 
+      /*else if*/  (goalsHomeTeam > goalsAwayTeam) ? 
+        /*then*/ <Typography variant='caption'>({homeTeamName} Win)</Typography> : 
+        /*else*/ <Typography variant='caption'>({awayTeamName} Win)</Typography> : 
+      /*else*/ null
 
     let header = (
       status === 'IN_PLAY' ? <span><span>In Progress</span><Timer style={{marginLeft: 15}} /></span> :
@@ -51,7 +57,7 @@ class FixtureOverview extends Component{
                 {header} <hr />
               </Grid>
             </Grid>
-            {homeTeamName} <span><Typography variant='subheading'>VS</Typography></span> {awayTeamName} <hr />
+            {homeTeamName} <span><Typography variant='caption'>VS</Typography></span> {awayTeamName} <hr />
             {goals}
             <Grid item xs style={{marginTop:10}}>
               {winner}

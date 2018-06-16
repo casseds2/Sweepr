@@ -7,6 +7,7 @@ import PrivateRoute from './PrivateRoute'
 import Profile from './Profile'
 import Sidebar from './Sidebar'
 import Fixtures from './Fixtures'
+import GroupTables from './GroupTables'
 
 export {
   SweepstakeForm,
@@ -17,5 +18,6 @@ export {
   Profile,
   Sidebar,
   Sweepstake,
-  Fixtures
+  Fixtures,
+  GroupTables
 }

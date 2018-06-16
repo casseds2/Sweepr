@@ -67,5 +67,28 @@ export default {
         })
       })
     }
+  },
+  fetchGroupStandings: (id) => {
+    return(dispatch) => {
+      dispatch({
+        type: constants.FETCHING_GROUP_STANDINGS,
+        status: 'loading'
+      })
+      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/leagueTable', null)
+      .then(data => {
+        dispatch({
+          type: constants.FETCHED_GROUP_STANDINGS,
+          data: data,
+          competitionID: id
+        })
+      })
+      .catch(err => {
+        alert(err)
+        dispatch({
+          type: constants.ERROR_FETCHING_GROUP_STANDINGS,
+          data: null
+        })
+      })
+    }
   }
 }

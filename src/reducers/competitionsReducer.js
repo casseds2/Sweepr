@@ -4,19 +4,21 @@ var initialState = {
   competitions: {},
   fixtures: {},
   teams: {},
+  groupStandings: {},
   selectedCompetitionID: 467
 }
 
 export default (state = initialState, action) => {
   
   let updated = Object.assign({}, state)
+  let id = state.selectedCompetitionID
   
 	switch (action.type) {
 
     case constants.FETCHED_COMPETITION:
       let fetchedCompetition = action.data
       let competitionsMap = updated['competitions']
-      let id = fetchedCompetition['id']
+      id = fetchedCompetition['id']
       competitionsMap[id] = fetchedCompetition
       updated['competitions'] = competitionsMap
       updated['selectedCompetitionID'] = id
@@ -43,6 +45,19 @@ export default (state = initialState, action) => {
       return updated
 
     case constants.ERROR_FETCHING_TEAMS:
+      return updated
+
+    case constants.FETCHING_GROUP_STANDINGS:
+      return updated
+    
+    case constants.FETCHED_GROUP_STANDINGS:
+      let groupStandings = updated['groupStandings']
+      id = action.competitionID
+      groupStandings[id] = action.data
+      updated['groupStandings'] = groupStandings
+      return updated
+
+    case constants.ERROR_FETCHING_GROUP_STANDINGS:
       return updated
 
 		default:

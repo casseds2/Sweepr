@@ -344,6 +344,27 @@ exports.default = {
         });
       });
     };
+  },
+  fetchGroupStandings: function fetchGroupStandings(id) {
+    return function (dispatch) {
+      dispatch({
+        type: _constants2.default.FETCHING_GROUP_STANDINGS,
+        status: 'loading'
+      });
+      _utils.WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/leagueTable', null).then(function (data) {
+        dispatch({
+          type: _constants2.default.FETCHED_GROUP_STANDINGS,
+          data: data,
+          competitionID: id
+        });
+      }).catch(function (err) {
+        alert(err);
+        dispatch({
+          type: _constants2.default.ERROR_FETCHING_GROUP_STANDINGS,
+          data: null
+        });
+      });
+    };
   }
 };
 
@@ -741,6 +762,127 @@ var dispatchToProps = function dispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Fixtures);
+
+/***/ }),
+
+/***/ "./src/components/containers/GroupTables.js":
+/*!**************************************************!*\
+  !*** ./src/components/containers/GroupTables.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _actions = __webpack_require__(/*! ../../actions */ "./src/actions/index.js");
+
+var _presentation = __webpack_require__(/*! ../presentation */ "./src/components/presentation/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GroupTables = function (_React$Component) {
+  _inherits(GroupTables, _React$Component);
+
+  function GroupTables() {
+    _classCallCheck(this, GroupTables);
+
+    return _possibleConstructorReturn(this, (GroupTables.__proto__ || Object.getPrototypeOf(GroupTables)).apply(this, arguments));
+  }
+
+  _createClass(GroupTables, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _props$competitions = this.props.competitions,
+          selectedCompetitionID = _props$competitions.selectedCompetitionID,
+          groupStandings = _props$competitions.groupStandings;
+
+      if (groupStandings[selectedCompetitionID] == null) {
+        this.props.fetchGroupStandings(selectedCompetitionID);
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props$competitions2 = this.props.competitions,
+          selectedCompetitionID = _props$competitions2.selectedCompetitionID,
+          groupStandings = _props$competitions2.groupStandings;
+
+
+      var competitionGroups = groupStandings[selectedCompetitionID] == null ? [] : groupStandings[selectedCompetitionID]['standings'];
+      var content = Object.keys(competitionGroups).map(function (groupKey, index) {
+        var capitalized = groupKey.charAt(0).toUpperCase();
+        var group = groupStandings[selectedCompetitionID]['standings'][capitalized] == null ? [] : groupStandings[selectedCompetitionID]['standings'][groupKey];
+        return _react2.default.createElement(
+          _core.Grid,
+          { key: index, item: true, xs: 6 },
+          _react2.default.createElement(
+            _core.Grid,
+            { item: true, xs: true, style: { textAlign: 'center', padding: 10 } },
+            _react2.default.createElement(
+              _core.Typography,
+              { variant: 'headline' },
+              'Group ',
+              groupKey
+            )
+          ),
+          _react2.default.createElement(_presentation.GroupTable, {
+            group: group,
+            letter: groupKey,
+            key: index
+          })
+        );
+      });
+
+      return _react2.default.createElement(
+        _core.Grid,
+        { container: true, justify: 'center' },
+        content
+      );
+    }
+  }]);
+
+  return GroupTables;
+}(_react2.default.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    competitions: state.competitions
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    navigateToRegisterPage: function navigateToRegisterPage(href) {
+      return dispatch(navigateTo('/register'));
+    },
+    fetchGroupStandings: function fetchGroupStandings(id) {
+      return dispatch(_actions.competitionActions.fetchGroupStandings(id));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(GroupTables);
 
 /***/ }),
 
@@ -1781,7 +1923,7 @@ exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Sweeps
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Fixtures = exports.Sweepstake = exports.Sidebar = exports.Profile = exports.PrivateRoute = exports.RegisterForm = exports.LoginForm = exports.Sweepstakes = exports.SweepstakeForm = undefined;
+exports.GroupTables = exports.Fixtures = exports.Sweepstake = exports.Sidebar = exports.Profile = exports.PrivateRoute = exports.RegisterForm = exports.LoginForm = exports.Sweepstakes = exports.SweepstakeForm = undefined;
 
 var _SweepstakeForm = __webpack_require__(/*! ./SweepstakeForm */ "./src/components/containers/SweepstakeForm.js");
 
@@ -1819,6 +1961,10 @@ var _Fixtures = __webpack_require__(/*! ./Fixtures */ "./src/components/containe
 
 var _Fixtures2 = _interopRequireDefault(_Fixtures);
 
+var _GroupTables = __webpack_require__(/*! ./GroupTables */ "./src/components/containers/GroupTables.js");
+
+var _GroupTables2 = _interopRequireDefault(_GroupTables);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.SweepstakeForm = _SweepstakeForm2.default;
@@ -1830,6 +1976,7 @@ exports.Profile = _Profile2.default;
 exports.Sidebar = _Sidebar2.default;
 exports.Sweepstake = _Sweepstake2.default;
 exports.Fixtures = _Fixtures2.default;
+exports.GroupTables = _GroupTables2.default;
 
 /***/ }),
 
@@ -2047,6 +2194,50 @@ exports.default = Dashboard;
 
 /***/ }),
 
+/***/ "./src/components/layout/GroupStandings.js":
+/*!*************************************************!*\
+  !*** ./src/components/layout/GroupStandings.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+var _containers = __webpack_require__(/*! ../containers */ "./src/components/containers/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var GroupStandings = function GroupStandings() {
+  return _react2.default.createElement(
+    _core.Grid,
+    { container: true },
+    _react2.default.createElement(
+      _core.Grid,
+      { item: true, xs: true },
+      _react2.default.createElement(
+        _containers.Sidebar,
+        null,
+        _react2.default.createElement(_containers.GroupTables, null)
+      )
+    )
+  );
+};
+
+exports.default = GroupStandings;
+
+/***/ }),
+
 /***/ "./src/components/layout/Leaderboard.js":
 /*!**********************************************!*\
   !*** ./src/components/layout/Leaderboard.js ***!
@@ -2071,7 +2262,7 @@ var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@materi
 
 var _containers = __webpack_require__(/*! ../containers */ "./src/components/containers/index.js");
 
-var _MuiThemeProvider = __webpack_require__(/*! @material-ui/core/styles/MuiThemeProvider */ "./node_modules/@material-ui/core/styles/MuiThemeProvider.js");
+var _MuiThemeProvider = __webpack_require__(/*! material-ui/styles/MuiThemeProvider */ "./node_modules/material-ui/styles/MuiThemeProvider.js");
 
 var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
 
@@ -2416,7 +2607,7 @@ exports.default = ViewSweepstake;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Leaderboard = exports.AllFixtures = exports.ViewSweepstake = exports.Register = exports.Login = exports.ViewAllSweepstakes = exports.CreateSweepstake = exports.ProfilePage = exports.Dashboard = undefined;
+exports.GroupStandings = exports.Leaderboard = exports.AllFixtures = exports.ViewSweepstake = exports.Register = exports.Login = exports.ViewAllSweepstakes = exports.CreateSweepstake = exports.ProfilePage = exports.Dashboard = undefined;
 
 var _Dashboard = __webpack_require__(/*! ./Dashboard */ "./src/components/layout/Dashboard.js");
 
@@ -2454,6 +2645,10 @@ var _Leaderboard = __webpack_require__(/*! ./Leaderboard */ "./src/components/la
 
 var _Leaderboard2 = _interopRequireDefault(_Leaderboard);
 
+var _GroupStandings = __webpack_require__(/*! ./GroupStandings */ "./src/components/layout/GroupStandings.js");
+
+var _GroupStandings2 = _interopRequireDefault(_GroupStandings);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Dashboard = _Dashboard2.default;
@@ -2465,6 +2660,7 @@ exports.Register = _Register2.default;
 exports.ViewSweepstake = _ViewSweepstake2.default;
 exports.AllFixtures = _AllFixtures2.default;
 exports.Leaderboard = _Leaderboard2.default;
+exports.GroupStandings = _GroupStandings2.default;
 
 /***/ }),
 
@@ -3255,20 +3451,30 @@ var FixtureOverview = function (_Component) {
         goalsAwayTeam
       );
       var formattedDate = date.substring(0, 16).replace("T", " @ ") + ' (UTC)';
-      // let winner = (goalsHomeTeam > goalsAwayTeam && goalsHomeTeam != null) ? homeTeamName : awayTeamName
-      var winner = goalsHomeTeam != null ? goalsHomeTeam > goalsAwayTeam ? _react2.default.createElement(
+      var winner =
+      /*if*/goalsHomeTeam != null && status == 'FINISHED' ?
+      /*if*/goalsHomeTeam == goalsAwayTeam ?
+      /*then*/_react2.default.createElement(
+        _core.Typography,
+        { variant: 'caption' },
+        '(Draw)'
+      ) :
+      /*else if*/goalsHomeTeam > goalsAwayTeam ?
+      /*then*/_react2.default.createElement(
         _core.Typography,
         { variant: 'caption' },
         '(',
         homeTeamName,
         ' Win)'
-      ) : _react2.default.createElement(
+      ) :
+      /*else*/_react2.default.createElement(
         _core.Typography,
         { variant: 'caption' },
         '(',
         awayTeamName,
         ' Win)'
-      ) : null;
+      ) :
+      /*else*/null;
 
       var header = status === 'IN_PLAY' ? _react2.default.createElement(
         'span',
@@ -3325,7 +3531,7 @@ var FixtureOverview = function (_Component) {
               null,
               _react2.default.createElement(
                 _core.Typography,
-                { variant: 'subheading' },
+                { variant: 'caption' },
                 'VS'
               )
             ),
@@ -3349,6 +3555,157 @@ var FixtureOverview = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _core.withStyles)(styles)(FixtureOverview);
+
+/***/ }),
+
+/***/ "./src/components/presentation/Groups/GroupTable.js":
+/*!**********************************************************!*\
+  !*** ./src/components/presentation/Groups/GroupTable.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  paper: {
+    marginBottom: 30,
+    margin: 10,
+    textAlign: 'center'
+  },
+  container: {
+    margin: 10,
+    textAlign: 'center'
+  },
+  imageStyle: {
+    flex: 1,
+    width: 25,
+    height: 25,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    resizeMode: 'contain'
+  }
+};
+
+var GroupTable = function (_React$Component) {
+  _inherits(GroupTable, _React$Component);
+
+  function GroupTable() {
+    _classCallCheck(this, GroupTable);
+
+    return _possibleConstructorReturn(this, (GroupTable.__proto__ || Object.getPrototypeOf(GroupTable)).apply(this, arguments));
+  }
+
+  _createClass(GroupTable, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          classes = _props.classes,
+          group = _props.group,
+          letter = _props.letter;
+
+      var teams = group.map(function (team, index) {
+        return _react2.default.createElement(
+          _core.TableRow,
+          { key: index },
+          _react2.default.createElement(
+            _core.TableCell,
+            { style: { padding: 20 }, component: 'th', scope: 'row' },
+            team.team
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            _react2.default.createElement('img', { src: team.crestURI, className: classes.imageStyle })
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            team.playedGames
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            team.goals
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            team.points
+          )
+        );
+      });
+
+      return _react2.default.createElement(
+        _core.Paper,
+        { className: classes.paper },
+        _react2.default.createElement(
+          _core.Table,
+          null,
+          _react2.default.createElement(
+            _core.TableHead,
+            null,
+            _react2.default.createElement(
+              _core.TableRow,
+              null,
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Team'
+              ),
+              _react2.default.createElement(_core.TableCell, null),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Games'
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Goals'
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Points'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _core.TableBody,
+            null,
+            teams
+          )
+        )
+      );
+    }
+  }]);
+
+  return GroupTable;
+}(_react2.default.Component);
+
+exports.default = (0, _core.withStyles)(styles)(GroupTable);
 
 /***/ }),
 
@@ -4849,7 +5206,7 @@ exports.default = (0, _core.withStyles)(styles)(PresentationMode);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FixtureOverview = exports.Member = exports.PresentationMode = exports.AssignedTeams = exports.DashboardCompetitions = exports.Participants = exports.Caption = exports.CreateFormTeams = exports.CreateFormGroups = exports.CreateFormGroupTable = exports.RegisterForm = exports.LoginForm = exports.Sweepstake = exports.SelectTeam = exports.Sidebar = undefined;
+exports.GroupTable = exports.FixtureOverview = exports.Member = exports.PresentationMode = exports.AssignedTeams = exports.DashboardCompetitions = exports.Participants = exports.Caption = exports.CreateFormTeams = exports.CreateFormGroups = exports.CreateFormGroupTable = exports.RegisterForm = exports.LoginForm = exports.Sweepstake = exports.SelectTeam = exports.Sidebar = undefined;
 
 var _Sidebar = __webpack_require__(/*! ./Sidebar */ "./src/components/presentation/Sidebar.js");
 
@@ -4911,6 +5268,10 @@ var _FixtureOverview = __webpack_require__(/*! ./Fixtures/FixtureOverview */ "./
 
 var _FixtureOverview2 = _interopRequireDefault(_FixtureOverview);
 
+var _GroupTable = __webpack_require__(/*! ./Groups/GroupTable */ "./src/components/presentation/Groups/GroupTable.js");
+
+var _GroupTable2 = _interopRequireDefault(_GroupTable);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Sidebar = _Sidebar2.default;
@@ -4928,6 +5289,7 @@ exports.AssignedTeams = _AssignedTeams2.default;
 exports.PresentationMode = _PresentationMode2.default;
 exports.Member = _Member2.default;
 exports.FixtureOverview = _FixtureOverview2.default;
+exports.GroupTable = _GroupTable2.default;
 
 /***/ }),
 
@@ -4975,7 +5337,7 @@ exports.default = (_LOGIN_REQUEST$LOGIN_ = {
   SWEEPSTAKE_GENERATED: 'SWEEPSTAKE_GENERATED',
 
   FETCHING_USERS: 'FETCHING_USERS'
-}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _LOGIN_REQUEST$LOGIN_);
+}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _LOGIN_REQUEST$LOGIN_);
 
 /***/ }),
 
@@ -5053,7 +5415,9 @@ var app = _react2.default.createElement(
 			_react2.default.createElement(_containers.PrivateRoute, { exact: true, path: '/randomizer', component: layouts.RandomAssigner }),
 			_react2.default.createElement(_containers.PrivateRoute, { path: '/sweepstake/:id', component: layouts.ViewSweepstake }),
 			_react2.default.createElement(_containers.PrivateRoute, { path: '/fixtures', component: layouts.AllFixtures }),
-			_react2.default.createElement(_containers.PrivateRoute, { path: '/leaderboard', component: layouts.Leaderboard })
+			_react2.default.createElement(_containers.PrivateRoute, { path: '/leaderboard', component: layouts.Leaderboard }),
+			'2',
+			_react2.default.createElement(_containers.PrivateRoute, { exact: true, path: '/groups', component: layouts.GroupStandings })
 		)
 	)
 );
@@ -5158,6 +5522,7 @@ var initialState = {
   competitions: {},
   fixtures: {},
   teams: {},
+  groupStandings: {},
   selectedCompetitionID: 467
 };
 
@@ -5167,13 +5532,14 @@ exports.default = function () {
 
 
   var updated = Object.assign({}, state);
+  var id = state.selectedCompetitionID;
 
   switch (action.type) {
 
     case _constants2.default.FETCHED_COMPETITION:
       var fetchedCompetition = action.data;
       var competitionsMap = updated['competitions'];
-      var id = fetchedCompetition['id'];
+      id = fetchedCompetition['id'];
       competitionsMap[id] = fetchedCompetition;
       updated['competitions'] = competitionsMap;
       updated['selectedCompetitionID'] = id;
@@ -5200,6 +5566,19 @@ exports.default = function () {
       return updated;
 
     case _constants2.default.ERROR_FETCHING_TEAMS:
+      return updated;
+
+    case _constants2.default.FETCHING_GROUP_STANDINGS:
+      return updated;
+
+    case _constants2.default.FETCHED_GROUP_STANDINGS:
+      var groupStandings = updated['groupStandings'];
+      id = action.competitionID;
+      groupStandings[id] = action.data;
+      updated['groupStandings'] = groupStandings;
+      return updated;
+
+    case _constants2.default.ERROR_FETCHING_GROUP_STANDINGS:
       return updated;
 
     default:
@@ -5400,8 +5779,6 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _layout = __webpack_require__(/*! ../components/layout */ "./src/components/layout/index.js");
-
 var _icons = __webpack_require__(/*! @material-ui/icons */ "./node_modules/@material-ui/icons/index.es.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -5410,26 +5787,27 @@ var AppRoutes = [{
   path: "/",
   sidebarName: "Dashboard",
   navbarName: "Dashboard",
-  icon: _react2.default.createElement(_icons.Home, null),
-  component: _layout.Dashboard
+  icon: _react2.default.createElement(_icons.Home, null)
 }, {
   path: "/create",
   sidebarName: "Create Sweepstake",
   navbarName: "Create Sweepstake",
-  icon: _react2.default.createElement(_icons.Create, null),
-  component: _layout.CreateSweepstake
+  icon: _react2.default.createElement(_icons.Create, null)
 }, {
   path: "/fixtures",
-  sidebarName: "Upcoming Fixtures",
-  navbarName: "Upcoming Fixtures",
-  icon: _react2.default.createElement(_icons.Event, null),
-  component: _layout.AllFixtures
+  sidebarName: "Fixtures and Results",
+  navbarName: "Fixtures and Results",
+  icon: _react2.default.createElement(_icons.Event, null)
+}, {
+  path: "/groups",
+  sidebarName: "Group Tables",
+  navbarName: "Group Tables",
+  icon: _react2.default.createElement(_icons.Group, null)
 }, {
   path: "/leaderboard",
   sidebarName: "Leaderboard",
   navbarName: "Leaderboard",
-  icon: _react2.default.createElement(_icons.Group, null),
-  component: _layout.AllFixtures
+  icon: _react2.default.createElement(_icons.LocalAtm, null)
 }];
 
 exports.default = AppRoutes;

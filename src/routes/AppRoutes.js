@@ -1,14 +1,10 @@
 import React from 'react'
-import { 
-  Dashboard, 
-  AllFixtures,
-  CreateSweepstake,
- } from '../components/layout'
 import {
   Home,
   Create,
   Event,
-  Group
+  Group,
+  LocalAtm
 } from "@material-ui/icons"
 
 const AppRoutes = [
@@ -16,29 +12,31 @@ const AppRoutes = [
     path: "/",
     sidebarName: "Dashboard",
     navbarName: "Dashboard",
-    icon: <Home />,
-    component: Dashboard,
+    icon: <Home />
   },
   {
     path: "/create",
     sidebarName: "Create Sweepstake",
     navbarName: "Create Sweepstake",
-    icon: <Create />,
-    component: CreateSweepstake
+    icon: <Create />
   },
   {
     path: "/fixtures",
-    sidebarName: "Upcoming Fixtures",
-    navbarName: "Upcoming Fixtures",
-    icon: <Event />,
-    component: AllFixtures
+    sidebarName: "Fixtures and Results",
+    navbarName: "Fixtures and Results",
+    icon: <Event />
+  },
+  {
+    path: "/groups",
+    sidebarName: "Group Tables",
+    navbarName: "Group Tables",
+    icon: <Group />
   },
   {
     path: "/leaderboard",
     sidebarName: "Leaderboard",
     navbarName: "Leaderboard",
-    icon: <Group />,
-    component: AllFixtures
+    icon: <LocalAtm />
   }
 ]
 

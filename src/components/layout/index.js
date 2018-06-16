@@ -7,6 +7,7 @@ import Register from './Register'
 import ViewSweepstake from './ViewSweepstake'
 import AllFixtures from './AllFixtures'
 import Leaderboard from './Leaderboard'
+import GroupStandings from './GroupStandings'
 
 export {
   Dashboard,
@@ -17,5 +18,6 @@ export {
   Register,
   ViewSweepstake,
   AllFixtures,
-  Leaderboard
+  Leaderboard,
+  GroupStandings
 }

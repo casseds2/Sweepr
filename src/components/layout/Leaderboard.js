@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Grid, Typography } from '@material-ui/core'
 import { Sidebar } from '../containers'
-import MuiTheme from '@material-ui/core/styles/MuiThemeProvider'
+import MuiTheme from 'material-ui/styles/MuiThemeProvider'
 
 class Leaderboard extends Component{
   render(){

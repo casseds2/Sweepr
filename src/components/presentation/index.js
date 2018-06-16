@@ -13,6 +13,7 @@ import AssignedTeams from './ViewSweepstake/AssignedTeams'
 import PresentationMode from './ViewSweepstake/PresentationMode'
 import Member from './ViewSweepstake/Member'
 import FixtureOverview from './Fixtures/FixtureOverview'
+import GroupTable from './Groups/GroupTable'
 
 export {
   Sidebar,
@@ -29,5 +30,6 @@ export {
   AssignedTeams,
   PresentationMode,
   Member,
-  FixtureOverview
+  FixtureOverview,
+  GroupTable
 }
