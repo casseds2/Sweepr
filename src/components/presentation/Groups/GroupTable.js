@@ -7,6 +7,7 @@ import {
   TableBody, 
   TableCell, 
   TableHead,
+  Typography,
   TableRow } from '@material-ui/core'
 
 const styles = {
@@ -32,14 +33,20 @@ const styles = {
 class GroupTable extends React.Component{
   render(){
     const { classes, group, letter } = this.props
-    const teams = group.map((team, index) => {
+    const teams = group.map((teamElem, index) => {
+      const { playedGames, goalDifference, points, team, crestURI, goals, goalsAgainst } = teamElem
+      let won = Math.floor(points / 3)
+      let drew = points % 3
+      let lost = (points == 0 && playedGames > 0) ? 1 : points - (won * 3) - drew
       return (
         <TableRow key={index}>
-          <TableCell style={{padding:20}} component="th" scope="row">{team.team}</TableCell>
-          <TableCell><img src={team.crestURI} className={classes.imageStyle} /></TableCell>
-          <TableCell>{team.playedGames}</TableCell>
-          <TableCell>{team.goals}</TableCell>
-          <TableCell>{team.points}</TableCell>
+          <TableCell style={{padding:20}} component="th" scope="row"><Typography>{team}</Typography></TableCell>
+          <TableCell><img src={crestURI} className={classes.imageStyle} /></TableCell>
+          <TableCell><Typography>{won}</Typography></TableCell>
+          <TableCell><Typography>{drew}</Typography></TableCell>
+          <TableCell><Typography>{lost}</Typography></TableCell>
+          <TableCell><Typography>{goalDifference}</Typography></TableCell>
+          <TableCell><Typography>{points}</Typography></TableCell>
         </TableRow>
       )
     })
@@ -49,11 +56,13 @@ class GroupTable extends React.Component{
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Team</TableCell>
+                <TableCell><Typography variant='caption'>Team</Typography></TableCell>
                 <TableCell></TableCell>
-                <TableCell>Games</TableCell>
-                <TableCell>Goals</TableCell>
-                <TableCell>Points</TableCell>
+                <TableCell><Typography variant='caption'>Won</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Drew</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Lost</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Diff.</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Points</Typography></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

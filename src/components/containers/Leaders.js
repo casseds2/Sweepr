@@ -24,26 +24,22 @@ class Leaders extends React.Component{
   render(){
 
     const { teamSweepstakePoints, selectedCompetitionID } = this.props.competitions
-    const { current, sweepstakes } = this.props.sweepstake
+    const { current } = this.props.sweepstake
 
-    // let sweepstake = (Object.keys(current).length) ? current.sweepstake : []
     let teamPoints = (Object.keys(teamSweepstakePoints).length > 0) ? teamSweepstakePoints[selectedCompetitionID] : {}
 
-    let content = sweepstakes.map((sweepstake, index) => {
-      return(
-        <Grid item key={index} xs={8}>
-          <Grid item xs style={{textAlign:'center', padding:10}}>
-              <Typography variant='headline'>
-                {sweepstake.name}
-              </Typography>
-            </Grid>
-          <LeaderTable 
-            sweepstake={sweepstake}
-            teamPoints={teamPoints}
-          />
-        </Grid>
-      )
-    })
+    let content = (Object.keys(current).length == 0) ? <Typography>Uh Oh!</Typography> :
+    <Grid item xs={8}>
+      <Grid item xs style={{textAlign:'center', padding:10}}>
+        <Typography variant='headline'>
+          {current.name}
+        </Typography>`
+      </Grid>
+      <LeaderTable 
+        sweepstake={current}
+        teamPoints={teamPoints}
+      />
+    </Grid>
 
     return(
       <Grid container justify={'center'}>

@@ -4,7 +4,8 @@ import {
   withStyles,
   Table, 
   TableBody,
-  TableCell, 
+  TableCell,
+  Typography,
   TableHead,
   TableRow } from '@material-ui/core'
   
@@ -33,7 +34,7 @@ class LeaderTable extends React.Component{
     const { classes, sweepstake, teamPoints } = this.props
     let standings = []
     if(Object.keys(teamPoints).length > 0){
-      sweepstake.sweepstake.map((entry, index) => {
+      sweepstake.sweepstake.map((entry) => {
         let standing = {}
         const { assignedTeams, user } = entry
         let capitalizedName = user.username.charAt(0).toUpperCase() + user.username.substring(1)
@@ -54,14 +55,16 @@ class LeaderTable extends React.Component{
     standings.sort((a, b) => (a.overall < b.overall ? -1 : 1)).reverse()
 
     let content = standings.map((standing, index) => {
-      let teams = standing['teams']    
+      let teams = standing['teams']
+      let positionStyle = (index == 0 || index == 1 || index == 2 || index == 3 || index == 4) ? {borderStyle: 'solid', borderWidth: 1, textAlign: 'center', paddingTop: 5} : {textAlign: 'center'} 
       return (
-        <TableRow>
-          <TableCell>{standing.username}</TableCell>
-          <TableCell>{teams[0].name} : {teams[0].points}</TableCell>
-          <TableCell>{teams[1].name} : {teams[1].points}</TableCell>
-          <TableCell>{teams[2].name} : {teams[2].points}</TableCell>
-          <TableCell>{standing.overall}</TableCell>
+        <TableRow key={index}>
+          <TableCell><Typography style={positionStyle}variant='body1'>{index+1}</Typography></TableCell>
+          <TableCell><Typography style={{textAlign:'left'}}variant='body1'>{standing.username}</Typography></TableCell>
+          <TableCell><Typography style={{textAlign:'left'}}variant='body1'>{teams[0].name} : {teams[0].points}</Typography></TableCell>
+          <TableCell><Typography style={{textAlign:'left'}}variant='body1'>{teams[1].name} : {teams[1].points}</Typography></TableCell>
+          <TableCell><Typography style={{textAlign:'left'}}variant='body1'>{teams[2].name} : {teams[2].points}</Typography></TableCell>
+          <TableCell><Typography style={{textAlign:'center'}}variant='body1'>{standing.overall}</Typography></TableCell>
         </TableRow>
       )
     })
@@ -70,11 +73,12 @@ class LeaderTable extends React.Component{
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>User</TableCell>
-                <TableCell>Team 1</TableCell>
-                <TableCell>Team 2</TableCell>
-                <TableCell>Team 3</TableCell>
-                <TableCell>Overall</TableCell>
+                <TableCell>Position</TableCell>
+                <TableCell><Typography variant='title'>User</Typography></TableCell>
+                <TableCell><Typography variant='title'>Team 1</Typography></TableCell>
+                <TableCell><Typography variant='title'>Team 2</Typography></TableCell>
+                <TableCell><Typography variant='title'>Team 3</Typography></TableCell>
+                <TableCell><Typography variant='title'>Overall</Typography></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

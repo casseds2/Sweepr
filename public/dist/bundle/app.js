@@ -836,12 +836,22 @@ var GroupTables = function (_React$Component) {
           { key: index, item: true, xs: 6 },
           _react2.default.createElement(
             _core.Grid,
-            { item: true, xs: true, style: { textAlign: 'center', padding: 10 } },
+            { item: true, xs: true, style: { textAlign: 'center' } },
             _react2.default.createElement(
-              _core.Typography,
-              { variant: 'headline' },
-              'Group ',
-              groupKey
+              _core.Grid,
+              { container: true, justify: 'center' },
+              _react2.default.createElement(
+                _core.Grid,
+                { item: true, xs: 4 },
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'headline' },
+                  'Group ',
+                  groupKey,
+                  ' ',
+                  _react2.default.createElement('hr', null)
+                )
+              )
             )
           ),
           _react2.default.createElement(_presentation.GroupTable, {
@@ -943,33 +953,33 @@ var Leaders = function (_React$Component) {
       var _props$competitions = this.props.competitions,
           teamSweepstakePoints = _props$competitions.teamSweepstakePoints,
           selectedCompetitionID = _props$competitions.selectedCompetitionID;
-      var _props$sweepstake = this.props.sweepstake,
-          current = _props$sweepstake.current,
-          sweepstakes = _props$sweepstake.sweepstakes;
+      var current = this.props.sweepstake.current;
 
-      // let sweepstake = (Object.keys(current).length) ? current.sweepstake : []
 
       var teamPoints = Object.keys(teamSweepstakePoints).length > 0 ? teamSweepstakePoints[selectedCompetitionID] : {};
 
-      var content = sweepstakes.map(function (sweepstake, index) {
-        return _react2.default.createElement(
+      var content = Object.keys(current).length == 0 ? _react2.default.createElement(
+        _core.Typography,
+        null,
+        'Uh Oh!'
+      ) : _react2.default.createElement(
+        _core.Grid,
+        { item: true, xs: 8 },
+        _react2.default.createElement(
           _core.Grid,
-          { item: true, key: index, xs: 8 },
+          { item: true, xs: true, style: { textAlign: 'center', padding: 10 } },
           _react2.default.createElement(
-            _core.Grid,
-            { item: true, xs: true, style: { textAlign: 'center', padding: 10 } },
-            _react2.default.createElement(
-              _core.Typography,
-              { variant: 'headline' },
-              sweepstake.name
-            )
+            _core.Typography,
+            { variant: 'headline' },
+            current.name
           ),
-          _react2.default.createElement(_presentation.LeaderTable, {
-            sweepstake: sweepstake,
-            teamPoints: teamPoints
-          })
-        );
-      });
+          '`'
+        ),
+        _react2.default.createElement(_presentation.LeaderTable, {
+          sweepstake: current,
+          teamPoints: teamPoints
+        })
+      );
 
       return _react2.default.createElement(
         _core.Grid,
@@ -3734,34 +3744,79 @@ var GroupTable = function (_React$Component) {
           group = _props.group,
           letter = _props.letter;
 
-      var teams = group.map(function (team, index) {
+      var teams = group.map(function (teamElem, index) {
+        var playedGames = teamElem.playedGames,
+            goalDifference = teamElem.goalDifference,
+            points = teamElem.points,
+            team = teamElem.team,
+            crestURI = teamElem.crestURI,
+            goals = teamElem.goals,
+            goalsAgainst = teamElem.goalsAgainst;
+
+        var won = Math.floor(points / 3);
+        var drew = points % 3;
+        var lost = points == 0 && playedGames > 0 ? 1 : points - won * 3 - drew;
         return _react2.default.createElement(
           _core.TableRow,
           { key: index },
           _react2.default.createElement(
             _core.TableCell,
             { style: { padding: 20 }, component: 'th', scope: 'row' },
-            team.team
+            _react2.default.createElement(
+              _core.Typography,
+              null,
+              team
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            _react2.default.createElement('img', { src: team.crestURI, className: classes.imageStyle })
+            _react2.default.createElement('img', { src: crestURI, className: classes.imageStyle })
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            team.playedGames
+            _react2.default.createElement(
+              _core.Typography,
+              null,
+              won
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            team.goals
+            _react2.default.createElement(
+              _core.Typography,
+              null,
+              drew
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            team.points
+            _react2.default.createElement(
+              _core.Typography,
+              null,
+              lost
+            )
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            _react2.default.createElement(
+              _core.Typography,
+              null,
+              goalDifference
+            )
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            _react2.default.createElement(
+              _core.Typography,
+              null,
+              points
+            )
           )
         );
       });
@@ -3781,23 +3836,57 @@ var GroupTable = function (_React$Component) {
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Team'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'caption' },
+                  'Team'
+                )
               ),
               _react2.default.createElement(_core.TableCell, null),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Games'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'caption' },
+                  'Won'
+                )
               ),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Goals'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'caption' },
+                  'Drew'
+                )
               ),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Points'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'caption' },
+                  'Lost'
+                )
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'caption' },
+                  'Diff.'
+                )
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'caption' },
+                  'Points'
+                )
               )
             )
           ),
@@ -3887,7 +3976,7 @@ var LeaderTable = function (_React$Component) {
 
       var standings = [];
       if (Object.keys(teamPoints).length > 0) {
-        sweepstake.sweepstake.map(function (entry, index) {
+        sweepstake.sweepstake.map(function (entry) {
           var standing = {};
           var assignedTeams = entry.assignedTeams,
               user = entry.user;
@@ -3913,39 +4002,69 @@ var LeaderTable = function (_React$Component) {
 
       var content = standings.map(function (standing, index) {
         var teams = standing['teams'];
+        var positionStyle = index == 0 || index == 1 || index == 2 || index == 3 || index == 4 ? { borderStyle: 'solid', borderWidth: 1, textAlign: 'center', paddingTop: 5 } : { textAlign: 'center' };
         return _react2.default.createElement(
           _core.TableRow,
-          null,
+          { key: index },
           _react2.default.createElement(
             _core.TableCell,
             null,
-            standing.username
+            _react2.default.createElement(
+              _core.Typography,
+              { style: positionStyle, variant: 'body1' },
+              index + 1
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            teams[0].name,
-            ' : ',
-            teams[0].points
+            _react2.default.createElement(
+              _core.Typography,
+              { style: { textAlign: 'left' }, variant: 'body1' },
+              standing.username
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            teams[1].name,
-            ' : ',
-            teams[1].points
+            _react2.default.createElement(
+              _core.Typography,
+              { style: { textAlign: 'left' }, variant: 'body1' },
+              teams[0].name,
+              ' : ',
+              teams[0].points
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            teams[2].name,
-            ' : ',
-            teams[2].points
+            _react2.default.createElement(
+              _core.Typography,
+              { style: { textAlign: 'left' }, variant: 'body1' },
+              teams[1].name,
+              ' : ',
+              teams[1].points
+            )
           ),
           _react2.default.createElement(
             _core.TableCell,
             null,
-            standing.overall
+            _react2.default.createElement(
+              _core.Typography,
+              { style: { textAlign: 'left' }, variant: 'body1' },
+              teams[2].name,
+              ' : ',
+              teams[2].points
+            )
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            _react2.default.createElement(
+              _core.Typography,
+              { style: { textAlign: 'center' }, variant: 'body1' },
+              standing.overall
+            )
           )
         );
       });
@@ -3964,27 +4083,52 @@ var LeaderTable = function (_React$Component) {
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'User'
+                'Position'
               ),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Team 1'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'title' },
+                  'User'
+                )
               ),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Team 2'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'title' },
+                  'Team 1'
+                )
               ),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Team 3'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'title' },
+                  'Team 2'
+                )
               ),
               _react2.default.createElement(
                 _core.TableCell,
                 null,
-                'Overall'
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'title' },
+                  'Team 3'
+                )
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                _react2.default.createElement(
+                  _core.Typography,
+                  { variant: 'title' },
+                  'Overall'
+                )
               )
             )
           ),

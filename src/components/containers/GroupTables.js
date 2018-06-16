@@ -23,10 +23,14 @@ class GroupTables extends React.Component{
       let group = (groupStandings[selectedCompetitionID]['standings'][capitalized] == null) ? [] : groupStandings[selectedCompetitionID]['standings'][groupKey]
       return(
         <Grid key={index} item xs={6}>
-          <Grid item xs style={{textAlign:'center', padding:10}}>
-            <Typography variant='headline'>
-              Group {groupKey}
-            </Typography>
+          <Grid item xs style={{textAlign:'center'}}>
+            <Grid container justify='center'>
+              <Grid item xs={4}>
+                <Typography variant='headline'>
+                  Group {groupKey} <hr />
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
           <GroupTable 
             group={group}
