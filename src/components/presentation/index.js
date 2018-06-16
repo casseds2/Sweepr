@@ -14,6 +14,7 @@ import PresentationMode from './ViewSweepstake/PresentationMode'
 import Member from './ViewSweepstake/Member'
 import FixtureOverview from './Fixtures/FixtureOverview'
 import GroupTable from './Groups/GroupTable'
+import LeaderTable from './Leaderboard/LeaderTable'
 
 export {
   Sidebar,
@@ -31,5 +32,6 @@ export {
   PresentationMode,
   Member,
   FixtureOverview,
-  GroupTable
+  GroupTable,
+  LeaderTable
 }

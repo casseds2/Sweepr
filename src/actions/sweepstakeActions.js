@@ -43,11 +43,6 @@ export default {
             index: index,
             presentationMode: true
           })
-          // dispatch({
-          //   type: constants.SWEEPSTAKE_SELECTED,
-          //   data: sweepstake,
-          //   presentationMode: true
-          // })
           dispatch(navigateTo ('/sweepstake/' + sweepstake._id))
         })
         .catch(err => {
@@ -141,7 +136,6 @@ export default {
   },
 
   deleteSweepstake: (id, index) => {
-    console.log('Index: ' + index)
     return (dispatch) => {
       APIManager.delete('/api/sweepstake/' + id)
       .then(data => {
@@ -160,5 +154,5 @@ export default {
         })
       })
     }
-  }
+  },
 }

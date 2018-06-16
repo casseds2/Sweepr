@@ -4,6 +4,7 @@ var initialState = {
   competitions: {},
   fixtures: {},
   teams: {},
+  teamSweepstakePoints: {},
   groupStandings: {},
   selectedCompetitionID: 467
 }
@@ -15,6 +16,10 @@ export default (state = initialState, action) => {
   
 	switch (action.type) {
 
+    case constants.POINTS_CALCULATED:
+      updated['teamSweepstakePoints'][id] = action.data
+      return updated
+
     case constants.FETCHED_COMPETITION:
       let fetchedCompetition = action.data
       let competitionsMap = updated['competitions']
@@ -25,7 +30,7 @@ export default (state = initialState, action) => {
       return updated
       
     case constants.FETCHED_FIXTURES:
-      updated['fixtures'][action.matchDay] = action.data
+      updated['fixtures'][id] = action.data
       return updated
 
     case constants.FETCHING_COMPETITION:

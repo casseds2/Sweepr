@@ -7,7 +7,7 @@ import {
   TableBody, 
   TableCell, 
   TableHead,
-  TableRow } from '@material-ui/core';
+  TableRow } from '@material-ui/core'
 
 const styles = {
   paper: {

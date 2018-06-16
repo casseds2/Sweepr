@@ -3,6 +3,7 @@ import renderComponents from './renderComponents'
 import APIManager from './APIManager'
 import RandomAssigner from './RandomAssigner'
 import WorldCupApi from './WorldCupApi'
+import PointsCalculator from './PointsCalculator'
 
 export {
 
@@ -10,6 +11,7 @@ export {
   renderComponents,
   APIManager,
   RandomAssigner,
-  WorldCupApi
+  WorldCupApi,
+  PointsCalculator
 
 }

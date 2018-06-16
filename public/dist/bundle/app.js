@@ -275,6 +275,7 @@ function logout(username) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.calculatePoints = calculatePoints;
 
 var _constants = __webpack_require__(/*! ../constants */ "./src/constants/index.js");
 
@@ -282,16 +283,36 @@ var _constants2 = _interopRequireDefault(_constants);
 
 var _utils = __webpack_require__(/*! ../utils */ "./src/utils/index.js");
 
+var _actions = __webpack_require__(/*! ../actions */ "./src/actions/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var calculateSuccess = function calculateSuccess(data) {
+  return {
+    type: _constants2.default.CALCULATE_SUCCESS,
+    data: data
+  };
+};
+
+function calculatePoints(fixtures) {
+  return function (dispatch) {
+    _utils.PointsCalculator.calculate(fixtures).then(function (data) {
+      dispatch({
+        type: _constants2.default.POINTS_CALCULATED,
+        data: data
+      });
+    }).catch(function (err) {
+      alert(err);
+    });
+  };
+}
 
 exports.default = {
 
   fetchFixtures: function fetchFixtures(id, matchDay) {
-    // console.log('ID: ' + JSON.stringify(id))
-    // console.log('Matchday: ' + JSON.stringify(matchDay))
     return function (dispatch) {
-      _utils.WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', { matchday: matchDay }).then(function (data) {
-        // console.log('FIXES:' + JSON.stringify(data))
+      _utils.WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', matchDay).then(function (data) {
+        dispatch(calculatePoints(data.fixtures));
         dispatch({
           type: _constants2.default.FETCHED_FIXTURES,
           data: data.fixtures,
@@ -299,7 +320,7 @@ exports.default = {
         });
       }).catch(function (err) {
         alert('Could Not Find Fixtures!');
-        dispatch(navigateTo('/'));
+        dispatch((0, _actions.navigateTo)('/'));
       });
     };
   },
@@ -310,7 +331,6 @@ exports.default = {
         status: 'loading'
       });
       _utils.WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id, null).then(function (data) {
-        // console.log('WorldyData: ' + JSON.stringify(data))
         dispatch({
           type: _constants2.default.FETCHED_COMPETITION,
           data: data
@@ -483,11 +503,6 @@ exports.default = {
             index: index,
             presentationMode: true
           });
-          // dispatch({
-          //   type: constants.SWEEPSTAKE_SELECTED,
-          //   data: sweepstake,
-          //   presentationMode: true
-          // })
           dispatch((0, _actions.navigateTo)('/sweepstake/' + sweepstake._id));
         }).catch(function (err) {
           dispatch({
@@ -574,7 +589,6 @@ exports.default = {
   },
 
   deleteSweepstake: function deleteSweepstake(id, index) {
-    console.log('Index: ' + index);
     return function (dispatch) {
       _utils.APIManager.delete('/api/sweepstake/' + id).then(function (data) {
         dispatch((0, _actions.navigateTo)('/'));
@@ -698,39 +712,23 @@ var Fixtures = function (_Component) {
 
       if (competitions[selectedCompetitionID] == null) {
         this.props.fetchCompetition(selectedCompetitionID);
-      }
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
-      var _props$competitions2 = this.props.competitions,
-          competitions = _props$competitions2.competitions,
-          selectedCompetitionID = _props$competitions2.selectedCompetitionID,
-          fixtures = _props$competitions2.fixtures;
-
-      if (competitions[selectedCompetitionID] != null) {
-        var matchDay = competitions[selectedCompetitionID]['currentMatchday'];
-        if (fixtures[matchDay] == null) {
-          // console.log('MAtchday:' + matchDay)
-          // console.log('FFFFFEEEETTTTTCHHHIINNNGG!!!!')
-          this.props.fetchFixtures(selectedCompetitionID, matchDay);
-        }
+        this.props.fetchFixtures(selectedCompetitionID, null);
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props$competitions3 = this.props.competitions,
-          fixtures = _props$competitions3.fixtures,
-          competitions = _props$competitions3.competitions,
-          selectedCompetitionID = _props$competitions3.selectedCompetitionID;
+      var _props$competitions2 = this.props.competitions,
+          fixtures = _props$competitions2.fixtures,
+          competitions = _props$competitions2.competitions,
+          selectedCompetitionID = _props$competitions2.selectedCompetitionID;
 
       var currentCompetition = competitions[selectedCompetitionID] == null ? null : competitions[selectedCompetitionID];
       var currentMatchday = currentCompetition == null ? 0 : currentCompetition['currentMatchday'];
-      var dayFixtures = fixtures[currentMatchday] == null ? [] : fixtures[currentMatchday];
+      var allFixtures = fixtures[selectedCompetitionID] == null ? [] : fixtures[selectedCompetitionID];
 
-      var fixturesDisplay = dayFixtures.map(function (fixture, index) {
-        return _react2.default.createElement(_presentation.FixtureOverview, { key: index, fixture: fixture });
+      var fixturesDisplay = allFixtures.map(function (fixture, index) {
+        if (fixture.matchday <= currentMatchday) return _react2.default.createElement(_presentation.FixtureOverview, { key: index, fixture: fixture });
       });
 
       return _react2.default.createElement(
@@ -883,6 +881,126 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(GroupTables);
+
+/***/ }),
+
+/***/ "./src/components/containers/Leaders.js":
+/*!**********************************************!*\
+  !*** ./src/components/containers/Leaders.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _actions = __webpack_require__(/*! ../../actions */ "./src/actions/index.js");
+
+var _presentation = __webpack_require__(/*! ../presentation */ "./src/components/presentation/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Leaders = function (_React$Component) {
+  _inherits(Leaders, _React$Component);
+
+  function Leaders() {
+    _classCallCheck(this, Leaders);
+
+    return _possibleConstructorReturn(this, (Leaders.__proto__ || Object.getPrototypeOf(Leaders)).apply(this, arguments));
+  }
+
+  _createClass(Leaders, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var selectedCompetitionID = this.props.competitions.selectedCompetitionID;
+
+      this.props.fetchFixtures(selectedCompetitionID, null);
+      this.props.fetchSweepstake('5b2239bd9cf10b0a71b41bf1');
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props$competitions = this.props.competitions,
+          teamSweepstakePoints = _props$competitions.teamSweepstakePoints,
+          selectedCompetitionID = _props$competitions.selectedCompetitionID;
+      var _props$sweepstake = this.props.sweepstake,
+          current = _props$sweepstake.current,
+          sweepstakes = _props$sweepstake.sweepstakes;
+
+      // let sweepstake = (Object.keys(current).length) ? current.sweepstake : []
+
+      var teamPoints = Object.keys(teamSweepstakePoints).length > 0 ? teamSweepstakePoints[selectedCompetitionID] : {};
+
+      var content = sweepstakes.map(function (sweepstake, index) {
+        return _react2.default.createElement(
+          _core.Grid,
+          { item: true, key: index, xs: 8 },
+          _react2.default.createElement(
+            _core.Grid,
+            { item: true, xs: true, style: { textAlign: 'center', padding: 10 } },
+            _react2.default.createElement(
+              _core.Typography,
+              { variant: 'headline' },
+              sweepstake.name
+            )
+          ),
+          _react2.default.createElement(_presentation.LeaderTable, {
+            sweepstake: sweepstake,
+            teamPoints: teamPoints
+          })
+        );
+      });
+
+      return _react2.default.createElement(
+        _core.Grid,
+        { container: true, justify: 'center' },
+        content
+      );
+    }
+  }]);
+
+  return Leaders;
+}(_react2.default.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    competitions: state.competitions,
+    sweepstake: state.sweepstake
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    fetchFixtures: function fetchFixtures(id, matchDay) {
+      return dispatch(_actions.competitionActions.fetchFixtures(id, matchDay));
+    },
+    fetchSweepstake: function fetchSweepstake(id) {
+      return dispatch(_actions.sweepstakeActions.fetchSweepstake(id));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Leaders);
 
 /***/ }),
 
@@ -1923,7 +2041,7 @@ exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Sweeps
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GroupTables = exports.Fixtures = exports.Sweepstake = exports.Sidebar = exports.Profile = exports.PrivateRoute = exports.RegisterForm = exports.LoginForm = exports.Sweepstakes = exports.SweepstakeForm = undefined;
+exports.Leaders = exports.GroupTables = exports.Fixtures = exports.Sweepstake = exports.Sidebar = exports.Profile = exports.PrivateRoute = exports.RegisterForm = exports.LoginForm = exports.Sweepstakes = exports.SweepstakeForm = undefined;
 
 var _SweepstakeForm = __webpack_require__(/*! ./SweepstakeForm */ "./src/components/containers/SweepstakeForm.js");
 
@@ -1965,6 +2083,10 @@ var _GroupTables = __webpack_require__(/*! ./GroupTables */ "./src/components/co
 
 var _GroupTables2 = _interopRequireDefault(_GroupTables);
 
+var _Leaders = __webpack_require__(/*! ./Leaders */ "./src/components/containers/Leaders.js");
+
+var _Leaders2 = _interopRequireDefault(_Leaders);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.SweepstakeForm = _SweepstakeForm2.default;
@@ -1977,6 +2099,7 @@ exports.Sidebar = _Sidebar2.default;
 exports.Sweepstake = _Sweepstake2.default;
 exports.Fixtures = _Fixtures2.default;
 exports.GroupTables = _GroupTables2.default;
+exports.Leaders = _Leaders2.default;
 
 /***/ }),
 
@@ -2258,8 +2381,6 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
-
 var _containers = __webpack_require__(/*! ../containers */ "./src/components/containers/index.js");
 
 var _MuiThemeProvider = __webpack_require__(/*! material-ui/styles/MuiThemeProvider */ "./node_modules/material-ui/styles/MuiThemeProvider.js");
@@ -2292,19 +2413,7 @@ var Leaderboard = function (_Component) {
         _react2.default.createElement(
           _containers.Sidebar,
           null,
-          _react2.default.createElement(
-            _core.Grid,
-            { container: true, justify: 'center', style: { textAlign: 'center', marginTop: 100 } },
-            _react2.default.createElement(
-              _core.Grid,
-              { item: true, xs: true },
-              _react2.default.createElement(
-                _core.Typography,
-                { variant: 'display3' },
-                'COMING SOON...'
-              )
-            )
-          )
+          _react2.default.createElement(_containers.Leaders, null)
         )
       );
     }
@@ -3706,6 +3815,193 @@ var GroupTable = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _core.withStyles)(styles)(GroupTable);
+
+/***/ }),
+
+/***/ "./src/components/presentation/Leaderboard/LeaderTable.js":
+/*!****************************************************************!*\
+  !*** ./src/components/presentation/Leaderboard/LeaderTable.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  paper: {
+    marginBottom: 30,
+    margin: 10,
+    textAlign: 'center'
+  },
+  container: {
+    margin: 10,
+    textAlign: 'center'
+  },
+  imageStyle: {
+    flex: 1,
+    width: 25,
+    height: 25,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    resizeMode: 'contain'
+  }
+};
+
+var LeaderTable = function (_React$Component) {
+  _inherits(LeaderTable, _React$Component);
+
+  function LeaderTable() {
+    _classCallCheck(this, LeaderTable);
+
+    return _possibleConstructorReturn(this, (LeaderTable.__proto__ || Object.getPrototypeOf(LeaderTable)).apply(this, arguments));
+  }
+
+  _createClass(LeaderTable, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          classes = _props.classes,
+          sweepstake = _props.sweepstake,
+          teamPoints = _props.teamPoints;
+
+      var standings = [];
+      if (Object.keys(teamPoints).length > 0) {
+        sweepstake.sweepstake.map(function (entry, index) {
+          var standing = {};
+          var assignedTeams = entry.assignedTeams,
+              user = entry.user;
+
+          var capitalizedName = user.username.charAt(0).toUpperCase() + user.username.substring(1);
+          standing['username'] = capitalizedName;
+          var overallPoints = 0;
+          standing['teams'] = [];
+          for (var i = 0; i < assignedTeams.length; i++) {
+            var team = assignedTeams[i].name;
+            var points = teamPoints[team] != null ? teamPoints[team] : 0;
+            overallPoints += points;
+            var teamAndPoints = { name: team, points: points };
+            standing['teams'].push(teamAndPoints);
+          }
+          standing['overall'] = overallPoints;
+          standings.push(standing);
+        });
+      }
+      standings.sort(function (a, b) {
+        return a.overall < b.overall ? -1 : 1;
+      }).reverse();
+
+      var content = standings.map(function (standing, index) {
+        var teams = standing['teams'];
+        return _react2.default.createElement(
+          _core.TableRow,
+          null,
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            standing.username
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            teams[0].name,
+            ' : ',
+            teams[0].points
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            teams[1].name,
+            ' : ',
+            teams[1].points
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            teams[2].name,
+            ' : ',
+            teams[2].points
+          ),
+          _react2.default.createElement(
+            _core.TableCell,
+            null,
+            standing.overall
+          )
+        );
+      });
+      return _react2.default.createElement(
+        _core.Paper,
+        { className: classes.paper },
+        _react2.default.createElement(
+          _core.Table,
+          null,
+          _react2.default.createElement(
+            _core.TableHead,
+            null,
+            _react2.default.createElement(
+              _core.TableRow,
+              null,
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'User'
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Team 1'
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Team 2'
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Team 3'
+              ),
+              _react2.default.createElement(
+                _core.TableCell,
+                null,
+                'Overall'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _core.TableBody,
+            null,
+            content
+          )
+        )
+      );
+    }
+  }]);
+
+  return LeaderTable;
+}(_react2.default.Component);
+
+exports.default = (0, _core.withStyles)(styles)(LeaderTable);
 
 /***/ }),
 
@@ -5206,7 +5502,7 @@ exports.default = (0, _core.withStyles)(styles)(PresentationMode);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GroupTable = exports.FixtureOverview = exports.Member = exports.PresentationMode = exports.AssignedTeams = exports.DashboardCompetitions = exports.Participants = exports.Caption = exports.CreateFormTeams = exports.CreateFormGroups = exports.CreateFormGroupTable = exports.RegisterForm = exports.LoginForm = exports.Sweepstake = exports.SelectTeam = exports.Sidebar = undefined;
+exports.LeaderTable = exports.GroupTable = exports.FixtureOverview = exports.Member = exports.PresentationMode = exports.AssignedTeams = exports.DashboardCompetitions = exports.Participants = exports.Caption = exports.CreateFormTeams = exports.CreateFormGroups = exports.CreateFormGroupTable = exports.RegisterForm = exports.LoginForm = exports.Sweepstake = exports.SelectTeam = exports.Sidebar = undefined;
 
 var _Sidebar = __webpack_require__(/*! ./Sidebar */ "./src/components/presentation/Sidebar.js");
 
@@ -5272,6 +5568,10 @@ var _GroupTable = __webpack_require__(/*! ./Groups/GroupTable */ "./src/componen
 
 var _GroupTable2 = _interopRequireDefault(_GroupTable);
 
+var _LeaderTable = __webpack_require__(/*! ./Leaderboard/LeaderTable */ "./src/components/presentation/Leaderboard/LeaderTable.js");
+
+var _LeaderTable2 = _interopRequireDefault(_LeaderTable);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Sidebar = _Sidebar2.default;
@@ -5290,6 +5590,7 @@ exports.PresentationMode = _PresentationMode2.default;
 exports.Member = _Member2.default;
 exports.FixtureOverview = _FixtureOverview2.default;
 exports.GroupTable = _GroupTable2.default;
+exports.LeaderTable = _LeaderTable2.default;
 
 /***/ }),
 
@@ -5337,7 +5638,7 @@ exports.default = (_LOGIN_REQUEST$LOGIN_ = {
   SWEEPSTAKE_GENERATED: 'SWEEPSTAKE_GENERATED',
 
   FETCHING_USERS: 'FETCHING_USERS'
-}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _LOGIN_REQUEST$LOGIN_);
+}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'POINTS_CALCULATED', 'POINTS_CALCULATED'), _LOGIN_REQUEST$LOGIN_);
 
 /***/ }),
 
@@ -5522,6 +5823,7 @@ var initialState = {
   competitions: {},
   fixtures: {},
   teams: {},
+  teamSweepstakePoints: {},
   groupStandings: {},
   selectedCompetitionID: 467
 };
@@ -5536,6 +5838,10 @@ exports.default = function () {
 
   switch (action.type) {
 
+    case _constants2.default.POINTS_CALCULATED:
+      updated['teamSweepstakePoints'][id] = action.data;
+      return updated;
+
     case _constants2.default.FETCHED_COMPETITION:
       var fetchedCompetition = action.data;
       var competitionsMap = updated['competitions'];
@@ -5546,7 +5852,7 @@ exports.default = function () {
       return updated;
 
     case _constants2.default.FETCHED_FIXTURES:
-      updated['fixtures'][action.matchDay] = action.data;
+      updated['fixtures'][id] = action.data;
       return updated;
 
     case _constants2.default.FETCHING_COMPETITION:
@@ -5892,6 +6198,118 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./src/utils/PointsCalculator.js":
+/*!***************************************!*\
+  !*** ./src/utils/PointsCalculator.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bluebird = __webpack_require__(/*! bluebird */ "./node_modules/bluebird/js/browser/bluebird.js");
+
+var _bluebird2 = _interopRequireDefault(_bluebird);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  calculate: function calculate(fixtures) {
+    return new _bluebird2.default(function (resolve, reject) {
+      var teamScores = {};
+      var finalReplay = false;
+      var semiReplay = false;
+      for (var i = 0; i < fixtures.length; i++) {
+        var game = fixtures[i];
+        var matchday = game.matchday,
+            homeTeamName = game.homeTeamName,
+            awayTeamName = game.awayTeamName,
+            result = game.result,
+            status = game.status;
+        var goalsHomeTeam = result.goalsHomeTeam,
+            goalsAwayTeam = result.goalsAwayTeam;
+
+        if (status == 'FINISHED') {
+          /* INITIALIZE TEAMS */
+          if (teamScores[homeTeamName] == null) {
+            teamScores[homeTeamName] = 0;
+          }
+          if (teamScores[awayTeamName] == null) {
+            teamScores[awayTeamName] = 0;
+          }
+          /* CALCULATE GOALS */
+
+          //console.log(JSON.stringify(homeTeamName + ': ' + goalsHomeTeam + '   ' + awayTeamName + ': ' + goalsAwayTeam))
+
+          var homePoints = teamScores[homeTeamName];
+          var awayPoints = teamScores[awayTeamName];
+
+          // console.log('Team: ' + JSON.stringify(homeTeamName) + ' Points: ' + JSON.stringify(homePoints))
+          // console.log('Team: ' + JSON.stringify(awayTeamName) + ' Points: ' + JSON.stringify(awayPoints))
+
+          //Calculate Goals
+          homePoints += goalsHomeTeam;
+          awayPoints += goalsAwayTeam;
+
+          // console.log('Team: ' + JSON.stringify(homeTeamName) + ' Points: ' + JSON.stringify(homePoints))
+          // console.log('Team: ' + JSON.stringify(awayTeamName) + ' Points: ' + JSON.stringify(awayPoints))
+
+          /* CALCULATE STAGE REACHED */
+          //Last 16
+          if (matchday == 4) {
+            if (goalsHomeTeam > goalsAwayTeam) {
+              awayPoints += 3;
+            } else {
+              homePoints += 3;
+            }
+          }
+
+          //Quarters
+          if (matchday == 5) {
+            if (goalsHomeTeam > goalsAwayTeam) {
+              awayPoints += 5;
+            } else {
+              homePoints += 5;
+            }
+          }
+
+          //Semis
+          if (matchday == 6) {
+            if (goalsHomeTeam > goalsAwayTeam) {
+              awayPoints += 7;
+            } else {
+              homePoints += 7;
+            }
+          }
+
+          //Final
+          if (matchday == 7 || matchday == 8) {
+            if (goalsHomeTeam > goalsAwayTeam) {
+              awayPoints += 9;
+              homePoints += 12;
+            } else {
+              awayPoints += 12;
+              homePoints += 9;
+            }
+          }
+
+          /* UPDATED THE SCORES MAP */
+          teamScores[homeTeamName] = homePoints;
+          teamScores[awayTeamName] = awayPoints;
+        }
+      }
+      resolve(teamScores);
+    });
+  }
+};
+
+/***/ }),
+
 /***/ "./src/utils/RandomAssigner.js":
 /*!*************************************!*\
   !*** ./src/utils/RandomAssigner.js ***!
@@ -6029,7 +6447,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WorldCupApi = exports.RandomAssigner = exports.APIManager = exports.renderComponents = exports.ServerEntry = undefined;
+exports.PointsCalculator = exports.WorldCupApi = exports.RandomAssigner = exports.APIManager = exports.renderComponents = exports.ServerEntry = undefined;
 
 var _ServerEntry = __webpack_require__(/*! ./ServerEntry */ "./src/utils/ServerEntry.js");
 
@@ -6051,6 +6469,10 @@ var _WorldCupApi = __webpack_require__(/*! ./WorldCupApi */ "./src/utils/WorldCu
 
 var _WorldCupApi2 = _interopRequireDefault(_WorldCupApi);
 
+var _PointsCalculator = __webpack_require__(/*! ./PointsCalculator */ "./src/utils/PointsCalculator.js");
+
+var _PointsCalculator2 = _interopRequireDefault(_PointsCalculator);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.ServerEntry = _ServerEntry2.default;
@@ -6058,6 +6480,7 @@ exports.renderComponents = _renderComponents2.default;
 exports.APIManager = _APIManager2.default;
 exports.RandomAssigner = _RandomAssigner2.default;
 exports.WorldCupApi = _WorldCupApi2.default;
+exports.PointsCalculator = _PointsCalculator2.default;
 
 /***/ }),
 

@@ -10,18 +10,7 @@ class Fixtures extends Component{
     const { competitions, fixtures, selectedCompetitionID } = this.props.competitions
     if(competitions[selectedCompetitionID] == null){
       this.props.fetchCompetition(selectedCompetitionID)
-    }
-  }
-
-  componentDidUpdate(){
-    const { competitions, selectedCompetitionID, fixtures } = this.props.competitions
-    if(competitions[selectedCompetitionID] != null){
-      let matchDay = competitions[selectedCompetitionID]['currentMatchday']
-      if(fixtures[matchDay] == null){
-        // console.log('MAtchday:' + matchDay)
-        // console.log('FFFFFEEEETTTTTCHHHIINNNGG!!!!')
-        this.props.fetchFixtures(selectedCompetitionID, matchDay)
-      }
+      this.props.fetchFixtures(selectedCompetitionID, null)
     }
   }
 
@@ -30,10 +19,11 @@ class Fixtures extends Component{
     const { fixtures, competitions, selectedCompetitionID } = this.props.competitions
     const currentCompetition = (competitions[selectedCompetitionID] == null) ? null : competitions[selectedCompetitionID]
     const currentMatchday = (currentCompetition == null) ? 0 : currentCompetition['currentMatchday']
-    const dayFixtures = (fixtures[currentMatchday] == null) ? [] : fixtures[currentMatchday]
+    const allFixtures = (fixtures[selectedCompetitionID] == null) ? [] : fixtures[selectedCompetitionID]
 
-    let fixturesDisplay = dayFixtures.map((fixture, index) => {
-      return <FixtureOverview key={index} fixture={fixture} />
+    let fixturesDisplay = allFixtures.map((fixture, index) => {
+      if(fixture.matchday <= currentMatchday)
+        return <FixtureOverview key={index} fixture={fixture} />
     })
 
     return(

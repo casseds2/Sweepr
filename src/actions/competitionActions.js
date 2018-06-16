@@ -1,15 +1,34 @@
 import constants from '../constants'
-import { WorldCupApi } from '../utils'
+import { WorldCupApi, PointsCalculator } from '../utils'
+import { navigateTo } from '../actions'
+
+const calculateSuccess = (data) => ({
+  type: constants.CALCULATE_SUCCESS,
+  data: data
+})
+
+export function calculatePoints(fixtures){
+  return (dispatch) => {
+    PointsCalculator.calculate(fixtures)
+    .then(data => {
+      dispatch({
+        type: constants.POINTS_CALCULATED,
+        data: data
+      })
+    })
+    .catch(err => {
+      alert(err)
+    })
+  }
+}
 
 export default {
 
   fetchFixtures: (id, matchDay) => {
-    // console.log('ID: ' + JSON.stringify(id))
-    // console.log('Matchday: ' + JSON.stringify(matchDay))
     return (dispatch) => {
-      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', {matchday: matchDay})
+      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', matchDay)
       .then(data => {
-        // console.log('FIXES:' + JSON.stringify(data))
+        dispatch(calculatePoints(data.fixtures))
         dispatch({
           type: constants.FETCHED_FIXTURES,
           data: data.fixtures,
@@ -30,7 +49,6 @@ export default {
       })
       WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id, null)
       .then(data => {
-        // console.log('WorldyData: ' + JSON.stringify(data))
         dispatch({
           type: constants.FETCHED_COMPETITION,
           data: data
