@@ -23,7 +23,7 @@ export default {
 
   fetchFixtures: (id, matchDay) => {
     return (dispatch) => {
-      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/fixtures', matchDay)
+      WorldCupApi.get('https://api.football-data.org/v1/competitions/' + id + '/fixtures', matchDay)
       .then(data => {
         dispatch({
           type: constants.FETCHED_FIXTURES,
@@ -45,7 +45,7 @@ export default {
         type: constants.FETCHING_COMPETITION,
         status: 'loading'
       })
-      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id, null)
+      WorldCupApi.get('https://api.football-data.org/v1/competitions/' + id, null)
       .then(data => {
         dispatch({
           type: constants.FETCHED_COMPETITION,
@@ -67,7 +67,7 @@ export default {
         type: constants.FETCHING_TEAMS,
         status: 'loading'
       })
-      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/teams', null)
+      WorldCupApi.get('https://api.football-data.org/v1/competitions/' + id + '/teams', null)
       .then(data => {
         dispatch({
           type: constants.FETCHED_TEAMS,
@@ -90,7 +90,7 @@ export default {
         type: constants.FETCHING_GROUP_STANDINGS,
         status: 'loading'
       })
-      WorldCupApi.get('http://api.football-data.org/v1/competitions/' + id + '/leagueTable', null)
+      WorldCupApi.get('https://api.football-data.org/v1/competitions/' + id + '/leagueTable', null)
       .then(data => {
         dispatch({
           type: constants.FETCHED_GROUP_STANDINGS,
