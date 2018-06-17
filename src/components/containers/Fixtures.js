@@ -8,7 +8,8 @@ class Fixtures extends Component{
 
   componentDidMount(){
     const { competitions, fixtures, selectedCompetitionID } = this.props.competitions
-    if(competitions[selectedCompetitionID] == null){
+    let fixtureKeys = Object.keys(fixtures)
+    if(competitions[selectedCompetitionID] == null || fixtureKeys.indexOf(selectedCompetitionID) == -1){
       this.props.fetchCompetition(selectedCompetitionID)
       this.props.fetchFixtures(selectedCompetitionID, null)
     }

@@ -746,7 +746,8 @@ var Fixtures = function (_Component) {
           fixtures = _props$competitions.fixtures,
           selectedCompetitionID = _props$competitions.selectedCompetitionID;
 
-      if (competitions[selectedCompetitionID] == null) {
+      var fixtureKeys = Object.keys(fixtures);
+      if (competitions[selectedCompetitionID] == null || fixtureKeys.indexOf(selectedCompetitionID) == -1) {
         this.props.fetchCompetition(selectedCompetitionID);
         this.props.fetchFixtures(selectedCompetitionID, null);
       }
