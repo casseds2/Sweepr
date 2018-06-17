@@ -17,9 +17,11 @@ class Leaders extends React.Component{
 
   componentDidMount(){
     const { selectedCompetitionID } = this.props.competitions
+    const { current } = this.props.sweepstake
     this.props.fetchFixtures(selectedCompetitionID, null)
-    this.props.fetchSweepstake('5b2239bd9cf10b0a71b41bf1')
-  }
+    if(Object.keys(current).length == 0)
+      this.props.fetchSweepstake('5b2239bd9cf10b0a71b41bf1')
+  } 
 
   render(){
 

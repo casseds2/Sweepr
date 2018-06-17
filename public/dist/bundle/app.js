@@ -999,9 +999,10 @@ var Leaders = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var selectedCompetitionID = this.props.competitions.selectedCompetitionID;
+      var current = this.props.sweepstake.current;
 
       this.props.fetchFixtures(selectedCompetitionID, null);
-      this.props.fetchSweepstake('5b2239bd9cf10b0a71b41bf1');
+      if (Object.keys(current).length == 0) this.props.fetchSweepstake('5b2239bd9cf10b0a71b41bf1');
     }
   }, {
     key: 'render',
@@ -6237,6 +6238,7 @@ exports.default = function () {
     case _constants2.default.SWEEPSTAKES_RECEIVED:
       sweepstakes = action.data.data;
       updated['sweepstakes'] = sweepstakes;
+      updated['current'] = sweepstakes[0];
       return updated;
 
     case _constants2.default.SWEEPSTAKE_RECEIVED:

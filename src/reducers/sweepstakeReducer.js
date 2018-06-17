@@ -22,6 +22,7 @@ export default (state = initialState, action) => {
     case constants.SWEEPSTAKES_RECEIVED:
       sweepstakes = action.data.data
       updated['sweepstakes'] = sweepstakes
+      updated['current'] = sweepstakes[0]
       return updated
 
     case constants.SWEEPSTAKE_RECEIVED:
