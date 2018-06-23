@@ -114,7 +114,6 @@ export default {
   },
 
   addMember: (id, members, index) => {
-    console.log('Members: ' + JSON.stringify(members))
     return(dispatch) => {
       APIManager.put('/api/sweepstake/' + id, {members: members})
       .then(data => {
@@ -131,6 +130,21 @@ export default {
           type: constants.FAILED_ADD_MEMBER,
           data: null
         })
+      })
+    }
+  },
+
+  markMemberAsPaid: (id, members) => {
+    return(dispatch) => {
+      APIManager.put('/api/sweepstake/' + id, {members: members})
+      .then(data => {
+        dispatch({
+          type: constants.MEMBER_PAID,
+          data: members
+        })
+      })
+      .catch(err => {
+        alert(err)
       })
     }
   },

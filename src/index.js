@@ -40,6 +40,7 @@ const app = (
         <PrivateRoute path='/fixtures' component={layouts.AllFixtures} />
         <PrivateRoute path='/leaderboard' component={layouts.Leaderboard} />2
         <PrivateRoute exact path='/groups' component={layouts.GroupStandings} />
+        <PrivateRoute path='/paid' component={layouts.NameAndShame} />
 			</Switch>
 		</ConnectedRouter>
 	</Provider>

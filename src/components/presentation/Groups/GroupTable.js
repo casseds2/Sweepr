@@ -35,16 +35,13 @@ class GroupTable extends React.Component{
     const { classes, group, letter } = this.props
     const teams = group.map((teamElem, index) => {
       const { playedGames, goalDifference, points, team, crestURI, goals, goalsAgainst } = teamElem
-      let won = Math.floor(points / 3)
-      let drew = points % 3
-      let lost = (points == 0 && playedGames > 0) ? 1 : points - (won * 3) - drew
       return (
         <TableRow key={index}>
           <TableCell style={{padding:20}} component="th" scope="row"><Typography>{team}</Typography></TableCell>
           <TableCell><img src={crestURI} className={classes.imageStyle} /></TableCell>
-          <TableCell><Typography>{won}</Typography></TableCell>
-          <TableCell><Typography>{drew}</Typography></TableCell>
-          <TableCell><Typography>{lost}</Typography></TableCell>
+          <TableCell><Typography>{playedGames}</Typography></TableCell>
+          <TableCell><Typography>{goals}</Typography></TableCell>
+          <TableCell><Typography>{goalsAgainst}</Typography></TableCell>
           <TableCell><Typography>{goalDifference}</Typography></TableCell>
           <TableCell><Typography>{points}</Typography></TableCell>
         </TableRow>
@@ -58,10 +55,10 @@ class GroupTable extends React.Component{
               <TableRow>
                 <TableCell><Typography variant='caption'>Team</Typography></TableCell>
                 <TableCell></TableCell>
-                <TableCell><Typography variant='caption'>Won</Typography></TableCell>
-                <TableCell><Typography variant='caption'>Drew</Typography></TableCell>
-                <TableCell><Typography variant='caption'>Lost</Typography></TableCell>
-                <TableCell><Typography variant='caption'>Diff.</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Played</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Goals For</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Goals Against</Typography></TableCell>
+                <TableCell><Typography variant='caption'>Goals +/-</Typography></TableCell>
                 <TableCell><Typography variant='caption'>Points</Typography></TableCell>
               </TableRow>
             </TableHead>

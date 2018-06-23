@@ -31,7 +31,7 @@ class Member extends Component{
 
     const { classes, teams, username, key } = this.props
 
-    let captalizedUsername = username.charAt(0).toUpperCase() + username.substr(1);
+    let captalizedUsername = username.charAt(0).toUpperCase() + username.substr(1)
 
     return(
       <Paper key={key} className={classes.entryStyle}>

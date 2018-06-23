@@ -215,7 +215,7 @@ class SweepstakeForm extends Component{
               </Grid>
               <Grid item xs={7}>
                 <Grid container justify={'center'}>
-                  <Grid item  style={{margin: 10}}>
+                  <Grid item style={{margin: 10}}>
                     <IconButton onClick={this.addGroup} style={{label: 'Add'}} aria-label="Add Group">
                       Add Group
                       <AddIcon

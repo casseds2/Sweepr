@@ -605,7 +605,6 @@ exports.default = {
   },
 
   addMember: function addMember(id, members, index) {
-    console.log('Members: ' + JSON.stringify(members));
     return function (dispatch) {
       _utils.APIManager.put('/api/sweepstake/' + id, { members: members }).then(function (data) {
         dispatch((0, _actions.navigateTo)('/'));
@@ -620,6 +619,19 @@ exports.default = {
           type: _constants2.default.FAILED_ADD_MEMBER,
           data: null
         });
+      });
+    };
+  },
+
+  markMemberAsPaid: function markMemberAsPaid(id, members) {
+    return function (dispatch) {
+      _utils.APIManager.put('/api/sweepstake/' + id, { members: members }).then(function (data) {
+        dispatch({
+          type: _constants2.default.MEMBER_PAID,
+          data: members
+        });
+      }).catch(function (err) {
+        alert(err);
       });
     };
   },
@@ -1111,6 +1123,124 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_presentation.LoginForm);
+
+/***/ }),
+
+/***/ "./src/components/containers/PaidUsers.js":
+/*!************************************************!*\
+  !*** ./src/components/containers/PaidUsers.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _actions = __webpack_require__(/*! ../../actions */ "./src/actions/index.js");
+
+var _presentation = __webpack_require__(/*! ../presentation */ "./src/components/presentation/index.js");
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PaidUsers = function (_React$Component) {
+  _inherits(PaidUsers, _React$Component);
+
+  function PaidUsers() {
+    _classCallCheck(this, PaidUsers);
+
+    var _this = _possibleConstructorReturn(this, (PaidUsers.__proto__ || Object.getPrototypeOf(PaidUsers)).call(this));
+
+    _this.markMemberAsPaid = _this.markMemberAsPaid.bind(_this);
+    return _this;
+  }
+
+  _createClass(PaidUsers, [{
+    key: 'markMemberAsPaid',
+    value: function markMemberAsPaid(sweepstakeID, members, index) {
+      members[index]['paid'] = true;
+      this.props.markMemberAsPaid(sweepstakeID, members);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var current = this.props.sweepstake.current;
+      var members = current.members,
+          owner = current.owner,
+          _id = current._id;
+      var user = this.props.user.user;
+
+      var owns = owner == user._id ? true : false;
+
+      var content = members.map(function (member, index) {
+        return member['paid'] == true ? _react2.default.createElement(_presentation.PaidMember, {
+          member: member,
+          key: index
+        }) : _react2.default.createElement(_presentation.NonPaidMember, {
+          addAsPaid: function addAsPaid() {
+            return _this2.markMemberAsPaid(_id, members, index);
+          },
+          member: member,
+          owner: owns,
+          key: index });
+      });
+
+      return _react2.default.createElement(
+        _core.Grid,
+        { container: true, justify: 'center' },
+        _react2.default.createElement(
+          _core.Grid,
+          { item: true, xs: 8 },
+          _react2.default.createElement(
+            _core.Grid,
+            { container: true },
+            content
+          )
+        )
+      );
+    }
+  }]);
+
+  return PaidUsers;
+}(_react2.default.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    sweepstake: state.sweepstake,
+    user: state.auth
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    markMemberAsPaid: function markMemberAsPaid(id, members) {
+      return dispatch(_actions.sweepstakeActions.markMemberAsPaid(id, members));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PaidUsers);
 
 /***/ }),
 
@@ -2108,7 +2238,7 @@ exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(Sweeps
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Leaders = exports.GroupTables = exports.Fixtures = exports.Sweepstake = exports.Sidebar = exports.Profile = exports.PrivateRoute = exports.RegisterForm = exports.LoginForm = exports.Sweepstakes = exports.SweepstakeForm = undefined;
+exports.PaidUsers = exports.Leaders = exports.GroupTables = exports.Fixtures = exports.Sweepstake = exports.Sidebar = exports.Profile = exports.PrivateRoute = exports.RegisterForm = exports.LoginForm = exports.Sweepstakes = exports.SweepstakeForm = undefined;
 
 var _SweepstakeForm = __webpack_require__(/*! ./SweepstakeForm */ "./src/components/containers/SweepstakeForm.js");
 
@@ -2154,6 +2284,10 @@ var _Leaders = __webpack_require__(/*! ./Leaders */ "./src/components/containers
 
 var _Leaders2 = _interopRequireDefault(_Leaders);
 
+var _PaidUsers = __webpack_require__(/*! ./PaidUsers */ "./src/components/containers/PaidUsers.js");
+
+var _PaidUsers2 = _interopRequireDefault(_PaidUsers);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.SweepstakeForm = _SweepstakeForm2.default;
@@ -2167,6 +2301,7 @@ exports.Sweepstake = _Sweepstake2.default;
 exports.Fixtures = _Fixtures2.default;
 exports.GroupTables = _GroupTables2.default;
 exports.Leaders = _Leaders2.default;
+exports.PaidUsers = _PaidUsers2.default;
 
 /***/ }),
 
@@ -2533,6 +2668,71 @@ exports.default = Login;
 
 /***/ }),
 
+/***/ "./src/components/layout/NameAndShame.js":
+/*!***********************************************!*\
+  !*** ./src/components/layout/NameAndShame.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _containers = __webpack_require__(/*! ../containers */ "./src/components/containers/index.js");
+
+var _MuiThemeProvider = __webpack_require__(/*! material-ui/styles/MuiThemeProvider */ "./node_modules/material-ui/styles/MuiThemeProvider.js");
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NameAndShame = function (_React$Component) {
+  _inherits(NameAndShame, _React$Component);
+
+  function NameAndShame() {
+    _classCallCheck(this, NameAndShame);
+
+    return _possibleConstructorReturn(this, (NameAndShame.__proto__ || Object.getPrototypeOf(NameAndShame)).apply(this, arguments));
+  }
+
+  _createClass(NameAndShame, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        null,
+        _react2.default.createElement(
+          _containers.Sidebar,
+          null,
+          _react2.default.createElement(_containers.PaidUsers, null)
+        )
+      );
+    }
+  }]);
+
+  return NameAndShame;
+}(_react2.default.Component);
+
+exports.default = NameAndShame;
+
+/***/ }),
+
 /***/ "./src/components/layout/ProfilePage.js":
 /*!**********************************************!*\
   !*** ./src/components/layout/ProfilePage.js ***!
@@ -2783,7 +2983,7 @@ exports.default = ViewSweepstake;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GroupStandings = exports.Leaderboard = exports.AllFixtures = exports.ViewSweepstake = exports.Register = exports.Login = exports.ViewAllSweepstakes = exports.CreateSweepstake = exports.ProfilePage = exports.Dashboard = undefined;
+exports.NameAndShame = exports.GroupStandings = exports.Leaderboard = exports.AllFixtures = exports.ViewSweepstake = exports.Register = exports.Login = exports.ViewAllSweepstakes = exports.CreateSweepstake = exports.ProfilePage = exports.Dashboard = undefined;
 
 var _Dashboard = __webpack_require__(/*! ./Dashboard */ "./src/components/layout/Dashboard.js");
 
@@ -2825,6 +3025,10 @@ var _GroupStandings = __webpack_require__(/*! ./GroupStandings */ "./src/compone
 
 var _GroupStandings2 = _interopRequireDefault(_GroupStandings);
 
+var _NameAndShame = __webpack_require__(/*! ./NameAndShame */ "./src/components/layout/NameAndShame.js");
+
+var _NameAndShame2 = _interopRequireDefault(_NameAndShame);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Dashboard = _Dashboard2.default;
@@ -2837,6 +3041,7 @@ exports.ViewSweepstake = _ViewSweepstake2.default;
 exports.AllFixtures = _AllFixtures2.default;
 exports.Leaderboard = _Leaderboard2.default;
 exports.GroupStandings = _GroupStandings2.default;
+exports.NameAndShame = _NameAndShame2.default;
 
 /***/ }),
 
@@ -3816,9 +4021,6 @@ var GroupTable = function (_React$Component) {
             goals = teamElem.goals,
             goalsAgainst = teamElem.goalsAgainst;
 
-        var won = Math.floor(points / 3);
-        var drew = points % 3;
-        var lost = points == 0 && playedGames > 0 ? 1 : points - won * 3 - drew;
         return _react2.default.createElement(
           _core.TableRow,
           { key: index },
@@ -3842,7 +4044,7 @@ var GroupTable = function (_React$Component) {
             _react2.default.createElement(
               _core.Typography,
               null,
-              won
+              playedGames
             )
           ),
           _react2.default.createElement(
@@ -3851,7 +4053,7 @@ var GroupTable = function (_React$Component) {
             _react2.default.createElement(
               _core.Typography,
               null,
-              drew
+              goals
             )
           ),
           _react2.default.createElement(
@@ -3860,7 +4062,7 @@ var GroupTable = function (_React$Component) {
             _react2.default.createElement(
               _core.Typography,
               null,
-              lost
+              goalsAgainst
             )
           ),
           _react2.default.createElement(
@@ -3912,7 +4114,7 @@ var GroupTable = function (_React$Component) {
                 _react2.default.createElement(
                   _core.Typography,
                   { variant: 'caption' },
-                  'Won'
+                  'Played'
                 )
               ),
               _react2.default.createElement(
@@ -3921,7 +4123,7 @@ var GroupTable = function (_React$Component) {
                 _react2.default.createElement(
                   _core.Typography,
                   { variant: 'caption' },
-                  'Drew'
+                  'Goals For'
                 )
               ),
               _react2.default.createElement(
@@ -3930,7 +4132,7 @@ var GroupTable = function (_React$Component) {
                 _react2.default.createElement(
                   _core.Typography,
                   { variant: 'caption' },
-                  'Lost'
+                  'Goals Against'
                 )
               ),
               _react2.default.createElement(
@@ -3939,7 +4141,7 @@ var GroupTable = function (_React$Component) {
                 _react2.default.createElement(
                   _core.Typography,
                   { variant: 'caption' },
-                  'Diff.'
+                  'Goals +/-'
                 )
               ),
               _react2.default.createElement(
@@ -4486,6 +4688,200 @@ var LoginForm = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _withStyles2.default)(styles)(LoginForm);
+
+/***/ }),
+
+/***/ "./src/components/presentation/NameAndShame/NonPaidMember.js":
+/*!*******************************************************************!*\
+  !*** ./src/components/presentation/NameAndShame/NonPaidMember.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  paper: {
+    padding: 5,
+    textAlign: 'center',
+    margin: 5,
+    backgroundColor: '#e0384b'
+    //opacity: 0.5
+  }
+};
+
+var NonPaidMember = function (_Component) {
+  _inherits(NonPaidMember, _Component);
+
+  function NonPaidMember() {
+    _classCallCheck(this, NonPaidMember);
+
+    return _possibleConstructorReturn(this, (NonPaidMember.__proto__ || Object.getPrototypeOf(NonPaidMember)).apply(this, arguments));
+  }
+
+  _createClass(NonPaidMember, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          member = _props.member,
+          owner = _props.owner,
+          classes = _props.classes,
+          user = _props.user;
+
+
+      var username = member['username'];
+      var captalizedUsername = username.charAt(0).toUpperCase() + username.substr(1);
+
+      var button = owner ? _react2.default.createElement(
+        _core.Grid,
+        { item: true, xs: 3 },
+        _react2.default.createElement(
+          _core.Button,
+          { onClick: this.props.addAsPaid, variant: 'contained', color: 'primary' },
+          'Add To Paid'
+        )
+      ) : null;
+
+      return _react2.default.createElement(
+        _core.Grid,
+        { item: true, xs: 7 },
+        _react2.default.createElement(
+          _core.Paper,
+          { className: classes.paper },
+          _react2.default.createElement(
+            _core.Grid,
+            { container: true },
+            _react2.default.createElement(
+              _core.Grid,
+              { item: true, xs: true },
+              _react2.default.createElement(
+                _core.Typography,
+                { variant: 'display1' },
+                captalizedUsername
+              )
+            ),
+            button
+          )
+        )
+      );
+    }
+  }]);
+
+  return NonPaidMember;
+}(_react.Component);
+
+exports.default = (0, _core.withStyles)(styles)(NonPaidMember);
+
+/***/ }),
+
+/***/ "./src/components/presentation/NameAndShame/PaidMember.js":
+/*!****************************************************************!*\
+  !*** ./src/components/presentation/NameAndShame/PaidMember.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  paper: {
+    padding: 5,
+    margin: 5,
+    backgroundColor: 'green',
+    textAlign: 'center'
+  }
+};
+
+var PaidMember = function (_Component) {
+  _inherits(PaidMember, _Component);
+
+  function PaidMember() {
+    _classCallCheck(this, PaidMember);
+
+    return _possibleConstructorReturn(this, (PaidMember.__proto__ || Object.getPrototypeOf(PaidMember)).apply(this, arguments));
+  }
+
+  _createClass(PaidMember, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          member = _props.member,
+          classes = _props.classes;
+
+
+      var username = member['username'];
+      var captalizedUsername = username.charAt(0).toUpperCase() + username.substr(1);
+
+      return _react2.default.createElement(
+        _core.Grid,
+        { item: true, xs: 7 },
+        _react2.default.createElement(
+          _core.Paper,
+          { className: classes.paper },
+          _react2.default.createElement(
+            _core.Grid,
+            { container: true },
+            _react2.default.createElement(
+              _core.Grid,
+              { item: true, xs: true },
+              _react2.default.createElement(
+                _core.Typography,
+                { variant: 'display1' },
+                captalizedUsername
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return PaidMember;
+}(_react.Component);
+
+exports.default = (0, _core.withStyles)(styles)(PaidMember);
 
 /***/ }),
 
@@ -5709,7 +6105,7 @@ exports.default = (0, _core.withStyles)(styles)(PresentationMode);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LeaderTable = exports.GroupTable = exports.FixtureOverview = exports.Member = exports.PresentationMode = exports.AssignedTeams = exports.DashboardCompetitions = exports.Participants = exports.Caption = exports.CreateFormTeams = exports.CreateFormGroups = exports.CreateFormGroupTable = exports.RegisterForm = exports.LoginForm = exports.Sweepstake = exports.SelectTeam = exports.Sidebar = undefined;
+exports.NonPaidMember = exports.PaidMember = exports.LeaderTable = exports.GroupTable = exports.FixtureOverview = exports.Member = exports.PresentationMode = exports.AssignedTeams = exports.DashboardCompetitions = exports.Participants = exports.Caption = exports.CreateFormTeams = exports.CreateFormGroups = exports.CreateFormGroupTable = exports.RegisterForm = exports.LoginForm = exports.Sweepstake = exports.SelectTeam = exports.Sidebar = undefined;
 
 var _Sidebar = __webpack_require__(/*! ./Sidebar */ "./src/components/presentation/Sidebar.js");
 
@@ -5779,6 +6175,14 @@ var _LeaderTable = __webpack_require__(/*! ./Leaderboard/LeaderTable */ "./src/c
 
 var _LeaderTable2 = _interopRequireDefault(_LeaderTable);
 
+var _PaidMember = __webpack_require__(/*! ./NameAndShame/PaidMember */ "./src/components/presentation/NameAndShame/PaidMember.js");
+
+var _PaidMember2 = _interopRequireDefault(_PaidMember);
+
+var _NonPaidMember = __webpack_require__(/*! ./NameAndShame/NonPaidMember */ "./src/components/presentation/NameAndShame/NonPaidMember.js");
+
+var _NonPaidMember2 = _interopRequireDefault(_NonPaidMember);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Sidebar = _Sidebar2.default;
@@ -5798,6 +6202,8 @@ exports.Member = _Member2.default;
 exports.FixtureOverview = _FixtureOverview2.default;
 exports.GroupTable = _GroupTable2.default;
 exports.LeaderTable = _LeaderTable2.default;
+exports.PaidMember = _PaidMember2.default;
+exports.NonPaidMember = _NonPaidMember2.default;
 
 /***/ }),
 
@@ -5845,7 +6251,7 @@ exports.default = (_LOGIN_REQUEST$LOGIN_ = {
   SWEEPSTAKE_GENERATED: 'SWEEPSTAKE_GENERATED',
 
   FETCHING_USERS: 'FETCHING_USERS'
-}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'POINTS_CALCULATED', 'POINTS_CALCULATED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FIXTURE_SNACKBAR_TOGGLED', 'FIXTURE_SNACKBAR_TOGGLED'), _LOGIN_REQUEST$LOGIN_);
+}, _defineProperty(_LOGIN_REQUEST$LOGIN_, 'USERS_RECEIVED', 'USERS_RECEIVED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_COMPETITION', 'FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_COMPETITION', 'FETCHED_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_COMPETITION', 'ERROR_FETCHING_COMPETITION'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_TEAMS', 'FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_TEAMS', 'FETCHED_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_TEAMS', 'ERROR_FETCHING_TEAMS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FAILED_ADD_MEMBER', 'FAILED_ADD_MEMBER'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_ADDED', 'MEMBER_ADDED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_FIXTURES', 'FETCHED_FIXTURES'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHING_GROUP_STANDINGS', 'FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FETCHED_GROUP_STANDINGS', 'FETCHED_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'ERROR_FETCHING_GROUP_STANDINGS', 'ERROR_FETCHING_GROUP_STANDINGS'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'POINTS_CALCULATED', 'POINTS_CALCULATED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'FIXTURE_SNACKBAR_TOGGLED', 'FIXTURE_SNACKBAR_TOGGLED'), _defineProperty(_LOGIN_REQUEST$LOGIN_, 'MEMBER_PAID', 'MEMBER_PAID'), _LOGIN_REQUEST$LOGIN_);
 
 /***/ }),
 
@@ -5925,7 +6331,8 @@ var app = _react2.default.createElement(
 			_react2.default.createElement(_containers.PrivateRoute, { path: '/fixtures', component: layouts.AllFixtures }),
 			_react2.default.createElement(_containers.PrivateRoute, { path: '/leaderboard', component: layouts.Leaderboard }),
 			'2',
-			_react2.default.createElement(_containers.PrivateRoute, { exact: true, path: '/groups', component: layouts.GroupStandings })
+			_react2.default.createElement(_containers.PrivateRoute, { exact: true, path: '/groups', component: layouts.GroupStandings }),
+			_react2.default.createElement(_containers.PrivateRoute, { path: '/paid', component: layouts.NameAndShame })
 		)
 	)
 );
@@ -6258,6 +6665,12 @@ exports.default = function () {
       updated['sweepstakes'] = sweepstakes;
       return updated;
 
+    case _constants2.default.MEMBER_PAID:
+      var current = updated['current'];
+      current['members'] = action.data;
+      updated['current'] = current;
+      return updated;
+
     case _constants2.default.SWEEPSTAKE_GENERATED:
       sweepstakes.splice(action.index, 1);
       sweepstakes.push(action.data);
@@ -6373,6 +6786,11 @@ var AppRoutes = [{
   sidebarName: "Leaderboard",
   navbarName: "Leaderboard",
   icon: _react2.default.createElement(_icons.LocalAtm, null)
+}, {
+  path: "/paid",
+  sidebarName: "Name & Shame",
+  navbarName: "Name & Shame",
+  icon: _react2.default.createElement(_icons.Visibility, null)
 }];
 
 exports.default = AppRoutes;

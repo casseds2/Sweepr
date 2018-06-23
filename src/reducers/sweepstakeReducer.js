@@ -42,6 +42,12 @@ export default (state = initialState, action) => {
       updated['sweepstakes'] = sweepstakes
       return updated
 
+    case constants.MEMBER_PAID:
+      let current = updated['current']
+      current['members'] = action.data
+      updated['current'] = current
+      return updated
+
     case constants.SWEEPSTAKE_GENERATED:
       sweepstakes.splice(action.index, 1)
       sweepstakes.push(action.data)

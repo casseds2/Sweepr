@@ -8,6 +8,7 @@ import ViewSweepstake from './ViewSweepstake'
 import AllFixtures from './AllFixtures'
 import Leaderboard from './Leaderboard'
 import GroupStandings from './GroupStandings'
+import NameAndShame from './NameAndShame'
 
 export {
   Dashboard,
@@ -19,5 +20,6 @@ export {
   ViewSweepstake,
   AllFixtures,
   Leaderboard,
-  GroupStandings
+  GroupStandings,
+  NameAndShame
 }

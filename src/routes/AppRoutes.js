@@ -4,7 +4,8 @@ import {
   Create,
   Event,
   Group,
-  LocalAtm
+  LocalAtm,
+  Visibility
 } from "@material-ui/icons"
 
 const AppRoutes = [
@@ -37,6 +38,12 @@ const AppRoutes = [
     sidebarName: "Leaderboard",
     navbarName: "Leaderboard",
     icon: <LocalAtm />
+  },
+  {
+    path: "/paid",
+    sidebarName: "Name & Shame",
+    navbarName: "Name & Shame",
+    icon: <Visibility />
   }
 ]
 

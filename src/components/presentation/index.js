@@ -15,6 +15,8 @@ import Member from './ViewSweepstake/Member'
 import FixtureOverview from './Fixtures/FixtureOverview'
 import GroupTable from './Groups/GroupTable'
 import LeaderTable from './Leaderboard/LeaderTable'
+import PaidMember from './NameAndShame/PaidMember'
+import NonPaidMember from './NameAndShame/NonPaidMember'
 
 export {
   Sidebar,
@@ -33,5 +35,7 @@ export {
   Member,
   FixtureOverview,
   GroupTable,
-  LeaderTable
+  LeaderTable,
+  PaidMember,
+  NonPaidMember
 }

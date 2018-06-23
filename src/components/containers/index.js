@@ -9,6 +9,7 @@ import Sidebar from './Sidebar'
 import Fixtures from './Fixtures'
 import GroupTables from './GroupTables'
 import Leaders from './Leaders'
+import PaidUsers from './PaidUsers'
 
 export {
   SweepstakeForm,
@@ -21,5 +22,6 @@ export {
   Sweepstake,
   Fixtures,
   GroupTables,
-  Leaders
+  Leaders,
+  PaidUsers
 }
