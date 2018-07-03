@@ -11,7 +11,7 @@ export default {
         let game = fixtures[i]
         let { matchday, homeTeamName, awayTeamName, result, status } = game
         let { goalsHomeTeam, goalsAwayTeam } = result
-        if(status == 'FINISHED'){
+        if(status == 'FINISHED' || matchday > 3){
           /* INITIALIZE TEAMS */
           if(teamScores[homeTeamName] == null){
             teamScores[homeTeamName] = 0
@@ -37,38 +37,70 @@ export default {
           // console.log('Team: ' + JSON.stringify(awayTeamName) + ' Points: ' + JSON.stringify(awayPoints))
 
           /* CALCULATE STAGE REACHED */
-          //Last 16
+          //Last 16 (3 Points for Reaching it, 2 extra for progressing to 1/4s)
           if(matchday == 4){
-            if(goalsHomeTeam > goalsAwayTeam){
-              awayPoints += 3
-            }
-            else{
-              homePoints += 3
-            }
+            homePoints += 3
+            awayPoints += 3
+            // if(goalsHomeTeam > goalsAwayTeam){
+            //   homePoints += 2
+            // }
+            // else{
+            //   if(goalsHomeTeam == goalsAwayTeam){
+            //     //It Went To Extra Time
+            //     let { extraTime } = result
+            //     let extraHome = extraTime['goalsHomeTeam']
+            //     let extraAway = extraTlsAwayTeam']
+            //     if(extraHome > extraAway){
+            //       //Home ime['goaTeam Won In Extra Time
+            //       homePoints += 2
+            //     }
+            //     else{
+            //       if(extraHome == extraAway){
+            //         //It Went To Penalties
+            //         let { penaltyShootout } = result
+            //         let penHome = penaltyShootout['goalsHomeTeam']
+            //         let penAway = penaltyShootout['goalsAwayTeam']
+            //         if(penHome > penAway){
+            //           //Home Team Won on Penalties
+            //           homePoints += 2
+            //         }
+            //         else{
+            //           //Away Team Won on Penalties
+            //           penAway += 2
+            //         }
+            //       }
+            //       else{
+            //         //Away Team Won In Extra Time
+            //         awayPoints += 2
+            //       }
+            //     }
+            //   }
+            //   else{
+            //     //Away Team Won
+            //     awayPoints += 2
+            //   }
+            // }
           }
 
           //Quarters
           if(matchday == 5){
-            if(goalsHomeTeam > goalsAwayTeam){
-              awayPoints += 5
-            }
-            else{
-              homePoints += 5
-            }
+            homePoints += 5
+            awayPoints += 5
           }
 
           //Semis
           if(matchday == 6){
-            if(goalsHomeTeam > goalsAwayTeam){
-              awayPoints += 7
-            }
-            else{
-              homePoints += 7
-            }
+            homePoints += 7
+            awayPoints += 7
           }
 
+          //3rd Place Play Off
+          // if(matchday == 7){
+
+          // }
+
           //Final
-          if(matchday == 7 || matchday == 8){
+          if(matchday == 8){
             if(goalsHomeTeam > goalsAwayTeam){
               awayPoints += 9
               homePoints += 12
