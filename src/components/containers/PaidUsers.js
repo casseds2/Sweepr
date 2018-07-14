@@ -6,6 +6,12 @@ import { Grid } from '@material-ui/core'
 
 class PaidUsers extends React.Component{
 
+  componentDidMount(){
+    if(this.props.sweepstake.sweepstakes.length === 0){
+      this.props.fetchSweepstakes()
+    }
+  }
+
   constructor(){
     super()
     this.markMemberAsPaid = this.markMemberAsPaid.bind(this)
@@ -19,9 +25,12 @@ class PaidUsers extends React.Component{
   render(){
 
     const { current } = this.props.sweepstake
-    const { members, owner, _id } = current
+    let { members, owner, _id } = current
     const { user } = this.props.user
     const owns = (owner == user._id) ? true : false
+
+    if(members == null)
+      members = []
 
     let content = members.map((member, index) => {
       return (member['paid'] == true) ? 
@@ -57,7 +66,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    markMemberAsPaid: (id, members) => dispatch(sweepstakeActions.markMemberAsPaid(id, members))
+    markMemberAsPaid: (id, members) => dispatch(sweepstakeActions.markMemberAsPaid(id, members)),
+    fetchSweepstakes: () => dispatch(sweepstakeActions.fetchSweepstakes()),
   }
 }
 
