@@ -11,7 +11,7 @@ export default {
         let game = fixtures[i]
         let { matchday, homeTeamName, awayTeamName, result, status } = game
         let { goalsHomeTeam, goalsAwayTeam } = result
-        if(status == 'FINISHED' || matchday > 3){
+        if(status == 'FINISHED' || status == 'TIMED'){
           /* INITIALIZE TEAMS */
           if(teamScores[homeTeamName] == null){
             teamScores[homeTeamName] = 0

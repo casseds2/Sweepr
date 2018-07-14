@@ -1165,6 +1165,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PaidUsers = function (_React$Component) {
   _inherits(PaidUsers, _React$Component);
 
+  _createClass(PaidUsers, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.props.sweepstake.sweepstakes.length === 0) {
+        this.props.fetchSweepstakes();
+      }
+    }
+  }]);
+
   function PaidUsers() {
     _classCallCheck(this, PaidUsers);
 
@@ -1192,6 +1201,8 @@ var PaidUsers = function (_React$Component) {
       var user = this.props.user.user;
 
       var owns = owner == user._id ? true : false;
+
+      if (members == null) members = [];
 
       var content = members.map(function (member, index) {
         return member['paid'] == true ? _react2.default.createElement(_presentation.PaidMember, {
@@ -1236,6 +1247,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     markMemberAsPaid: function markMemberAsPaid(id, members) {
       return dispatch(_actions.sweepstakeActions.markMemberAsPaid(id, members));
+    },
+    fetchSweepstakes: function fetchSweepstakes() {
+      return dispatch(_actions.sweepstakeActions.fetchSweepstakes());
     }
   };
 };
@@ -6911,7 +6925,7 @@ exports.default = {
         var goalsHomeTeam = result.goalsHomeTeam,
             goalsAwayTeam = result.goalsAwayTeam;
 
-        if (status == 'FINISHED' || matchday > 3) {
+        if (status == 'FINISHED' || status == 'TIMED') {
           /* INITIALIZE TEAMS */
           if (teamScores[homeTeamName] == null) {
             teamScores[homeTeamName] = 0;
