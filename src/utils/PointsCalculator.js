@@ -90,7 +90,7 @@ export default {
           }
 
           //Final
-          if(matchday > 8){
+          if(matchday == 8){
             console.log('Final')
             //Home Team Won
             if(goalsHomeTeam > goalsAwayTeam){
