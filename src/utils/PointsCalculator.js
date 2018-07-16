@@ -97,6 +97,8 @@ export default {
               console.log(homeTeamName + ' VS. ' + awayTeamName + ' was ' + goalsHomeTeam + ' : ' + goalsAwayTeam)
               awayPoints += 9
               homePoints += 12
+              homePoints += goalsHomeTeam
+              awayPoints += goalsAwayTeam
             }
             else{
               //Away Team Won
@@ -104,6 +106,8 @@ export default {
                 console.log(homeTeamName + ' VS. ' + awayTeamName + ' was ' + goalsHomeTeam + ' : ' + goalsAwayTeam)
                 awayPoints += 12
                 homePoints += 9
+                homePoints += goalsHomeTeam
+                awayPoints += goalsAwayTeam
               }
               //Extra Time
               else {
@@ -115,12 +119,16 @@ export default {
                 if(extraTime.goalsHomeTeam > extraTime.goalsAwayTeam){
                   homePoints += 12 //Points for Knockout Stage
                   awayPoints += 9 //Points for Knockout Stage
+                  homePoints += extraTime.goalsHomeTeam
+                  awayPoints += extraTime.goalsAwayTeam
                 }
                 else{
                   //Away Team Won In Extra Time
                   if(extraTime.goalsAwayTeam > extraTime.goalsHomeTeam){
                     homePoints += 9 //Points for Knockout Stage
                     awayPoints += 12 //Points for Knockout Stage
+                    homePoints += extraTime.goalsHomeTeam
+                    awayPoints += extraTime.goalsAwayTeam
                   }
                   else {
                     //It Went To Penalties
